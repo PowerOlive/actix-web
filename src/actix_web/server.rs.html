@@ -640,6 +640,7 @@
 <span id="639">639</span>
 <span id="640">640</span>
 <span id="641">641</span>
+<span id="642">642</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">any</span>::<span class="ident">Any</span>,
@@ -654,13 +655,6 @@
 };
 <span class="kw">use</span> <span class="ident">actix_server</span>::{<span class="ident">Server</span>, <span class="ident">ServerBuilder</span>};
 <span class="kw">use</span> <span class="ident">actix_service</span>::{<span class="ident">map_config</span>, <span class="ident">IntoServiceFactory</span>, <span class="ident">Service</span>, <span class="ident">ServiceFactory</span>};
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
-<span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">Protocol</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
-<span class="kw">use</span> <span class="ident">actix_service</span>::<span class="ident">pipeline_factory</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
-<span class="kw">use</span> <span class="ident">futures_util</span>::<span class="ident">future</span>::<span class="ident">ok</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;openssl&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">actix_tls</span>::<span class="ident">accept</span>::<span class="ident">openssl</span>::{<span class="ident">AlpnError</span>, <span class="ident">SslAcceptor</span>, <span class="ident">SslAcceptorBuilder</span>};
@@ -1132,7 +1126,9 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
     <span class="doccomment">/// Start listening for unix domain (UDS) connections on existing listener.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">listen_uds</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">lst</span>: <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">unix</span>::<span class="ident">net</span>::<span class="ident">UnixListener</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">Protocol</span>;
         <span class="kw">use</span> <span class="ident">actix_rt</span>::<span class="ident">net</span>::<span class="ident">UnixStream</span>;
+        <span class="kw">use</span> <span class="ident">actix_service</span>::<span class="ident">pipeline_factory</span>;
 
         <span class="kw">let</span> <span class="ident">cfg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">clone</span>();
         <span class="kw">let</span> <span class="ident">factory</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">factory</span>.<span class="ident">clone</span>();
@@ -1154,19 +1150,22 @@
                 <span class="ident">c</span>.<span class="ident">host</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">socket_addr</span>)),
             );
 
-            <span class="ident">pipeline_factory</span>(<span class="op">|</span><span class="ident">io</span>: <span class="ident">UnixStream</span><span class="op">|</span> <span class="ident">ok</span>((<span class="ident">io</span>, <span class="ident">Protocol</span>::<span class="ident">Http1</span>, <span class="prelude-val">None</span>))).<span class="ident">and_then</span>({
-                <span class="kw">let</span> <span class="ident">svc</span> <span class="op">=</span> <span class="ident">HttpService</span>::<span class="ident">build</span>()
-                    .<span class="ident">keep_alive</span>(<span class="ident">c</span>.<span class="ident">keep_alive</span>)
-                    .<span class="ident">client_timeout</span>(<span class="ident">c</span>.<span class="ident">client_timeout</span>);
+            <span class="ident">pipeline_factory</span>(<span class="op">|</span><span class="ident">io</span>: <span class="ident">UnixStream</span><span class="op">|</span> <span class="kw">async</span> { <span class="prelude-val">Ok</span>((<span class="ident">io</span>, <span class="ident">Protocol</span>::<span class="ident">Http1</span>, <span class="prelude-val">None</span>)) })
+                .<span class="ident">and_then</span>({
+                    <span class="kw">let</span> <span class="ident">svc</span> <span class="op">=</span> <span class="ident">HttpService</span>::<span class="ident">build</span>()
+                        .<span class="ident">keep_alive</span>(<span class="ident">c</span>.<span class="ident">keep_alive</span>)
+                        .<span class="ident">client_timeout</span>(<span class="ident">c</span>.<span class="ident">client_timeout</span>);
 
-                <span class="kw">let</span> <span class="ident">svc</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">handler</span>) <span class="op">=</span> <span class="ident">on_connect_fn</span>.<span class="ident">clone</span>() {
-                    <span class="ident">svc</span>.<span class="ident">on_connect_ext</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">io</span>: <span class="kw-2">&amp;</span><span class="kw">_</span>, <span class="ident">ext</span>: <span class="kw">_</span><span class="op">|</span> (<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">handler</span>)(<span class="ident">io</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">Any</span>, <span class="ident">ext</span>))
-                } <span class="kw">else</span> {
-                    <span class="ident">svc</span>
-                };
+                    <span class="kw">let</span> <span class="ident">svc</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">handler</span>) <span class="op">=</span> <span class="ident">on_connect_fn</span>.<span class="ident">clone</span>() {
+                        <span class="ident">svc</span>.<span class="ident">on_connect_ext</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">io</span>: <span class="kw-2">&amp;</span><span class="kw">_</span>, <span class="ident">ext</span>: <span class="kw">_</span><span class="op">|</span> {
+                            (<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">handler</span>)(<span class="ident">io</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">Any</span>, <span class="ident">ext</span>)
+                        })
+                    } <span class="kw">else</span> {
+                        <span class="ident">svc</span>
+                    };
 
-                <span class="ident">svc</span>.<span class="ident">finish</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">config</span>.<span class="ident">clone</span>()))
-            })
+                    <span class="ident">svc</span>.<span class="ident">finish</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">config</span>.<span class="ident">clone</span>()))
+                })
         })<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="self">self</span>)
     }
@@ -1177,7 +1176,9 @@
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span><span class="op">&gt;</span>,
     {
+        <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">Protocol</span>;
         <span class="kw">use</span> <span class="ident">actix_rt</span>::<span class="ident">net</span>::<span class="ident">UnixStream</span>;
+        <span class="kw">use</span> <span class="ident">actix_service</span>::<span class="ident">pipeline_factory</span>;
 
         <span class="kw">let</span> <span class="ident">cfg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">clone</span>();
         <span class="kw">let</span> <span class="ident">factory</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">factory</span>.<span class="ident">clone</span>();
@@ -1198,12 +1199,13 @@
                     <span class="ident">socket_addr</span>,
                     <span class="ident">c</span>.<span class="ident">host</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">socket_addr</span>)),
                 );
-                <span class="ident">pipeline_factory</span>(<span class="op">|</span><span class="ident">io</span>: <span class="ident">UnixStream</span><span class="op">|</span> <span class="ident">ok</span>((<span class="ident">io</span>, <span class="ident">Protocol</span>::<span class="ident">Http1</span>, <span class="prelude-val">None</span>))).<span class="ident">and_then</span>(
-                    <span class="ident">HttpService</span>::<span class="ident">build</span>()
-                        .<span class="ident">keep_alive</span>(<span class="ident">c</span>.<span class="ident">keep_alive</span>)
-                        .<span class="ident">client_timeout</span>(<span class="ident">c</span>.<span class="ident">client_timeout</span>)
-                        .<span class="ident">finish</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">config</span>.<span class="ident">clone</span>())),
-                )
+                <span class="ident">pipeline_factory</span>(<span class="op">|</span><span class="ident">io</span>: <span class="ident">UnixStream</span><span class="op">|</span> <span class="kw">async</span> { <span class="prelude-val">Ok</span>((<span class="ident">io</span>, <span class="ident">Protocol</span>::<span class="ident">Http1</span>, <span class="prelude-val">None</span>)) })
+                    .<span class="ident">and_then</span>(
+                        <span class="ident">HttpService</span>::<span class="ident">build</span>()
+                            .<span class="ident">keep_alive</span>(<span class="ident">c</span>.<span class="ident">keep_alive</span>)
+                            .<span class="ident">client_timeout</span>(<span class="ident">c</span>.<span class="ident">client_timeout</span>)
+                            .<span class="ident">finish</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">config</span>.<span class="ident">clone</span>())),
+                    )
             },
         )<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="self">self</span>)
