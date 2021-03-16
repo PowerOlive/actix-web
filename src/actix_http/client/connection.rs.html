@@ -310,24 +310,6 @@
 <span id="309">309</span>
 <span id="310">310</span>
 <span id="311">311</span>
-<span id="312">312</span>
-<span id="313">313</span>
-<span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
-<span id="317">317</span>
-<span id="318">318</span>
-<span id="319">319</span>
-<span id="320">320</span>
-<span id="321">321</span>
-<span id="322">322</span>
-<span id="323">323</span>
-<span id="324">324</span>
-<span id="325">325</span>
-<span id="326">326</span>
-<span id="327">327</span>
-<span id="328">328</span>
-<span id="329">329</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>;
@@ -425,14 +407,6 @@
     <span class="op">&gt;</span>;
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">ConnectionLifetime</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> {
-    <span class="doccomment">/// Close connection</span>
-    <span class="kw">fn</span> <span class="ident">close</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>);
-
-    <span class="doccomment">/// Release connection to the connection pool</span>
-    <span class="kw">fn</span> <span class="ident">release</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>);
-}
-
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="doccomment">/// HTTP client connection</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IoConnection</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
@@ -441,7 +415,7 @@
 {
     <span class="ident">io</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ConnectionType</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">created</span>: <span class="ident">time</span>::<span class="ident">Instant</span>,
-    <span class="ident">pool</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Acquired</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">pool</span>: <span class="ident">Acquired</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">IoConnection</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
@@ -461,7 +435,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">io</span>: <span class="ident">ConnectionType</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
         <span class="ident">created</span>: <span class="ident">time</span>::<span class="ident">Instant</span>,
-        <span class="ident">pool</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Acquired</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">pool</span>: <span class="ident">Acquired</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">IoConnection</span> {
             <span class="ident">pool</span>,
@@ -470,13 +444,9 @@
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">ConnectionType</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">time</span>::<span class="ident">Instant</span>) {
-        (<span class="self">self</span>.<span class="ident">io</span>.<span class="ident">unwrap</span>(), <span class="self">self</span>.<span class="ident">created</span>)
-    }
-
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">into_parts</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">ConnectionType</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">time</span>::<span class="ident">Instant</span>, <span class="ident">Acquired</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) {
-        (<span class="self">self</span>.<span class="ident">io</span>.<span class="ident">unwrap</span>(), <span class="self">self</span>.<span class="ident">created</span>, <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">unwrap</span>())
+        (<span class="self">self</span>.<span class="ident">io</span>.<span class="ident">unwrap</span>(), <span class="self">self</span>.<span class="ident">created</span>, <span class="self">self</span>.<span class="ident">pool</span>)
     }
 
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">send_request</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">MessageBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>, <span class="ident">H</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">RequestHeadType</span><span class="op">&gt;</span><span class="op">&gt;</span>(
@@ -504,13 +474,7 @@
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">io</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>() {
             <span class="ident">ConnectionType</span>::<span class="ident">H1</span>(<span class="ident">io</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">h1proto</span>::<span class="ident">open_tunnel</span>(<span class="ident">io</span>, <span class="ident">head</span>.<span class="ident">into</span>()).<span class="kw">await</span>,
             <span class="ident">ConnectionType</span>::<span class="ident">H2</span>(<span class="ident">io</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">pool</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">take</span>() {
-                    <span class="ident">pool</span>.<span class="ident">release</span>(<span class="ident">IoConnection</span>::<span class="ident">new</span>(
-                        <span class="ident">ConnectionType</span>::<span class="ident">H2</span>(<span class="ident">io</span>),
-                        <span class="self">self</span>.<span class="ident">created</span>,
-                        <span class="prelude-val">None</span>,
-                    ));
-                }
+                <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">release</span>(<span class="ident">ConnectionType</span>::<span class="ident">H2</span>(<span class="ident">io</span>), <span class="self">self</span>.<span class="ident">created</span>);
                 <span class="prelude-val">Err</span>(<span class="ident">SendRequestError</span>::<span class="ident">TunnelNotSupported</span>)
             }
         }
