@@ -335,7 +335,7 @@
 <span class="kw">use</span> <span class="ident">bytes</span>::<span class="ident">buf</span>::<span class="ident">BufMut</span>;
 <span class="kw">use</span> <span class="ident">bytes</span>::{<span class="ident">Bytes</span>, <span class="ident">BytesMut</span>};
 <span class="kw">use</span> <span class="ident">futures_core</span>::<span class="ident">Stream</span>;
-<span class="kw">use</span> <span class="ident">futures_util</span>::{<span class="ident">future</span>::<span class="ident">poll_fn</span>, <span class="ident">SinkExt</span>};
+<span class="kw">use</span> <span class="ident">futures_util</span>::{<span class="ident">future</span>::<span class="ident">poll_fn</span>, <span class="ident">SinkExt</span> <span class="kw">as</span> <span class="kw">_</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">PayloadError</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">h1</span>;
@@ -526,7 +526,7 @@
         }
     }
 
-    <span class="ident">SinkExt</span>::<span class="ident">flush</span>(<span class="ident">framed</span>.<span class="ident">get_mut</span>()).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="ident">framed</span>.<span class="ident">get_mut</span>().<span class="ident">flush</span>().<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(())
 }
 

@@ -75,7 +75,7 @@
 <span class="kw">use</span> <span class="ident">time</span>::{<span class="ident">Date</span>, <span class="ident">OffsetDateTime</span>, <span class="ident">PrimitiveDateTime</span>};
 
 <span class="doccomment">/// Attempt to parse a `time` string as one of either RFC 1123, RFC 850, or asctime.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_http_date</span>(<span class="ident">time</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PrimitiveDateTime</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">parse_http_date</span>(<span class="ident">time</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PrimitiveDateTime</span><span class="op">&gt;</span> {
     <span class="ident">try_parse_rfc_1123</span>(<span class="ident">time</span>)
         .<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">try_parse_rfc_850</span>(<span class="ident">time</span>))
         .<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">try_parse_asctime</span>(<span class="ident">time</span>))

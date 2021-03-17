@@ -397,7 +397,7 @@
 <span class="kw">use</span> <span class="ident">bytes</span>::<span class="ident">Bytes</span>;
 <span class="kw">use</span> <span class="ident">futures_core</span>::<span class="ident">ready</span>;
 <span class="kw">use</span> <span class="ident">futures_util</span>::<span class="ident">future</span>::<span class="ident">ok</span>;
-<span class="kw">use</span> <span class="ident">h2</span>::<span class="ident">server</span>::{<span class="self">self</span>, <span class="ident">Handshake</span>};
+<span class="kw">use</span> <span class="ident">h2</span>::<span class="ident">server</span>::{<span class="ident">handshake</span>, <span class="ident">Handshake</span>};
 <span class="kw">use</span> <span class="ident">log</span>::<span class="ident">error</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">body</span>::<span class="ident">MessageBody</span>;
@@ -691,7 +691,7 @@
                 <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">cfg</span>.<span class="ident">clone</span>()),
                 <span class="ident">addr</span>,
                 <span class="ident">on_connect_data</span>,
-                <span class="ident">server</span>::<span class="ident">handshake</span>(<span class="ident">io</span>),
+                <span class="ident">handshake</span>(<span class="ident">io</span>),
             ),
         }
     }
