@@ -552,7 +552,7 @@
 <span class="kw">use</span> <span class="ident">http</span>::<span class="ident">Uri</span>;
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">config</span>::<span class="ident">ConnectorConfig</span>;
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">connection</span>::{<span class="ident">Connection</span>, <span class="ident">EitherIoConnection</span>};
+<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">connection</span>::{<span class="ident">Connection</span>, <span class="ident">ConnectionIo</span>, <span class="ident">EitherIoConnection</span>};
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">error</span>::<span class="ident">ConnectError</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">pool</span>::<span class="ident">ConnectionPool</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">Connect</span>;
@@ -594,9 +594,6 @@
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
     <span class="ident">ssl</span>: <span class="ident">SslConnector</span>,
 }
-
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Io</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span> {}
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span><span class="op">&gt;</span> <span class="ident">Io</span> <span class="kw">for</span> <span class="ident">T</span> {}
 
 <span class="kw">impl</span> <span class="ident">Connector</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_ret_no_self</span>, <span class="ident">clippy</span>::<span class="ident">let_unit_value</span>)]</span>
@@ -815,16 +812,16 @@
             <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">DummyService</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span>
                 <span class="kw">dyn</span> <span class="ident">Service</span><span class="op">&lt;</span>
                     <span class="ident">Connect</span>,
-                    <span class="ident">Response</span> <span class="op">=</span> (<span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Io</span><span class="op">&gt;</span>, <span class="ident">Protocol</span>),
+                    <span class="ident">Response</span> <span class="op">=</span> (<span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ConnectionIo</span><span class="op">&gt;</span>, <span class="ident">Protocol</span>),
                     <span class="ident">Error</span> <span class="op">=</span> <span class="ident">ConnectError</span>,
                     <span class="ident">Future</span> <span class="op">=</span> <span class="ident">futures_core</span>::<span class="ident">future</span>::<span class="ident">LocalBoxFuture</span><span class="op">&lt;</span>
                         <span class="lifetime">&#39;static</span>,
-                        <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Io</span><span class="op">&gt;</span>, <span class="ident">Protocol</span>), <span class="ident">ConnectError</span><span class="op">&gt;</span>,
+                        <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ConnectionIo</span><span class="op">&gt;</span>, <span class="ident">Protocol</span>), <span class="ident">ConnectError</span><span class="op">&gt;</span>,
                     <span class="op">&gt;</span>,
                 <span class="op">&gt;</span>,
             <span class="op">&gt;</span>;
 
-            <span class="ident">InnerConnector</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">DummyService</span>, <span class="kw">_</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Io</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+            <span class="ident">InnerConnector</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">DummyService</span>, <span class="kw">_</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ConnectionIo</span><span class="op">&gt;</span><span class="op">&gt;</span> {
                 <span class="ident">tcp_pool</span>: <span class="ident">ConnectionPool</span>::<span class="ident">new</span>(
                     <span class="ident">tcp_service</span>,
                     <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">no_disconnect_timeout</span>(),
@@ -868,9 +865,12 @@
                                     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">protos</span><span class="op">|</span> <span class="ident">protos</span>.<span class="ident">windows</span>(<span class="number">2</span>).<span class="ident">any</span>(<span class="op">|</span><span class="ident">w</span><span class="op">|</span> <span class="ident">w</span> <span class="op">=</span><span class="op">=</span> <span class="ident">H2</span>))
                                     .<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>);
                                 <span class="kw">if</span> <span class="ident">h2</span> {
-                                    (<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">sock</span>) <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Io</span><span class="op">&gt;</span>, <span class="ident">Protocol</span>::<span class="ident">Http2</span>)
+                                    (
+                                        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">sock</span>) <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ConnectionIo</span><span class="op">&gt;</span>,
+                                        <span class="ident">Protocol</span>::<span class="ident">Http2</span>,
+                                    )
                                 } <span class="kw">else</span> {
-                                    (<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">sock</span>) <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Io</span><span class="op">&gt;</span>, <span class="ident">Protocol</span>::<span class="ident">Http1</span>)
+                                    (<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">sock</span>) <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">Protocol</span>::<span class="ident">Http1</span>)
                                 }
                             })
                             .<span class="ident">map_err</span>(<span class="ident">ConnectError</span>::<span class="ident">from</span>),
@@ -888,9 +888,9 @@
                                     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">protos</span><span class="op">|</span> <span class="ident">protos</span>.<span class="ident">windows</span>(<span class="number">2</span>).<span class="ident">any</span>(<span class="op">|</span><span class="ident">w</span><span class="op">|</span> <span class="ident">w</span> <span class="op">=</span><span class="op">=</span> <span class="ident">H2</span>))
                                     .<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>);
                                 <span class="kw">if</span> <span class="ident">h2</span> {
-                                    (<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">sock</span>) <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Io</span><span class="op">&gt;</span>, <span class="ident">Protocol</span>::<span class="ident">Http2</span>)
+                                    (<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">sock</span>) <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">Protocol</span>::<span class="ident">Http2</span>)
                                 } <span class="kw">else</span> {
-                                    (<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">sock</span>) <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Io</span><span class="op">&gt;</span>, <span class="ident">Protocol</span>::<span class="ident">Http1</span>)
+                                    (<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">sock</span>) <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">Protocol</span>::<span class="ident">Http1</span>)
                                 }
                             }),
                     ),

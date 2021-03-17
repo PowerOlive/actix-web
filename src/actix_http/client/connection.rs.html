@@ -310,6 +310,10 @@
 <span id="309">309</span>
 <span id="310">310</span>
 <span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>;
@@ -331,6 +335,10 @@
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">error</span>::<span class="ident">SendRequestError</span>;
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">pool</span>::<span class="ident">Acquired</span>;
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">h1proto</span>, <span class="ident">h2proto</span>};
+
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ConnectionIo</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> {}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="ident">ConnectionIo</span> <span class="kw">for</span> <span class="ident">T</span> {}
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum</span> <span class="ident">ConnectionType</span><span class="op">&lt;</span><span class="ident">Io</span><span class="op">&gt;</span> {
     <span class="ident">H1</span>(<span class="ident">Io</span>),

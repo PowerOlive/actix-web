@@ -42,7 +42,7 @@
     <span class="ident">Connect</span> <span class="kw">as</span> <span class="ident">TcpConnect</span>, <span class="ident">ConnectError</span> <span class="kw">as</span> <span class="ident">TcpConnectError</span>, <span class="ident">Connection</span> <span class="kw">as</span> <span class="ident">TcpConnection</span>,
 };
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">connection</span>::<span class="ident">Connection</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">connection</span>::{<span class="ident">Connection</span>, <span class="ident">ConnectionIo</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">connector</span>::<span class="ident">Connector</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">error</span>::{<span class="ident">ConnectError</span>, <span class="ident">FreezeRequestError</span>, <span class="ident">InvalidUrl</span>, <span class="ident">SendRequestError</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Protocol</span>;
