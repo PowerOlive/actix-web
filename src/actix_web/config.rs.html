@@ -463,7 +463,7 @@
 
 <span class="kw">impl</span> <span class="ident">AppConfig</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">secure</span>: <span class="ident">bool</span>, <span class="ident">addr</span>: <span class="ident">SocketAddr</span>, <span class="ident">host</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">AppConfig</span> { <span class="ident">secure</span>, <span class="ident">addr</span>, <span class="ident">host</span> }
+        <span class="ident">AppConfig</span> { <span class="ident">secure</span>, <span class="ident">host</span>, <span class="ident">addr</span> }
     }
 
     <span class="doccomment">/// Server host name.</span>

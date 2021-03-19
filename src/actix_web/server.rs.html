@@ -638,9 +638,6 @@
 <span id="637">637</span>
 <span id="638">638</span>
 <span id="639">639</span>
-<span id="640">640</span>
-<span id="641">641</span>
-<span id="642">642</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">any</span>::<span class="ident">Any</span>,
@@ -1251,17 +1248,14 @@
 
 <span class="kw">fn</span> <span class="ident">create_tcp_listener</span>(<span class="ident">addr</span>: <span class="ident">net</span>::<span class="ident">SocketAddr</span>, <span class="ident">backlog</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">net</span>::<span class="ident">TcpListener</span><span class="op">&gt;</span> {
     <span class="kw">use</span> <span class="ident">socket2</span>::{<span class="ident">Domain</span>, <span class="ident">Protocol</span>, <span class="ident">Socket</span>, <span class="ident">Type</span>};
-    <span class="kw">let</span> <span class="ident">domain</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">addr</span> {
-        <span class="ident">net</span>::<span class="ident">SocketAddr</span>::<span class="ident">V4</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Domain</span>::<span class="ident">ipv4</span>(),
-        <span class="ident">net</span>::<span class="ident">SocketAddr</span>::<span class="ident">V6</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Domain</span>::<span class="ident">ipv6</span>(),
-    };
-    <span class="kw">let</span> <span class="ident">socket</span> <span class="op">=</span> <span class="ident">Socket</span>::<span class="ident">new</span>(<span class="ident">domain</span>, <span class="ident">Type</span>::<span class="ident">stream</span>(), <span class="prelude-val">Some</span>(<span class="ident">Protocol</span>::<span class="ident">tcp</span>()))<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">domain</span> <span class="op">=</span> <span class="ident">Domain</span>::<span class="ident">for_address</span>(<span class="ident">addr</span>);
+    <span class="kw">let</span> <span class="ident">socket</span> <span class="op">=</span> <span class="ident">Socket</span>::<span class="ident">new</span>(<span class="ident">domain</span>, <span class="ident">Type</span>::<span class="ident">STREAM</span>, <span class="prelude-val">Some</span>(<span class="ident">Protocol</span>::<span class="ident">TCP</span>))<span class="question-mark">?</span>;
     <span class="ident">socket</span>.<span class="ident">set_reuse_address</span>(<span class="bool-val">true</span>)<span class="question-mark">?</span>;
     <span class="ident">socket</span>.<span class="ident">bind</span>(<span class="kw-2">&amp;</span><span class="ident">addr</span>.<span class="ident">into</span>())<span class="question-mark">?</span>;
     <span class="comment">// clamp backlog to max u32 that fits in i32 range</span>
     <span class="kw">let</span> <span class="ident">backlog</span> <span class="op">=</span> <span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">backlog</span>, <span class="ident">i32</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="kw">as</span> <span class="ident">i32</span>;
     <span class="ident">socket</span>.<span class="ident">listen</span>(<span class="ident">backlog</span>)<span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>(<span class="ident">socket</span>.<span class="ident">into_tcp_listener</span>())
+    <span class="prelude-val">Ok</span>(<span class="ident">net</span>::<span class="ident">TcpListener</span>::<span class="ident">from</span>(<span class="ident">socket</span>))
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;openssl&quot;</span>)]</span>
