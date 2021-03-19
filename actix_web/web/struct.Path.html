@@ -8,7 +8,7 @@
 <span class="comment">// extract path info from &quot;/{name}/{count}/index.html&quot; into tuple</span>
 <span class="comment">// {name}  - deserialize a String</span>
 <span class="comment">// {count} - deserialize a u32</span>
-<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/{name}/{count}/index.html&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">index</span>(<span class="ident">path</span>: <span class="ident">web</span>::<span class="ident">Path</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">u32</span>)<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
     <span class="kw">let</span> (<span class="ident">name</span>, <span class="ident">count</span>) <span class="op">=</span> <span class="ident">path</span>.<span class="ident">into_inner</span>();
     <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Welcome {}! {}&quot;</span>, <span class="ident">name</span>, <span class="ident">count</span>)
@@ -26,7 +26,7 @@ Path segment labels will be matched with struct field names.</p>
 }
 
 <span class="comment">// extract `Info` from a path using serde</span>
-<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/{name}&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">index</span>(<span class="ident">info</span>: <span class="ident">web</span>::<span class="ident">Path</span><span class="op">&lt;</span><span class="ident">Info</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
     <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Welcome {}!&quot;</span>, <span class="ident">info</span>.<span class="ident">name</span>)
 }</pre></div>

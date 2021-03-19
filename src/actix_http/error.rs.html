@@ -1266,7 +1266,7 @@
 
     <span class="doccomment">/// Similar to `as_response_error` but downcasts.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_error</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ResponseError</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">ResponseError</span>::<span class="ident">downcast_ref</span>(<span class="self">self</span>.<span class="ident">cause</span>.<span class="ident">as_ref</span>())
+        <span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ResponseError</span><span class="op">&gt;</span>::<span class="ident">downcast_ref</span>(<span class="self">self</span>.<span class="ident">cause</span>.<span class="ident">as_ref</span>())
     }
 }
 

@@ -287,6 +287,7 @@
 <span id="286">286</span>
 <span id="287">287</span>
 <span id="288">288</span>
+<span id="289">289</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! `awc` is a HTTP and WebSocket client library built on the Actix ecosystem.</span>
 <span class="doccomment">//!</span>
@@ -411,7 +412,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ws</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">builder</span>::<span class="ident">ClientBuilder</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">connect</span>::{<span class="ident">BoxedSocket</span>, <span class="ident">ConnectRequest</span>, <span class="ident">ConnectResponse</span>, <span class="ident">ConnectorService</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">connect</span>::{<span class="ident">BoxConnectorService</span>, <span class="ident">BoxedSocket</span>, <span class="ident">ConnectRequest</span>, <span class="ident">ConnectResponse</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">frozen</span>::{<span class="ident">FrozenClientRequest</span>, <span class="ident">FrozenSendBuilder</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">request</span>::<span class="ident">ClientRequest</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">response</span>::{<span class="ident">ClientResponse</span>, <span class="ident">JsonBody</span>, <span class="ident">MessageBody</span>};
@@ -437,11 +438,12 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Client</span>(<span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">ClientConfig</span><span class="op">&gt;</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Client</span>(<span class="ident">ClientConfig</span>);
 
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">ClientConfig</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">connector</span>: <span class="ident">ConnectorService</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">headers</span>: <span class="ident">HeaderMap</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">connector</span>: <span class="ident">BoxConnectorService</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">headers</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">HeaderMap</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
 }
 

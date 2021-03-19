@@ -745,7 +745,7 @@
     <span class="ident">addr</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">net</span>::<span class="ident">SocketAddr</span><span class="op">&gt;</span>,
     <span class="ident">response_decompress</span>: <span class="ident">bool</span>,
     <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
-    <span class="ident">config</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">ClientConfig</span><span class="op">&gt;</span>,
+    <span class="ident">config</span>: <span class="ident">ClientConfig</span>,
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
     <span class="ident">cookies</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CookieJar</span><span class="op">&gt;</span>,
@@ -753,7 +753,7 @@
 
 <span class="kw">impl</span> <span class="ident">ClientRequest</span> {
     <span class="doccomment">/// Create new client request builder.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="ident">method</span>: <span class="ident">Method</span>, <span class="ident">uri</span>: <span class="ident">U</span>, <span class="ident">config</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">ClientConfig</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="ident">method</span>: <span class="ident">Method</span>, <span class="ident">uri</span>: <span class="ident">U</span>, <span class="ident">config</span>: <span class="ident">ClientConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">Uri</span>: <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">Uri</span> <span class="kw">as</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">HttpError</span><span class="op">&gt;</span>,
@@ -1086,7 +1086,7 @@
             <span class="ident">slf</span>.<span class="ident">addr</span>,
             <span class="ident">slf</span>.<span class="ident">response_decompress</span>,
             <span class="ident">slf</span>.<span class="ident">timeout</span>,
-            <span class="ident">slf</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="ident">slf</span>.<span class="ident">config</span>,
             <span class="ident">body</span>,
         )
     }
@@ -1102,7 +1102,7 @@
             <span class="ident">slf</span>.<span class="ident">addr</span>,
             <span class="ident">slf</span>.<span class="ident">response_decompress</span>,
             <span class="ident">slf</span>.<span class="ident">timeout</span>,
-            <span class="ident">slf</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="ident">slf</span>.<span class="ident">config</span>,
             <span class="ident">value</span>,
         )
     }
@@ -1120,7 +1120,7 @@
             <span class="ident">slf</span>.<span class="ident">addr</span>,
             <span class="ident">slf</span>.<span class="ident">response_decompress</span>,
             <span class="ident">slf</span>.<span class="ident">timeout</span>,
-            <span class="ident">slf</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="ident">slf</span>.<span class="ident">config</span>,
             <span class="ident">value</span>,
         )
     }
@@ -1140,7 +1140,7 @@
             <span class="ident">slf</span>.<span class="ident">addr</span>,
             <span class="ident">slf</span>.<span class="ident">response_decompress</span>,
             <span class="ident">slf</span>.<span class="ident">timeout</span>,
-            <span class="ident">slf</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="ident">slf</span>.<span class="ident">config</span>,
             <span class="ident">stream</span>,
         )
     }
@@ -1156,7 +1156,7 @@
             <span class="ident">slf</span>.<span class="ident">addr</span>,
             <span class="ident">slf</span>.<span class="ident">response_decompress</span>,
             <span class="ident">slf</span>.<span class="ident">timeout</span>,
-            <span class="ident">slf</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="ident">slf</span>.<span class="ident">config</span>,
         )
     }
 

@@ -324,8 +324,6 @@
 <span id="323">323</span>
 <span id="324">324</span>
 <span id="325">325</span>
-<span id="326">326</span>
-<span id="327">327</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
@@ -335,7 +333,7 @@
 
 <span class="kw">use</span> <span class="ident">actix_codec</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>};
 <span class="kw">use</span> <span class="ident">actix_http</span>::{
-    <span class="ident">client</span>::{<span class="ident">Connector</span>, <span class="ident">TcpConnect</span>, <span class="ident">TcpConnectError</span>, <span class="ident">TcpConnection</span>},
+    <span class="ident">client</span>::{<span class="ident">Connector</span>, <span class="ident">ConnectorService</span>, <span class="ident">TcpConnect</span>, <span class="ident">TcpConnectError</span>, <span class="ident">TcpConnection</span>},
     <span class="ident">http</span>::{<span class="self">self</span>, <span class="ident">header</span>, <span class="ident">Error</span> <span class="kw">as</span> <span class="ident">HttpError</span>, <span class="ident">HeaderMap</span>, <span class="ident">HeaderName</span>, <span class="ident">Uri</span>},
 };
 <span class="kw">use</span> <span class="ident">actix_rt</span>::<span class="ident">net</span>::<span class="ident">TcpStream</span>;
@@ -344,7 +342,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">connect</span>::<span class="ident">DefaultConnector</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">SendRequestError</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">middleware</span>::{<span class="ident">NestTransform</span>, <span class="ident">Redirect</span>, <span class="ident">Transform</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Client</span>, <span class="ident">ClientConfig</span>, <span class="ident">ConnectRequest</span>, <span class="ident">ConnectResponse</span>, <span class="ident">ConnectorService</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Client</span>, <span class="ident">ClientConfig</span>, <span class="ident">ConnectRequest</span>, <span class="ident">ConnectResponse</span>};
 
 <span class="doccomment">/// An HTTP Client builder</span>
 <span class="doccomment">///</span>
@@ -563,7 +561,7 @@
     <span class="doccomment">/// Finish build process and create `Client` instance.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">finish</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Client</span>
     <span class="kw">where</span>
-        <span class="ident">M</span>: <span class="ident">Transform</span><span class="op">&lt;</span><span class="ident">ConnectorService</span>, <span class="ident">ConnectRequest</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">M</span>: <span class="ident">Transform</span><span class="op">&lt;</span><span class="ident">DefaultConnector</span><span class="op">&lt;</span><span class="ident">ConnectorService</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">Io</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">ConnectRequest</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">M</span>::<span class="ident">Transform</span>:
             <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">ConnectRequest</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">ConnectResponse</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">SendRequestError</span><span class="op">&gt;</span>,
     {
@@ -579,7 +577,7 @@
 
     <span class="kw">fn</span> <span class="ident">_finish</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Client</span>
     <span class="kw">where</span>
-        <span class="ident">M</span>: <span class="ident">Transform</span><span class="op">&lt;</span><span class="ident">ConnectorService</span>, <span class="ident">ConnectRequest</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">M</span>: <span class="ident">Transform</span><span class="op">&lt;</span><span class="ident">DefaultConnector</span><span class="op">&lt;</span><span class="ident">ConnectorService</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">Io</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">ConnectRequest</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">M</span>::<span class="ident">Transform</span>:
             <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">ConnectRequest</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">ConnectResponse</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">SendRequestError</span><span class="op">&gt;</span>,
     {
@@ -598,16 +596,14 @@
             <span class="ident">connector</span> <span class="op">=</span> <span class="ident">connector</span>.<span class="ident">local_address</span>(<span class="ident">val</span>);
         }
 
-        <span class="kw">let</span> <span class="ident">connector</span> <span class="op">=</span> <span class="ident">boxed</span>::<span class="ident">service</span>(<span class="ident">DefaultConnector</span>::<span class="ident">new</span>(<span class="ident">connector</span>.<span class="ident">finish</span>()));
-        <span class="kw">let</span> <span class="ident">connector</span> <span class="op">=</span> <span class="ident">boxed</span>::<span class="ident">service</span>(<span class="self">self</span>.<span class="ident">middleware</span>.<span class="ident">new_transform</span>(<span class="ident">connector</span>));
+        <span class="kw">let</span> <span class="ident">connector</span> <span class="op">=</span> <span class="ident">DefaultConnector</span>::<span class="ident">new</span>(<span class="ident">connector</span>.<span class="ident">finish</span>());
+        <span class="kw">let</span> <span class="ident">connector</span> <span class="op">=</span> <span class="ident">boxed</span>::<span class="ident">rc_service</span>(<span class="self">self</span>.<span class="ident">middleware</span>.<span class="ident">new_transform</span>(<span class="ident">connector</span>));
 
-        <span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">ClientConfig</span> {
-            <span class="ident">headers</span>: <span class="self">self</span>.<span class="ident">headers</span>,
+        <span class="ident">Client</span>(<span class="ident">ClientConfig</span> {
+            <span class="ident">headers</span>: <span class="ident">Rc</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">headers</span>),
             <span class="ident">timeout</span>: <span class="self">self</span>.<span class="ident">timeout</span>,
             <span class="ident">connector</span>,
-        };
-
-        <span class="ident">Client</span>(<span class="ident">Rc</span>::<span class="ident">new</span>(<span class="ident">config</span>))
+        })
     }
 }
 

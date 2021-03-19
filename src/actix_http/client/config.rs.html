@@ -40,6 +40,8 @@
 <span id="39">39</span>
 <span id="40">40</span>
 <span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">net</span>::<span class="ident">IpAddr</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>;
@@ -51,6 +53,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">ConnectorConfig</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">timeout</span>: <span class="ident">Duration</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">handshake_timeout</span>: <span class="ident">Duration</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">conn_lifetime</span>: <span class="ident">Duration</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">conn_keep_alive</span>: <span class="ident">Duration</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">disconnect_timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
@@ -64,6 +67,7 @@
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">timeout</span>: <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">5</span>),
+            <span class="ident">handshake_timeout</span>: <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">5</span>),
             <span class="ident">conn_lifetime</span>: <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">75</span>),
             <span class="ident">conn_keep_alive</span>: <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">15</span>),
             <span class="ident">disconnect_timeout</span>: <span class="prelude-val">Some</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">3000</span>)),

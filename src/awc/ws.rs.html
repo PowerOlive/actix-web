@@ -532,7 +532,6 @@
 <span id="531">531</span>
 <span id="532">532</span>
 <span id="533">533</span>
-<span id="534">534</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Websockets client</span>
 <span class="doccomment">//!</span>
@@ -564,7 +563,6 @@
 
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">net</span>::<span class="ident">SocketAddr</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">rc</span>::<span class="ident">Rc</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">str</span>};
 
 <span class="kw">use</span> <span class="ident">actix_codec</span>::<span class="ident">Framed</span>;
@@ -592,7 +590,7 @@
     <span class="ident">addr</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SocketAddr</span><span class="op">&gt;</span>,
     <span class="ident">max_size</span>: <span class="ident">usize</span>,
     <span class="ident">server_mode</span>: <span class="ident">bool</span>,
-    <span class="ident">config</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">ClientConfig</span><span class="op">&gt;</span>,
+    <span class="ident">config</span>: <span class="ident">ClientConfig</span>,
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
     <span class="ident">cookies</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CookieJar</span><span class="op">&gt;</span>,
@@ -600,7 +598,7 @@
 
 <span class="kw">impl</span> <span class="ident">WebsocketsRequest</span> {
     <span class="doccomment">/// Create new WebSocket connection</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="ident">uri</span>: <span class="ident">U</span>, <span class="ident">config</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">ClientConfig</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="ident">uri</span>: <span class="ident">U</span>, <span class="ident">config</span>: <span class="ident">ClientConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">Uri</span>: <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">Uri</span> <span class="kw">as</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">HttpError</span><span class="op">&gt;</span>,

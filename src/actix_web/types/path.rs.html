@@ -335,7 +335,7 @@
 <span class="doccomment">/// // extract path info from &quot;/{name}/{count}/index.html&quot; into tuple</span>
 <span class="doccomment">/// // {name}  - deserialize a String</span>
 <span class="doccomment">/// // {count} - deserialize a u32</span>
-<span class="doccomment">/// #[get(&quot;/&quot;)]</span>
+<span class="doccomment">/// #[get(&quot;/{name}/{count}/index.html&quot;)]</span>
 <span class="doccomment">/// async fn index(path: web::Path&lt;(String, u32)&gt;) -&gt; String {</span>
 <span class="doccomment">///     let (name, count) = path.into_inner();</span>
 <span class="doccomment">///     format!(&quot;Welcome {}! {}&quot;, name, count)</span>
@@ -355,7 +355,7 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// // extract `Info` from a path using serde</span>
-<span class="doccomment">/// #[get(&quot;/&quot;)]</span>
+<span class="doccomment">/// #[get(&quot;/{name}&quot;)]</span>
 <span class="doccomment">/// async fn index(info: web::Path&lt;Info&gt;) -&gt; String {</span>
 <span class="doccomment">///     format!(&quot;Welcome {}!&quot;, info.name)</span>
 <span class="doccomment">/// }</span>

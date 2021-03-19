@@ -542,7 +542,7 @@
                             <span class="comment">// remove body</span>
                             .<span class="ident">call</span>(<span class="ident">ConnectRequest</span>::<span class="ident">Client</span>(<span class="ident">head</span>, <span class="ident">Body</span>::<span class="prelude-val">None</span>, <span class="ident">addr</span>));
 
-                        <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">set</span>(<span class="ident">RedirectServiceFuture</span>::<span class="ident">Client</span> {
+                        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">RedirectServiceFuture</span>::<span class="ident">Client</span> {
                             <span class="ident">fut</span>,
                             <span class="ident">max_redirect_times</span>,
                             <span class="ident">uri</span>: <span class="prelude-val">Some</span>(<span class="ident">uri</span>),
@@ -589,7 +589,7 @@
                             .<span class="ident">unwrap</span>()
                             .<span class="ident">call</span>(<span class="ident">ConnectRequest</span>::<span class="ident">Client</span>(<span class="ident">head</span>, <span class="ident">body_new</span>, <span class="ident">addr</span>));
 
-                        <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">set</span>(<span class="ident">RedirectServiceFuture</span>::<span class="ident">Client</span> {
+                        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">RedirectServiceFuture</span>::<span class="ident">Client</span> {
                             <span class="ident">fut</span>,
                             <span class="ident">max_redirect_times</span>,
                             <span class="ident">uri</span>: <span class="prelude-val">Some</span>(<span class="ident">uri</span>),

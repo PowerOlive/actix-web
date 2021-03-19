@@ -263,7 +263,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">addr</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">net</span>::<span class="ident">SocketAddr</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">response_decompress</span>: <span class="ident">bool</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">config</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">ClientConfig</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">config</span>: <span class="ident">ClientConfig</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">FrozenClientRequest</span> {
@@ -291,7 +291,7 @@
             <span class="self">self</span>.<span class="ident">addr</span>,
             <span class="self">self</span>.<span class="ident">response_decompress</span>,
             <span class="self">self</span>.<span class="ident">timeout</span>,
-            <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>,
             <span class="ident">body</span>,
         )
     }
@@ -302,7 +302,7 @@
             <span class="self">self</span>.<span class="ident">addr</span>,
             <span class="self">self</span>.<span class="ident">response_decompress</span>,
             <span class="self">self</span>.<span class="ident">timeout</span>,
-            <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>,
             <span class="ident">value</span>,
         )
     }
@@ -313,7 +313,7 @@
             <span class="self">self</span>.<span class="ident">addr</span>,
             <span class="self">self</span>.<span class="ident">response_decompress</span>,
             <span class="self">self</span>.<span class="ident">timeout</span>,
-            <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>,
             <span class="ident">value</span>,
         )
     }
@@ -328,7 +328,7 @@
             <span class="self">self</span>.<span class="ident">addr</span>,
             <span class="self">self</span>.<span class="ident">response_decompress</span>,
             <span class="self">self</span>.<span class="ident">timeout</span>,
-            <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>,
             <span class="ident">stream</span>,
         )
     }
@@ -339,7 +339,7 @@
             <span class="self">self</span>.<span class="ident">addr</span>,
             <span class="self">self</span>.<span class="ident">response_decompress</span>,
             <span class="self">self</span>.<span class="ident">timeout</span>,
-            <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>,
         )
     }
 
@@ -408,7 +408,7 @@
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">addr</span>,
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">response_decompress</span>,
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">timeout</span>,
-            <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">req</span>.<span class="ident">config</span>,
             <span class="ident">body</span>,
         )
     }
@@ -423,7 +423,7 @@
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">addr</span>,
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">response_decompress</span>,
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">timeout</span>,
-            <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">req</span>.<span class="ident">config</span>,
             <span class="ident">value</span>,
         )
     }
@@ -438,7 +438,7 @@
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">addr</span>,
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">response_decompress</span>,
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">timeout</span>,
-            <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">req</span>.<span class="ident">config</span>,
             <span class="ident">value</span>,
         )
     }
@@ -457,7 +457,7 @@
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">addr</span>,
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">response_decompress</span>,
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">timeout</span>,
-            <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">req</span>.<span class="ident">config</span>,
             <span class="ident">stream</span>,
         )
     }
@@ -472,7 +472,7 @@
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">addr</span>,
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">response_decompress</span>,
             <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">timeout</span>,
-            <span class="self">self</span>.<span class="ident">req</span>.<span class="ident">config</span>.<span class="ident">as_ref</span>(),
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">req</span>.<span class="ident">config</span>,
         )
     }
 }
