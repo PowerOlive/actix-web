@@ -782,7 +782,7 @@
 <span class="doccomment">/// and check guards for specific route, if request matches all</span>
 <span class="doccomment">/// guards, route considered matched and route handler get called.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// ```</span>
 <span class="doccomment">/// use actix_web::{web, App, HttpResponse};</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// fn main() {</span>
@@ -844,7 +844,7 @@
 
     <span class="doccomment">/// Add match guard to a resource.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use actix_web::{web, guard, App, HttpResponse};</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// async fn index(data: web::Path&lt;(String, String)&gt;) -&gt; &amp;&#39;static str {</span>
@@ -877,7 +877,7 @@
 
     <span class="doccomment">/// Register a new route.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use actix_web::{web, guard, App, HttpResponse};</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// fn main() {</span>
@@ -894,7 +894,7 @@
     <span class="doccomment">/// Multiple routes could be added to a resource. Resource object uses</span>
     <span class="doccomment">/// match guards for route selection.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use actix_web::{web, guard, App};</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// fn main() {</span>
@@ -919,7 +919,7 @@
     <span class="doccomment">/// Provided data is available for all routes registered for the current resource.</span>
     <span class="doccomment">/// Resource data overrides data registered by `App::data()` method.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use actix_web::{web, App, FromRequest};</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// /// extract text data from request</span>
@@ -958,7 +958,7 @@
 
     <span class="doccomment">/// Register a new route and add handler. This route matches all requests.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use actix_web::*;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// fn index(req: HttpRequest) -&gt; HttpResponse {</span>
@@ -970,7 +970,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This is shortcut for:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// # extern crate actix_web;</span>
     <span class="doccomment">/// # use actix_web::*;</span>
     <span class="doccomment">/// # fn index(req: HttpRequest) -&gt; HttpResponse { unimplemented!() }</span>
@@ -1036,7 +1036,7 @@
     <span class="doccomment">/// Resource level middlewares are not allowed to change response</span>
     <span class="doccomment">/// type (i.e modify response&#39;s body).</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use actix_service::Service;</span>
     <span class="doccomment">/// use actix_web::{web, App};</span>
     <span class="doccomment">/// use actix_web::http::{header::CONTENT_TYPE, HeaderValue};</span>
