@@ -760,6 +760,11 @@
 <span id="759">759</span>
 <span id="760">760</span>
 <span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>,
@@ -772,7 +777,7 @@
 };
 
 <span class="kw">use</span> <span class="ident">actix_rt</span>::{
-    <span class="ident">net</span>::<span class="ident">TcpStream</span>,
+    <span class="ident">net</span>::{<span class="ident">ActixStream</span>, <span class="ident">TcpStream</span>},
     <span class="ident">time</span>::{<span class="ident">sleep</span>, <span class="ident">Sleep</span>},
 };
 <span class="kw">use</span> <span class="ident">actix_service</span>::<span class="ident">Service</span>;
@@ -882,7 +887,7 @@
     <span class="doccomment">/// Use custom connector.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connector</span><span class="op">&lt;</span><span class="ident">S1</span>, <span class="ident">Io1</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">connector</span>: <span class="ident">S1</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Connector</span><span class="op">&lt;</span><span class="ident">S1</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">Io1</span>: <span class="ident">ConnectionIo</span> <span class="op">+</span> <span class="ident">fmt</span>::<span class="ident">Debug</span>,
+        <span class="ident">Io1</span>: <span class="ident">ActixStream</span> <span class="op">+</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">S1</span>: <span class="ident">Service</span><span class="op">&lt;</span>
                 <span class="ident">TcpConnect</span><span class="op">&lt;</span><span class="ident">Uri</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">TcpConnection</span><span class="op">&lt;</span><span class="ident">Uri</span>, <span class="ident">Io1</span><span class="op">&gt;</span>,
@@ -899,7 +904,14 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">Io</span><span class="op">&gt;</span> <span class="ident">Connector</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">Io</span>: <span class="ident">ConnectionIo</span> <span class="op">+</span> <span class="ident">fmt</span>::<span class="ident">Debug</span>,
+    <span class="comment">// Note:</span>
+    <span class="comment">// Input Io type is bound to ActixStream trait but internally in client module they</span>
+    <span class="comment">// are bound to ConnectionIo trait alias. And latter is the trait exposed to public</span>
+    <span class="comment">// in the form of Box&lt;dyn ConnectionIo&gt; type.</span>
+    <span class="comment">//</span>
+    <span class="comment">// This remap is to hide ActixStream&#39;s trait methods. They are not meant to be called</span>
+    <span class="comment">// from user code.</span>
+    <span class="ident">Io</span>: <span class="ident">ActixStream</span> <span class="op">+</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">S</span>: <span class="ident">Service</span><span class="op">&lt;</span>
             <span class="ident">TcpConnect</span><span class="op">&lt;</span><span class="ident">Uri</span><span class="op">&gt;</span>,
             <span class="ident">Response</span> <span class="op">=</span> <span class="ident">TcpConnection</span><span class="op">&lt;</span><span class="ident">Uri</span>, <span class="ident">Io</span><span class="op">&gt;</span>,
@@ -1170,16 +1182,14 @@
     <span class="ident">timeout</span>: <span class="ident">Duration</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">St</span>, <span class="ident">Io</span>, <span class="ident">Res</span><span class="op">&gt;</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Connect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TlsConnectorService</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">St</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">St</span>, <span class="ident">Io</span><span class="op">&gt;</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Connect</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TlsConnectorService</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">St</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">S</span>: <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Connect</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">TcpConnection</span><span class="op">&lt;</span><span class="ident">Uri</span>, <span class="ident">Io</span><span class="op">&gt;</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">ConnectError</span><span class="op">&gt;</span>
         <span class="op">+</span> <span class="ident">Clone</span>
         <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">St</span>: <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">TcpConnection</span><span class="op">&lt;</span><span class="ident">Uri</span>, <span class="ident">Io</span><span class="op">&gt;</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Res</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span>
-        <span class="op">+</span> <span class="ident">Clone</span>
-        <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">St</span>: <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">TcpConnection</span><span class="op">&lt;</span><span class="ident">Uri</span>, <span class="ident">Io</span><span class="op">&gt;</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">Io</span>: <span class="ident">ConnectionIo</span>,
-    <span class="ident">Res</span>: <span class="ident">IntoConnectionIo</span>,
+    <span class="ident">St</span>::<span class="ident">Response</span>: <span class="ident">IntoConnectionIo</span>,
 {
     <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> (<span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ConnectionIo</span><span class="op">&gt;</span>, <span class="ident">Protocol</span>);
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">ConnectError</span>;
@@ -1234,10 +1244,10 @@
         <span class="ident">Error</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span>,
         <span class="ident">Future</span> <span class="op">=</span> <span class="ident">Fut2</span>,
     <span class="op">&gt;</span>,
+    <span class="ident">S</span>::<span class="ident">Response</span>: <span class="ident">IntoConnectionIo</span>,
     <span class="ident">Fut1</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TcpConnection</span><span class="op">&lt;</span><span class="ident">Uri</span>, <span class="ident">Io</span><span class="op">&gt;</span>, <span class="ident">ConnectError</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">Fut2</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Response</span>, <span class="ident">S</span>::<span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">Io</span>: <span class="ident">ConnectionIo</span>,
-    <span class="ident">Res</span>: <span class="ident">IntoConnectionIo</span>,
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">ConnectionIo</span><span class="op">&gt;</span>, <span class="ident">Protocol</span>), <span class="ident">ConnectError</span><span class="op">&gt;</span>;
 
