@@ -1219,6 +1219,22 @@
 <span id="1218">1218</span>
 <span id="1219">1219</span>
 <span id="1220">1220</span>
+<span id="1221">1221</span>
+<span id="1222">1222</span>
+<span id="1223">1223</span>
+<span id="1224">1224</span>
+<span id="1225">1225</span>
+<span id="1226">1226</span>
+<span id="1227">1227</span>
+<span id="1228">1228</span>
+<span id="1229">1229</span>
+<span id="1230">1230</span>
+<span id="1231">1231</span>
+<span id="1232">1232</span>
+<span id="1233">1233</span>
+<span id="1234">1234</span>
+<span id="1235">1235</span>
+<span id="1236">1236</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Various helpers for Actix applications to use during testing.</span>
 
@@ -1230,19 +1246,18 @@
 <span class="kw">use</span> <span class="ident">actix_codec</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>, <span class="ident">Framed</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">cookie</span>::<span class="ident">Cookie</span>;
-<span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">http</span>::<span class="ident">header</span>::{<span class="ident">ContentType</span>, <span class="ident">IntoHeaderPair</span>};
-<span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">http</span>::{<span class="ident">Method</span>, <span class="ident">StatusCode</span>, <span class="ident">Uri</span>, <span class="ident">Version</span>};
+<span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">http</span>::{<span class="ident">HeaderMap</span>, <span class="ident">Method</span>, <span class="ident">StatusCode</span>, <span class="ident">Uri</span>, <span class="ident">Version</span>};
 <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">test</span>::<span class="ident">TestRequest</span> <span class="kw">as</span> <span class="ident">HttpTestRequest</span>;
 <span class="kw">use</span> <span class="ident">actix_http</span>::{<span class="ident">ws</span>, <span class="ident">Extensions</span>, <span class="ident">HttpService</span>, <span class="ident">Request</span>};
 <span class="kw">use</span> <span class="ident">actix_router</span>::{<span class="ident">Path</span>, <span class="ident">ResourceDef</span>, <span class="ident">Url</span>};
 <span class="kw">use</span> <span class="ident">actix_rt</span>::{<span class="ident">time</span>::<span class="ident">sleep</span>, <span class="ident">System</span>};
 <span class="kw">use</span> <span class="ident">actix_service</span>::{<span class="ident">map_config</span>, <span class="ident">IntoService</span>, <span class="ident">IntoServiceFactory</span>, <span class="ident">Service</span>, <span class="ident">ServiceFactory</span>};
+<span class="kw">use</span> <span class="ident">actix_utils</span>::<span class="ident">future</span>::<span class="ident">ok</span>;
 <span class="kw">use</span> <span class="ident">awc</span>::<span class="ident">error</span>::<span class="ident">PayloadError</span>;
 <span class="kw">use</span> <span class="ident">awc</span>::{<span class="ident">Client</span>, <span class="ident">ClientRequest</span>, <span class="ident">ClientResponse</span>, <span class="ident">Connector</span>};
 <span class="kw">use</span> <span class="ident">bytes</span>::{<span class="ident">Bytes</span>, <span class="ident">BytesMut</span>};
 <span class="kw">use</span> <span class="ident">futures_core</span>::<span class="ident">Stream</span>;
-<span class="kw">use</span> <span class="ident">futures_util</span>::<span class="ident">future</span>::<span class="ident">ok</span>;
-<span class="kw">use</span> <span class="ident">futures_util</span>::<span class="ident">StreamExt</span>;
+<span class="kw">use</span> <span class="ident">futures_util</span>::<span class="ident">StreamExt</span> <span class="kw">as</span> <span class="kw">_</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">DeserializeOwned</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Serialize</span>;
 <span class="kw">use</span> <span class="ident">socket2</span>::{<span class="ident">Domain</span>, <span class="ident">Protocol</span>, <span class="ident">Socket</span>, <span class="ident">Type</span>};
@@ -1253,6 +1268,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">config</span>::<span class="ident">AppConfig</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">data</span>::<span class="ident">Data</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dev</span>::{<span class="ident">Body</span>, <span class="ident">MessageBody</span>, <span class="ident">Payload</span>, <span class="ident">Server</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::<span class="ident">header</span>::{<span class="ident">ContentType</span>, <span class="ident">IntoHeaderPair</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">rmap</span>::<span class="ident">ResourceMap</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">service</span>::{<span class="ident">ServiceRequest</span>, <span class="ident">ServiceResponse</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Error</span>, <span class="ident">HttpRequest</span>, <span class="ident">HttpResponse</span>};
@@ -1384,7 +1400,7 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">app</span>
         .<span class="ident">call</span>(<span class="ident">req</span>)
         .<span class="kw">await</span>
-        .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;read_response failed at application call&quot;</span>));
+        .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;read_response failed at application call: {}&quot;</span>, <span class="ident">e</span>));
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">take_body</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">BytesMut</span>::<span class="ident">new</span>();
@@ -1476,8 +1492,12 @@
 {
     <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">read_body</span>(<span class="ident">res</span>).<span class="kw">await</span>;
 
-    <span class="ident">serde_json</span>::<span class="ident">from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">body</span>)
-        .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;read_response_json failed during deserialization: {}&quot;</span>, <span class="ident">e</span>))
+    <span class="ident">serde_json</span>::<span class="ident">from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">body</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+        <span class="macro">panic</span><span class="macro">!</span>(
+            <span class="string">&quot;read_response_json failed during deserialization of body: {:?}, {}&quot;</span>,
+            <span class="ident">body</span>, <span class="ident">e</span>
+        )
+    })
 }
 
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">load_stream</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">stream</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">Error</span><span class="op">&gt;</span>
@@ -1533,8 +1553,12 @@
 {
     <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">read_response</span>(<span class="ident">app</span>, <span class="ident">req</span>).<span class="kw">await</span>;
 
-    <span class="ident">serde_json</span>::<span class="ident">from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">body</span>)
-        .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;read_response_json failed during deserialization&quot;</span>))
+    <span class="ident">serde_json</span>::<span class="ident">from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">body</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
+        <span class="macro">panic</span><span class="macro">!</span>(
+            <span class="string">&quot;read_response_json failed during deserialization of body: {:?}&quot;</span>,
+            <span class="ident">body</span>
+        )
+    })
 }
 
 <span class="doccomment">/// Test `Request` builder.</span>
@@ -2182,6 +2206,14 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Framed</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span>, <span class="ident">ws</span>::<span class="ident">Codec</span><span class="op">&gt;</span>, <span class="ident">awc</span>::<span class="ident">error</span>::<span class="ident">WsClientError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">ws_at</span>(<span class="string">&quot;/&quot;</span>).<span class="kw">await</span>
+    }
+
+    <span class="doccomment">/// Get default HeaderMap of Client.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns Some(&amp;mut HeaderMap) when Client object is unique</span>
+    <span class="doccomment">/// (No other clone of client exists at the same time).</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">client_headers</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HeaderMap</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">client</span>.<span class="ident">headers</span>()
     }
 
     <span class="doccomment">/// Gracefully stop HTTP server</span>

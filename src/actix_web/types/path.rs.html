@@ -319,7 +319,7 @@
 
 <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">error</span>::{<span class="ident">Error</span>, <span class="ident">ErrorNotFound</span>};
 <span class="kw">use</span> <span class="ident">actix_router</span>::<span class="ident">PathDeserializer</span>;
-<span class="kw">use</span> <span class="ident">futures_util</span>::<span class="ident">future</span>::{<span class="ident">ready</span>, <span class="ident">Ready</span>};
+<span class="kw">use</span> <span class="ident">actix_utils</span>::<span class="ident">future</span>::{<span class="ident">ready</span>, <span class="ident">Ready</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">de</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">dev</span>::<span class="ident">Payload</span>, <span class="ident">error</span>::<span class="ident">PathError</span>, <span class="ident">FromRequest</span>, <span class="ident">HttpRequest</span>};

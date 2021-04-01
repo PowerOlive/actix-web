@@ -996,13 +996,13 @@
 
     <span class="attribute">#[<span class="ident">actix_rt</span>::<span class="ident">test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_body</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestResponse</span>::<span class="ident">with_header</span>(<span class="ident">header</span>::<span class="ident">CONTENT_LENGTH</span>, <span class="string">&quot;xxxx&quot;</span>).<span class="ident">finish</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestResponse</span>::<span class="ident">with_header</span>((<span class="ident">header</span>::<span class="ident">CONTENT_LENGTH</span>, <span class="string">&quot;xxxx&quot;</span>)).<span class="ident">finish</span>();
         <span class="kw">match</span> <span class="ident">req</span>.<span class="ident">body</span>().<span class="kw">await</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>() {
             <span class="ident">PayloadError</span>::<span class="ident">UnknownLength</span> <span class="op">=</span><span class="op">&gt;</span> {}
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;error&quot;</span>),
         }
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestResponse</span>::<span class="ident">with_header</span>(<span class="ident">header</span>::<span class="ident">CONTENT_LENGTH</span>, <span class="string">&quot;10000000&quot;</span>).<span class="ident">finish</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestResponse</span>::<span class="ident">with_header</span>((<span class="ident">header</span>::<span class="ident">CONTENT_LENGTH</span>, <span class="string">&quot;10000000&quot;</span>)).<span class="ident">finish</span>();
         <span class="kw">match</span> <span class="ident">req</span>.<span class="ident">body</span>().<span class="kw">await</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>() {
             <span class="ident">PayloadError</span>::<span class="ident">Overflow</span> <span class="op">=</span><span class="op">&gt;</span> {}
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;error&quot;</span>),
@@ -1044,23 +1044,23 @@
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">json_eq</span>(<span class="ident">json</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>(), <span class="ident">JsonPayloadError</span>::<span class="ident">ContentType</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestResponse</span>::<span class="ident">default</span>()
-            .<span class="ident">header</span>(
+            .<span class="ident">insert_header</span>((
                 <span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>,
                 <span class="ident">header</span>::<span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;application/text&quot;</span>),
-            )
+            ))
             .<span class="ident">finish</span>();
         <span class="kw">let</span> <span class="ident">json</span> <span class="op">=</span> <span class="ident">JsonBody</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">MyObject</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">req</span>).<span class="kw">await</span>;
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">json_eq</span>(<span class="ident">json</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>(), <span class="ident">JsonPayloadError</span>::<span class="ident">ContentType</span>));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestResponse</span>::<span class="ident">default</span>()
-            .<span class="ident">header</span>(
+            .<span class="ident">insert_header</span>((
                 <span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>,
                 <span class="ident">header</span>::<span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;application/json&quot;</span>),
-            )
-            .<span class="ident">header</span>(
+            ))
+            .<span class="ident">insert_header</span>((
                 <span class="ident">header</span>::<span class="ident">CONTENT_LENGTH</span>,
                 <span class="ident">header</span>::<span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;10000&quot;</span>),
-            )
+            ))
             .<span class="ident">finish</span>();
 
         <span class="kw">let</span> <span class="ident">json</span> <span class="op">=</span> <span class="ident">JsonBody</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">MyObject</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">req</span>).<span class="ident">limit</span>(<span class="number">100</span>).<span class="kw">await</span>;
@@ -1070,14 +1070,14 @@
         ));
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestResponse</span>::<span class="ident">default</span>()
-            .<span class="ident">header</span>(
+            .<span class="ident">insert_header</span>((
                 <span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>,
                 <span class="ident">header</span>::<span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;application/json&quot;</span>),
-            )
-            .<span class="ident">header</span>(
+            ))
+            .<span class="ident">insert_header</span>((
                 <span class="ident">header</span>::<span class="ident">CONTENT_LENGTH</span>,
                 <span class="ident">header</span>::<span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;16&quot;</span>),
-            )
+            ))
             .<span class="ident">set_payload</span>(<span class="ident">Bytes</span>::<span class="ident">from_static</span>(<span class="string">b&quot;{\&quot;name\&quot;: \&quot;test\&quot;}&quot;</span>))
             .<span class="ident">finish</span>();
 

@@ -270,6 +270,16 @@
 <span id="269">269</span>
 <span id="270">270</span>
 <span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Various helpers for Actix applications to use during testing.</span>
 
@@ -286,7 +296,9 @@
 <span class="kw">use</span> <span class="ident">actix_codec</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>, <span class="ident">Framed</span>};
 <span class="kw">use</span> <span class="ident">actix_rt</span>::{<span class="ident">net</span>::<span class="ident">TcpStream</span>, <span class="ident">System</span>};
 <span class="kw">use</span> <span class="ident">actix_server</span>::{<span class="ident">Server</span>, <span class="ident">ServiceFactory</span>};
-<span class="kw">use</span> <span class="ident">awc</span>::{<span class="ident">error</span>::<span class="ident">PayloadError</span>, <span class="ident">ws</span>, <span class="ident">Client</span>, <span class="ident">ClientRequest</span>, <span class="ident">ClientResponse</span>, <span class="ident">Connector</span>};
+<span class="kw">use</span> <span class="ident">awc</span>::{
+    <span class="ident">error</span>::<span class="ident">PayloadError</span>, <span class="ident">http</span>::<span class="ident">HeaderMap</span>, <span class="ident">ws</span>, <span class="ident">Client</span>, <span class="ident">ClientRequest</span>, <span class="ident">ClientResponse</span>, <span class="ident">Connector</span>,
+};
 <span class="kw">use</span> <span class="ident">bytes</span>::<span class="ident">Bytes</span>;
 <span class="kw">use</span> <span class="ident">futures_core</span>::<span class="ident">stream</span>::<span class="ident">Stream</span>;
 <span class="kw">use</span> <span class="ident">http</span>::<span class="ident">Method</span>;
@@ -529,6 +541,14 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Framed</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span>, <span class="ident">ws</span>::<span class="ident">Codec</span><span class="op">&gt;</span>, <span class="ident">awc</span>::<span class="ident">error</span>::<span class="ident">WsClientError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">ws_at</span>(<span class="string">&quot;/&quot;</span>).<span class="kw">await</span>
+    }
+
+    <span class="doccomment">/// Get default HeaderMap of Client.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns Some(&amp;mut HeaderMap) when Client object is unique</span>
+    <span class="doccomment">/// (No other clone of client exists at the same time).</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">client_headers</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HeaderMap</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">client</span>.<span class="ident">headers</span>()
     }
 
     <span class="doccomment">/// Stop HTTP server</span>

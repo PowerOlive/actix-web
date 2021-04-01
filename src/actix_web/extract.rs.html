@@ -415,8 +415,6 @@
 <span id="414">414</span>
 <span id="415">415</span>
 <span id="416">416</span>
-<span id="417">417</span>
-<span id="418">418</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Request extractors</span>
 
@@ -426,10 +424,8 @@
     <span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>},
 };
 
-<span class="kw">use</span> <span class="ident">futures_util</span>::{
-    <span class="ident">future</span>::{<span class="ident">ready</span>, <span class="ident">Ready</span>},
-    <span class="ident">ready</span>,
-};
+<span class="kw">use</span> <span class="ident">actix_utils</span>::<span class="ident">future</span>::{<span class="ident">ready</span>, <span class="ident">Ready</span>};
+<span class="kw">use</span> <span class="ident">futures_core</span>::<span class="ident">ready</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">dev</span>::<span class="ident">Payload</span>, <span class="ident">Error</span>, <span class="ident">HttpRequest</span>};
 

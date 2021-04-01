@@ -1531,10 +1531,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// # use actix_http::Response;</span>
-    <span class="doccomment">/// use actix_http::http::header::ContentType;</span>
+    <span class="doccomment">/// use actix_http::http::header;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Response::Ok()</span>
-    <span class="doccomment">///     .insert_header(ContentType(mime::APPLICATION_JSON))</span>
+    <span class="doccomment">///     .insert_header((header::CONTENT_TYPE, mime::APPLICATION_JSON))</span>
     <span class="doccomment">///     .insert_header((&quot;X-TEST&quot;, &quot;value&quot;))</span>
     <span class="doccomment">///     .finish();</span>
     <span class="doccomment">/// ```</span>
@@ -1558,10 +1558,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// # use actix_http::Response;</span>
-    <span class="doccomment">/// use actix_http::http::header::ContentType;</span>
+    <span class="doccomment">/// use actix_http::http::header;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Response::Ok()</span>
-    <span class="doccomment">///     .append_header(ContentType(mime::APPLICATION_JSON))</span>
+    <span class="doccomment">///     .append_header((header::CONTENT_TYPE, mime::APPLICATION_JSON))</span>
     <span class="doccomment">///     .append_header((&quot;X-TEST&quot;, &quot;value1&quot;))</span>
     <span class="doccomment">///     .append_header((&quot;X-TEST&quot;, &quot;value2&quot;))</span>
     <span class="doccomment">///     .finish();</span>
@@ -1854,7 +1854,7 @@
                 };
 
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">contains</span> {
-                    <span class="self">self</span>.<span class="ident">insert_header</span>(<span class="ident">header</span>::<span class="ident">ContentType</span>(<span class="ident">mime</span>::<span class="ident">APPLICATION_JSON</span>));
+                    <span class="self">self</span>.<span class="ident">insert_header</span>((<span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>, <span class="ident">mime</span>::<span class="ident">APPLICATION_JSON</span>));
                 }
 
                 <span class="self">self</span>.<span class="ident">body</span>(<span class="ident">Body</span>::<span class="ident">from</span>(<span class="ident">body</span>))
@@ -2305,7 +2305,7 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">response_builder_header_insert_typed</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Response</span>::<span class="prelude-val">Ok</span>();
-        <span class="ident">res</span>.<span class="ident">insert_header</span>(<span class="ident">header</span>::<span class="ident">ContentType</span>(<span class="ident">mime</span>::<span class="ident">APPLICATION_OCTET_STREAM</span>));
+        <span class="ident">res</span>.<span class="ident">insert_header</span>((<span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>, <span class="ident">mime</span>::<span class="ident">APPLICATION_OCTET_STREAM</span>));
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">res</span>.<span class="ident">finish</span>();
 
         <span class="macro">assert_eq</span><span class="macro">!</span>(
@@ -2330,8 +2330,8 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">response_builder_header_append_typed</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Response</span>::<span class="prelude-val">Ok</span>();
-        <span class="ident">res</span>.<span class="ident">append_header</span>(<span class="ident">header</span>::<span class="ident">ContentType</span>(<span class="ident">mime</span>::<span class="ident">APPLICATION_OCTET_STREAM</span>));
-        <span class="ident">res</span>.<span class="ident">append_header</span>(<span class="ident">header</span>::<span class="ident">ContentType</span>(<span class="ident">mime</span>::<span class="ident">APPLICATION_JSON</span>));
+        <span class="ident">res</span>.<span class="ident">append_header</span>((<span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>, <span class="ident">mime</span>::<span class="ident">APPLICATION_OCTET_STREAM</span>));
+        <span class="ident">res</span>.<span class="ident">append_header</span>((<span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>, <span class="ident">mime</span>::<span class="ident">APPLICATION_JSON</span>));
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">res</span>.<span class="ident">finish</span>();
 
         <span class="kw">let</span> <span class="ident">headers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">res</span>.<span class="ident">headers</span>().<span class="ident">get_all</span>(<span class="string">&quot;Content-Type&quot;</span>).<span class="ident">cloned</span>().<span class="ident">collect</span>();

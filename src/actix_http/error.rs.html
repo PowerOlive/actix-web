@@ -1185,30 +1185,6 @@
 <span id="1184">1184</span>
 <span id="1185">1185</span>
 <span id="1186">1186</span>
-<span id="1187">1187</span>
-<span id="1188">1188</span>
-<span id="1189">1189</span>
-<span id="1190">1190</span>
-<span id="1191">1191</span>
-<span id="1192">1192</span>
-<span id="1193">1193</span>
-<span id="1194">1194</span>
-<span id="1195">1195</span>
-<span id="1196">1196</span>
-<span id="1197">1197</span>
-<span id="1198">1198</span>
-<span id="1199">1199</span>
-<span id="1200">1200</span>
-<span id="1201">1201</span>
-<span id="1202">1202</span>
-<span id="1203">1203</span>
-<span id="1204">1204</span>
-<span id="1205">1205</span>
-<span id="1206">1206</span>
-<span id="1207">1207</span>
-<span id="1208">1208</span>
-<span id="1209">1209</span>
-<span id="1210">1210</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Error and Result module</span>
 
@@ -1218,9 +1194,6 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">string</span>::<span class="ident">FromUtf8Error</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">io</span>, <span class="ident">result</span>};
 
-<span class="kw">use</span> <span class="ident">actix_codec</span>::{<span class="ident">Decoder</span>, <span class="ident">Encoder</span>};
-<span class="kw">use</span> <span class="ident">actix_utils</span>::<span class="ident">dispatcher</span>::<span class="ident">DispatcherError</span> <span class="kw">as</span> <span class="ident">FramedDispatcherError</span>;
-<span class="kw">use</span> <span class="ident">actix_utils</span>::<span class="ident">timeout</span>::<span class="ident">TimeoutError</span>;
 <span class="kw">use</span> <span class="ident">bytes</span>::<span class="ident">BytesMut</span>;
 <span class="kw">use</span> <span class="ident">derive_more</span>::{<span class="ident">Display</span>, <span class="ident">From</span>};
 <span class="kw">use</span> <span class="ident">http</span>::<span class="ident">uri</span>::<span class="ident">InvalidUri</span>;
@@ -1357,19 +1330,6 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ResponseBuilder</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw-2">mut</span> <span class="ident">res</span>: <span class="ident">ResponseBuilder</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
         <span class="ident">InternalError</span>::<span class="ident">from_response</span>(<span class="string">&quot;&quot;</span>, <span class="ident">res</span>.<span class="ident">finish</span>()).<span class="ident">into</span>()
-    }
-}
-
-<span class="doccomment">/// Inspects the underlying enum and returns an appropriate status code.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If the variant is [`TimeoutError::Service`], the error code of the service is returned.</span>
-<span class="doccomment">/// Otherwise, [`StatusCode::GATEWAY_TIMEOUT`] is returned.</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">ResponseError</span><span class="op">&gt;</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">TimeoutError</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">status_code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusCode</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">TimeoutError</span>::<span class="ident">Service</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">status_code</span>(),
-            <span class="ident">TimeoutError</span>::<span class="ident">Timeout</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode</span>::<span class="ident">GATEWAY_TIMEOUT</span>,
-        }
     }
 }
 
@@ -1679,14 +1639,6 @@
     <span class="kw">fn</span> <span class="ident">status_code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusCode</span> {
         <span class="ident">StatusCode</span>::<span class="ident">BAD_REQUEST</span>
     }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span>, <span class="ident">U</span>: <span class="ident">Encoder</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Decoder</span>, <span class="ident">I</span><span class="op">&gt;</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">FramedDispatcherError</span><span class="op">&lt;</span><span class="ident">E</span>, <span class="ident">U</span>, <span class="ident">I</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">E</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="op">+</span> <span class="ident">fmt</span>::<span class="ident">Display</span>,
-    <span class="op">&lt;</span><span class="ident">U</span> <span class="kw">as</span> <span class="ident">Encoder</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Error</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
-    <span class="op">&lt;</span><span class="ident">U</span> <span class="kw">as</span> <span class="ident">Decoder</span><span class="op">&gt;</span>::<span class="ident">Error</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
-{
 }
 
 <span class="doccomment">/// Helper type that can wrap any error and generate custom response.</span>

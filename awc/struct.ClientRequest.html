@@ -33,12 +33,12 @@ provided url’s host name get resolved.</p>
 </div><h4 id="method.append_header" class="method"><code>pub fn <a href="#method.append_header" class="fnname">append_header</a>&lt;H&gt;(self, header: H) -&gt; Self <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;H: <a class="trait" href="../awc/http/header/trait.IntoHeaderPair.html" title="trait awc::http::header::IntoHeaderPair">IntoHeaderPair</a>,&nbsp;</span></code><a class="srclink" href="../src/awc/request.rs.html#200-210" title="goto source code">[src]</a></h4><div class="docblock"><p>Append a header, keeping any that were set with an equivalent field name.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">awc</span>::<span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">ContentType</span>;
+<span class="kw">use</span> <span class="ident">awc</span>::<span class="ident">http</span>::<span class="ident">header</span>::<span class="ident">CONTENT_TYPE</span>;
 
 <span class="ident">Client</span>::<span class="ident">new</span>()
     .<span class="ident">get</span>(<span class="string">&quot;http://www.rust-lang.org&quot;</span>)
     .<span class="ident">insert_header</span>((<span class="string">&quot;X-TEST&quot;</span>, <span class="string">&quot;value&quot;</span>))
-    .<span class="ident">insert_header</span>(<span class="ident">ContentType</span>(<span class="ident">mime</span>::<span class="ident">APPLICATION_JSON</span>));</pre></div>
+    .<span class="ident">insert_header</span>((<span class="ident">CONTENT_TYPE</span>, <span class="ident">mime</span>::<span class="ident">APPLICATION_JSON</span>));</pre></div>
 </div><h4 id="method.camel_case" class="method"><code>pub fn <a href="#method.camel_case" class="fnname">camel_case</a>(self) -&gt; Self</code><a class="srclink" href="../src/awc/request.rs.html#214-217" title="goto source code">[src]</a></h4><div class="docblock"><p>Send headers in <code>Camel-Case</code> form.</p>
 </div><h4 id="method.force_close" class="method"><code>pub fn <a href="#method.force_close" class="fnname">force_close</a>(self) -&gt; Self</code><a class="srclink" href="../src/awc/request.rs.html#222-225" title="goto source code">[src]</a></h4><div class="docblock"><p>Force close connection instead of returning it back to connections pool.
 This setting affect only HTTP/1 connections.</p>

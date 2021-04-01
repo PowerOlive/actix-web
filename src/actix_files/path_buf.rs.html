@@ -126,8 +126,8 @@
     <span class="ident">str</span>::<span class="ident">FromStr</span>,
 };
 
+<span class="kw">use</span> <span class="ident">actix_utils</span>::<span class="ident">future</span>::{<span class="ident">ready</span>, <span class="ident">Ready</span>};
 <span class="kw">use</span> <span class="ident">actix_web</span>::{<span class="ident">dev</span>::<span class="ident">Payload</span>, <span class="ident">FromRequest</span>, <span class="ident">HttpRequest</span>};
-<span class="kw">use</span> <span class="ident">futures_util</span>::<span class="ident">future</span>::{<span class="ident">ready</span>, <span class="ident">Ready</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">UriSegmentError</span>;
 

@@ -1187,7 +1187,7 @@
 <span id="1184">1184</span>
 <span id="1185">1185</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Multipart payload support</span>
+<span class="doccomment">//! Multipart response payload support.</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cell</span>::{<span class="ident">Cell</span>, <span class="ident">RefCell</span>, <span class="ident">RefMut</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span>;
@@ -1197,12 +1197,12 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">cmp</span>, <span class="ident">fmt</span>};
 
-<span class="kw">use</span> <span class="ident">bytes</span>::{<span class="ident">Bytes</span>, <span class="ident">BytesMut</span>};
-<span class="kw">use</span> <span class="ident">futures_util</span>::<span class="ident">stream</span>::{<span class="ident">LocalBoxStream</span>, <span class="ident">Stream</span>, <span class="ident">StreamExt</span>};
-
-<span class="kw">use</span> <span class="ident">actix_utils</span>::<span class="ident">task</span>::<span class="ident">LocalWaker</span>;
 <span class="kw">use</span> <span class="ident">actix_web</span>::<span class="ident">error</span>::{<span class="ident">ParseError</span>, <span class="ident">PayloadError</span>};
 <span class="kw">use</span> <span class="ident">actix_web</span>::<span class="ident">http</span>::<span class="ident">header</span>::{<span class="self">self</span>, <span class="ident">ContentDisposition</span>, <span class="ident">HeaderMap</span>, <span class="ident">HeaderName</span>, <span class="ident">HeaderValue</span>};
+<span class="kw">use</span> <span class="ident">bytes</span>::{<span class="ident">Bytes</span>, <span class="ident">BytesMut</span>};
+<span class="kw">use</span> <span class="ident">futures_core</span>::<span class="ident">stream</span>::{<span class="ident">LocalBoxStream</span>, <span class="ident">Stream</span>};
+<span class="kw">use</span> <span class="ident">futures_util</span>::<span class="ident">stream</span>::<span class="ident">StreamExt</span> <span class="kw">as</span> <span class="kw">_</span>;
+<span class="kw">use</span> <span class="ident">local_waker</span>::<span class="ident">LocalWaker</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">MultipartError</span>;
 
