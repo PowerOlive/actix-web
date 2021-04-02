@@ -772,6 +772,18 @@
 <span id="771">771</span>
 <span id="772">772</span>
 <span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cell</span>::{<span class="ident">Ref</span>, <span class="ident">RefCell</span>, <span class="ident">RefMut</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">rc</span>::<span class="ident">Rc</span>;
@@ -826,6 +838,18 @@
                 <span class="ident">app_data</span>: <span class="ident">data</span>,
             }),
         }
+    }
+
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">__priv_test_new</span>(
+        <span class="ident">path</span>: <span class="ident">Path</span><span class="op">&lt;</span><span class="ident">Url</span><span class="op">&gt;</span>,
+        <span class="ident">head</span>: <span class="ident">Message</span><span class="op">&lt;</span><span class="ident">RequestHead</span><span class="op">&gt;</span>,
+        <span class="ident">rmap</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">ResourceMap</span><span class="op">&gt;</span>,
+        <span class="ident">config</span>: <span class="ident">AppConfig</span>,
+        <span class="ident">app_data</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">Extensions</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpRequest</span> {
+        <span class="kw">let</span> <span class="ident">app_state</span> <span class="op">=</span> <span class="ident">AppInitServiceState</span>::<span class="ident">new</span>(<span class="ident">rmap</span>, <span class="ident">config</span>);
+        <span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">path</span>, <span class="ident">head</span>, <span class="ident">app_state</span>, <span class="ident">app_data</span>)
     }
 }
 

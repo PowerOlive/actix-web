@@ -1174,7 +1174,7 @@
 
     <span class="attribute">#[<span class="ident">actix_rt</span>::<span class="ident">test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_named_file_content_range_headers</span>() {
-        <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="ident">test</span>::<span class="ident">start</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">App</span>::<span class="ident">new</span>().<span class="ident">service</span>(<span class="ident">Files</span>::<span class="ident">new</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;.&quot;</span>)));
+        <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="ident">actix_test</span>::<span class="ident">start</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">App</span>::<span class="ident">new</span>().<span class="ident">service</span>(<span class="ident">Files</span>::<span class="ident">new</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;.&quot;</span>)));
 
         <span class="comment">// Valid range header</span>
         <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">srv</span>
@@ -1199,7 +1199,7 @@
 
     <span class="attribute">#[<span class="ident">actix_rt</span>::<span class="ident">test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_named_file_content_length_headers</span>() {
-        <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="ident">test</span>::<span class="ident">start</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">App</span>::<span class="ident">new</span>().<span class="ident">service</span>(<span class="ident">Files</span>::<span class="ident">new</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;.&quot;</span>)));
+        <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="ident">actix_test</span>::<span class="ident">start</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">App</span>::<span class="ident">new</span>().<span class="ident">service</span>(<span class="ident">Files</span>::<span class="ident">new</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;.&quot;</span>)));
 
         <span class="comment">// Valid range header</span>
         <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">srv</span>
@@ -1238,7 +1238,7 @@
 
     <span class="attribute">#[<span class="ident">actix_rt</span>::<span class="ident">test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_head_content_length_headers</span>() {
-        <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="ident">test</span>::<span class="ident">start</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">App</span>::<span class="ident">new</span>().<span class="ident">service</span>(<span class="ident">Files</span>::<span class="ident">new</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;.&quot;</span>)));
+        <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="ident">actix_test</span>::<span class="ident">start</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">App</span>::<span class="ident">new</span>().<span class="ident">service</span>(<span class="ident">Files</span>::<span class="ident">new</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;.&quot;</span>)));
 
         <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">srv</span>.<span class="ident">head</span>(<span class="string">&quot;/tests/test.binary&quot;</span>).<span class="ident">send</span>().<span class="kw">await</span>.<span class="ident">unwrap</span>();
 

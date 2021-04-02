@@ -593,6 +593,20 @@
 <span id="592">592</span>
 <span id="593">593</span>
 <span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>,
@@ -749,11 +763,14 @@
     <span class="ident">S</span>::<span class="ident">InitError</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
     <span class="ident">S</span>::<span class="ident">Response</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
+
     <span class="ident">B</span>: <span class="ident">MessageBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+
     <span class="ident">X</span>: <span class="ident">ServiceFactory</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Config</span> <span class="op">=</span> (), <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Request</span><span class="op">&gt;</span>,
     <span class="ident">X</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
     <span class="ident">X</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span>,
     <span class="ident">X</span>::<span class="ident">InitError</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
+
     <span class="ident">U</span>: <span class="ident">ServiceFactory</span><span class="op">&lt;</span>
         (<span class="ident">Request</span>, <span class="ident">Framed</span><span class="op">&lt;</span><span class="ident">TcpStream</span>, <span class="ident">h1</span>::<span class="ident">Codec</span><span class="op">&gt;</span>),
         <span class="ident">Config</span> <span class="op">=</span> (),
@@ -783,10 +800,11 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;openssl&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">openssl</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="ident">actix_service</span>::<span class="ident">ServiceFactoryExt</span>;
     <span class="kw">use</span> <span class="ident">actix_tls</span>::<span class="ident">accept</span>::<span class="ident">openssl</span>::{<span class="ident">Acceptor</span>, <span class="ident">SslAcceptor</span>, <span class="ident">SslError</span>, <span class="ident">TlsStream</span>};
     <span class="kw">use</span> <span class="ident">actix_tls</span>::<span class="ident">accept</span>::<span class="ident">TlsError</span>;
+
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">B</span>, <span class="ident">X</span>, <span class="ident">U</span><span class="op">&gt;</span> <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">TlsStream</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span>, <span class="ident">S</span>, <span class="ident">B</span>, <span class="ident">X</span>, <span class="ident">U</span><span class="op">&gt;</span>
     <span class="kw">where</span>
@@ -796,11 +814,14 @@
         <span class="ident">S</span>::<span class="ident">InitError</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
         <span class="ident">S</span>::<span class="ident">Response</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
+
         <span class="ident">B</span>: <span class="ident">MessageBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+
         <span class="ident">X</span>: <span class="ident">ServiceFactory</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Config</span> <span class="op">=</span> (), <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Request</span><span class="op">&gt;</span>,
         <span class="ident">X</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
         <span class="ident">X</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span>,
         <span class="ident">X</span>::<span class="ident">InitError</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
+
         <span class="ident">U</span>: <span class="ident">ServiceFactory</span><span class="op">&lt;</span>
             (<span class="ident">Request</span>, <span class="ident">Framed</span><span class="op">&lt;</span><span class="ident">TlsStream</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span>, <span class="ident">h1</span>::<span class="ident">Codec</span><span class="op">&gt;</span>),
             <span class="ident">Config</span> <span class="op">=</span> (),
@@ -862,11 +883,14 @@
         <span class="ident">S</span>::<span class="ident">InitError</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
         <span class="ident">S</span>::<span class="ident">Response</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
+
         <span class="ident">B</span>: <span class="ident">MessageBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+
         <span class="ident">X</span>: <span class="ident">ServiceFactory</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Config</span> <span class="op">=</span> (), <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Request</span><span class="op">&gt;</span>,
         <span class="ident">X</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
         <span class="ident">X</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span>,
         <span class="ident">X</span>::<span class="ident">InitError</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
+
         <span class="ident">U</span>: <span class="ident">ServiceFactory</span><span class="op">&lt;</span>
             (<span class="ident">Request</span>, <span class="ident">Framed</span><span class="op">&lt;</span><span class="ident">TlsStream</span><span class="op">&lt;</span><span class="ident">TcpStream</span><span class="op">&gt;</span>, <span class="ident">h1</span>::<span class="ident">Codec</span><span class="op">&gt;</span>),
             <span class="ident">Config</span> <span class="op">=</span> (),
@@ -876,7 +900,7 @@
         <span class="ident">U</span>::<span class="ident">Error</span>: <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="op">+</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span>,
         <span class="ident">U</span>::<span class="ident">InitError</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
     {
-        <span class="doccomment">/// Create openssl based service</span>
+        <span class="doccomment">/// Create rustls based service</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rustls</span>(
             <span class="self">self</span>,
             <span class="kw-2">mut</span> <span class="ident">config</span>: <span class="ident">ServerConfig</span>,
@@ -917,17 +941,21 @@
     <span class="kw">for</span> <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">S</span>, <span class="ident">B</span>, <span class="ident">X</span>, <span class="ident">U</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+
     <span class="ident">S</span>: <span class="ident">ServiceFactory</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Config</span> <span class="op">=</span> ()<span class="op">&gt;</span>,
     <span class="ident">S</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
     <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">S</span>::<span class="ident">InitError</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
     <span class="ident">S</span>::<span class="ident">Response</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
+
     <span class="ident">B</span>: <span class="ident">MessageBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+
     <span class="ident">X</span>: <span class="ident">ServiceFactory</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Config</span> <span class="op">=</span> (), <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Request</span><span class="op">&gt;</span>,
     <span class="ident">X</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
     <span class="ident">X</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span>,
     <span class="ident">X</span>::<span class="ident">InitError</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
+
     <span class="ident">U</span>: <span class="ident">ServiceFactory</span><span class="op">&lt;</span>(<span class="ident">Request</span>, <span class="ident">Framed</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">h1</span>::<span class="ident">Codec</span><span class="op">&gt;</span>), <span class="ident">Config</span> <span class="op">=</span> (), <span class="ident">Response</span> <span class="op">=</span> ()<span class="op">&gt;</span>,
     <span class="ident">U</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
     <span class="ident">U</span>::<span class="ident">Error</span>: <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="op">+</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span>,
