@@ -295,7 +295,6 @@
 <span id="294">294</span>
 <span id="295">295</span>
 <span id="296">296</span>
-<span id="297">297</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! `awc` is a HTTP and WebSocket client library built on the Actix ecosystem.</span>
 <span class="doccomment">//!</span>
@@ -392,12 +391,11 @@
 <span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_logo_url</span> <span class="op">=</span> <span class="string">&quot;https://actix.rs/img/logo.png&quot;</span>)]</span>
 <span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_favicon_url</span> <span class="op">=</span> <span class="string">&quot;https://actix.rs/favicon.ico&quot;</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">std::convert::TryFrom</span>;
-<span class="kw">use</span> <span class="ident">std::rc::Rc</span>;
-<span class="kw">use</span> <span class="ident">std::time::Duration</span>;
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">rc::Rc</span>, <span class="ident">time::Duration</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http::cookie</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cookie</span>;
+
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http</span>::{<span class="ident">client::Connector</span>, <span class="ident">http</span>};
 
 <span class="kw">use</span> <span class="ident">actix_http</span>::{

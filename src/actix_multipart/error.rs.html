@@ -55,7 +55,6 @@
 <span id="52">52</span>
 <span id="53">53</span>
 <span id="54">54</span>
-<span id="55">55</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Error and Result module</span>
 <span class="kw">use</span> <span class="ident">actix_web::error</span>::{<span class="ident">ParseError</span>, <span class="ident">PayloadError</span>};
@@ -104,11 +103,10 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">actix_web::HttpResponse</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_multipart_error</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">MultipartError::Boundary</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">MultipartError::Boundary</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::BAD_REQUEST</span>);
     }
 }

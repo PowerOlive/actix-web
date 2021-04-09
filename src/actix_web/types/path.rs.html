@@ -306,6 +306,9 @@
 <span id="305">305</span>
 <span id="306">306</span>
 <span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! For path segment extractor documentation, see [`Path`].</span>
 
@@ -458,7 +461,7 @@
 <span class="doccomment">///             .app_data(PathConfig::default().error_handler(|err, req| {</span>
 <span class="doccomment">///                 error::InternalError::from_response(</span>
 <span class="doccomment">///                     err,</span>
-<span class="doccomment">///                     HttpResponse::Conflict().finish(),</span>
+<span class="doccomment">///                     HttpResponse::Conflict().into(),</span>
 <span class="doccomment">///                 )</span>
 <span class="doccomment">///                 .into()</span>
 <span class="doccomment">///             }))</span>
@@ -601,15 +604,18 @@
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_custom_err_handler</span>() {
         <span class="kw">let</span> (<span class="ident">req</span>, <span class="kw-2">mut</span> <span class="ident">pl</span>) <span class="op">=</span> <span class="ident">TestRequest::with_uri</span>(<span class="string">&quot;/name/user1/&quot;</span>)
             .<span class="ident">app_data</span>(<span class="ident">PathConfig::default</span>().<span class="ident">error_handler</span>(<span class="op">|</span><span class="ident">err</span>, <span class="kw">_</span><span class="op">|</span> {
-                <span class="ident">error::InternalError::from_response</span>(<span class="ident">err</span>, <span class="ident">HttpResponse::Conflict</span>().<span class="ident">finish</span>())
-                    .<span class="ident">into</span>()
+                <span class="ident">error::InternalError::from_response</span>(
+                    <span class="ident">err</span>,
+                    <span class="ident">HttpResponse::Conflict</span>().<span class="ident">finish</span>().<span class="ident">into</span>(),
+                )
+                .<span class="ident">into</span>()
             }))
             .<span class="ident">to_http_parts</span>();
 
         <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="op">&lt;</span>(<span class="ident">usize</span>,)<span class="op">&gt;</span><span class="ident">::from_request</span>(<span class="kw-2">&amp;</span><span class="ident">req</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pl</span>)
             .<span class="kw">await</span>
             .<span class="ident">unwrap_err</span>();
-        <span class="kw">let</span> <span class="ident">res</span>: <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">HttpResponse::from_error</span>(<span class="ident">s</span>.<span class="ident">into</span>());
 
         <span class="macro">assert_eq!</span>(<span class="ident">res</span>.<span class="ident">status</span>(), <span class="ident">http::StatusCode::CONFLICT</span>);
     }

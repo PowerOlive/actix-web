@@ -1685,7 +1685,7 @@
 
                     <span class="comment">// send service call error as response</span>
                     <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="kw">let</span> <span class="ident">res</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">into</span>().<span class="ident">into</span>();
+                        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Response::from_error</span>(<span class="ident">err</span>.<span class="ident">into</span>());
                         <span class="kw">let</span> (<span class="ident">res</span>, <span class="ident">body</span>) <span class="op">=</span> <span class="ident">res</span>.<span class="ident">replace_body</span>(());
                         <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">send_response</span>(<span class="ident">res</span>, <span class="ident">body</span>.<span class="ident">into_body</span>())<span class="question-mark">?</span>;
                     }

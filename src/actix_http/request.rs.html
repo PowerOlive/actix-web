@@ -218,21 +218,25 @@
 <span id="217">217</span>
 <span id="218">218</span>
 <span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! HTTP requests.</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">cell</span>::{<span class="ident">Ref</span>, <span class="ident">RefMut</span>},
-    <span class="ident">fmt</span>, <span class="ident">net</span>,
+    <span class="ident">fmt</span>, <span class="ident">net</span>, <span class="ident">str</span>,
 };
 
 <span class="kw">use</span> <span class="ident">http</span>::{<span class="ident">header</span>, <span class="ident">Method</span>, <span class="ident">Uri</span>, <span class="ident">Version</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::extensions::Extensions</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::header::HeaderMap</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::message</span>::{<span class="ident">Message</span>, <span class="ident">RequestHead</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::payload</span>::{<span class="ident">Payload</span>, <span class="ident">PayloadStream</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::HttpMessage</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">extensions::Extensions</span>,
+    <span class="ident">header::HeaderMap</span>,
+    <span class="ident">message</span>::{<span class="ident">Message</span>, <span class="ident">RequestHead</span>},
+    <span class="ident">payload</span>::{<span class="ident">Payload</span>, <span class="ident">PayloadStream</span>},
+    <span class="ident">HttpMessage</span>,
+};
 
 <span class="doccomment">/// Request</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="ident">P</span> <span class="op">=</span> <span class="ident">PayloadStream</span><span class="op">&gt;</span> {

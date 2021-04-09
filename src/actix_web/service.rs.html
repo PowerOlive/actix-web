@@ -752,6 +752,12 @@
 <span id="751">751</span>
 <span id="752">752</span>
 <span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std::cell</span>::{<span class="ident">Ref</span>, <span class="ident">RefMut</span>};
 <span class="kw">use</span> <span class="ident">std::rc::Rc</span>;
@@ -765,12 +771,15 @@
 <span class="kw">use</span> <span class="ident">actix_router</span>::{<span class="ident">IntoPattern</span>, <span class="ident">Path</span>, <span class="ident">Resource</span>, <span class="ident">ResourceDef</span>, <span class="ident">Url</span>};
 <span class="kw">use</span> <span class="ident">actix_service</span>::{<span class="ident">IntoServiceFactory</span>, <span class="ident">ServiceFactory</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::config</span>::{<span class="ident">AppConfig</span>, <span class="ident">AppService</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dev::insert_slash</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::guard::Guard</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::info::ConnectionInfo</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::request::HttpRequest</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::rmap::ResourceMap</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">config</span>::{<span class="ident">AppConfig</span>, <span class="ident">AppService</span>},
+    <span class="ident">HttpResponse</span>,
+};
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">HttpServiceFactory</span> {
     <span class="kw">fn</span> <span class="ident">register</span>(<span class="self">self</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">AppService</span>);
@@ -854,13 +863,14 @@
     <span class="doccomment">/// Create service response</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_response</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">R</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">res</span>: <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
-        <span class="ident">ServiceResponse::new</span>(<span class="self">self</span>.<span class="ident">req</span>, <span class="ident">res</span>.<span class="ident">into</span>())
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">HttpResponse::from</span>(<span class="ident">res</span>.<span class="ident">into</span>());
+        <span class="ident">ServiceResponse::new</span>(<span class="self">self</span>.<span class="ident">req</span>, <span class="ident">res</span>)
     }
 
     <span class="doccomment">/// Create service response for error</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">error_response</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">E</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">err</span>: <span class="ident">E</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">res</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">into</span>().<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">HttpResponse::from_error</span>(<span class="ident">err</span>.<span class="ident">into</span>());
         <span class="ident">ServiceResponse::new</span>(<span class="self">self</span>.<span class="ident">req</span>, <span class="ident">res</span>.<span class="ident">into_body</span>())
     }
 
@@ -1070,23 +1080,19 @@
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ServiceResponse</span><span class="op">&lt;</span><span class="ident">B</span> <span class="op">=</span> <span class="ident">Body</span><span class="op">&gt;</span> {
     <span class="ident">request</span>: <span class="ident">HttpRequest</span>,
-    <span class="ident">response</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
+    <span class="ident">response</span>: <span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="ident">ServiceResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Create service response instance</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">request</span>: <span class="ident">HttpRequest</span>, <span class="ident">response</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">request</span>: <span class="ident">HttpRequest</span>, <span class="ident">response</span>: <span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">ServiceResponse</span> { <span class="ident">request</span>, <span class="ident">response</span> }
     }
 
     <span class="doccomment">/// Create service response from the error</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_err</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">err</span>: <span class="ident">E</span>, <span class="ident">request</span>: <span class="ident">HttpRequest</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">Error</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">res</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">into</span>();
-        <span class="ident">ServiceResponse</span> {
-            <span class="ident">request</span>,
-            <span class="ident">response</span>: <span class="ident">res</span>.<span class="ident">into_body</span>(),
-        }
+        <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">HttpResponse::from_error</span>(<span class="ident">err</span>.<span class="ident">into</span>()).<span class="ident">into_body</span>();
+        <span class="ident">ServiceResponse</span> { <span class="ident">request</span>, <span class="ident">response</span> }
     }
 
     <span class="doccomment">/// Create service response for error</span>
@@ -1097,7 +1103,7 @@
 
     <span class="doccomment">/// Create service response</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_response</span><span class="op">&lt;</span><span class="ident">B1</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">response</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B1</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResponse</span><span class="op">&lt;</span><span class="ident">B1</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_response</span><span class="op">&lt;</span><span class="ident">B1</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">response</span>: <span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B1</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceResponse</span><span class="op">&lt;</span><span class="ident">B1</span><span class="op">&gt;</span> {
         <span class="ident">ServiceResponse::new</span>(<span class="self">self</span>.<span class="ident">request</span>, <span class="ident">response</span>)
     }
 
@@ -1109,13 +1115,13 @@
 
     <span class="doccomment">/// Get reference to response</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">response</span>
     }
 
     <span class="doccomment">/// Get mutable reference to response</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">response_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">response_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">response</span>
     }
 
@@ -1131,8 +1137,8 @@
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">headers</span>()
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="doccomment">/// Returns mutable response&#39;s headers.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">headers_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HeaderMap</span> {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">headers_mut</span>()
     }
@@ -1146,7 +1152,7 @@
         <span class="kw">match</span> <span class="ident">f</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
             <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>,
             <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">res</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">into</span>().<span class="ident">into</span>();
+                <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">HttpResponse::from_error</span>(<span class="ident">err</span>.<span class="ident">into</span>());
                 <span class="ident">ServiceResponse::new</span>(<span class="self">self</span>.<span class="ident">request</span>, <span class="ident">res</span>.<span class="ident">into_body</span>())
             }
         }
@@ -1173,9 +1179,15 @@
     }
 }
 
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ServiceResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">res</span>: <span class="ident">ServiceResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
+        <span class="ident">res</span>.<span class="ident">response</span>
+    }
+}
+
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ServiceResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">res</span>: <span class="ident">ServiceResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
-        <span class="ident">res</span>.<span class="ident">response</span>
+        <span class="ident">res</span>.<span class="ident">response</span>.<span class="ident">into</span>()
     }
 }
 

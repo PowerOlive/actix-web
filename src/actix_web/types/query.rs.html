@@ -455,7 +455,7 @@
 <span class="doccomment">/// let query_cfg = web::QueryConfig::default()</span>
 <span class="doccomment">///     // use custom error handler</span>
 <span class="doccomment">///     .error_handler(|err, req| {</span>
-<span class="doccomment">///         error::InternalError::from_response(err, HttpResponse::Conflict().finish()).into()</span>
+<span class="doccomment">///         error::InternalError::from_response(err, HttpResponse::Conflict().into()).into()</span>
 <span class="doccomment">///     });</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// App::new()</span>
@@ -556,7 +556,7 @@
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestRequest::with_uri</span>(<span class="string">&quot;/name/user1/&quot;</span>)
             .<span class="ident">app_data</span>(<span class="ident">QueryConfig::default</span>().<span class="ident">error_handler</span>(<span class="op">|</span><span class="ident">e</span>, <span class="kw">_</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HttpResponse::UnprocessableEntity</span>().<span class="ident">finish</span>();
-                <span class="ident">InternalError::from_response</span>(<span class="ident">e</span>, <span class="ident">resp</span>).<span class="ident">into</span>()
+                <span class="ident">InternalError::from_response</span>(<span class="ident">e</span>, <span class="ident">resp</span>.<span class="ident">into</span>()).<span class="ident">into</span>()
             }))
             .<span class="ident">to_srv_request</span>();
 

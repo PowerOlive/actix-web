@@ -335,8 +335,6 @@
 <span id="334">334</span>
 <span id="335">335</span>
 <span id="336">336</span>
-<span id="337">337</span>
-<span id="338">338</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! WebSocket protocol implementation.</span>
 <span class="doccomment">//!</span>
@@ -349,10 +347,8 @@
 <span class="kw">use</span> <span class="ident">http</span>::{<span class="ident">header</span>, <span class="ident">Method</span>, <span class="ident">StatusCode</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">error::ResponseError</span>,
-    <span class="ident">header::HeaderValue</span>,
-    <span class="ident">message::RequestHead</span>,
-    <span class="ident">response</span>::{<span class="ident">Response</span>, <span class="ident">ResponseBuilder</span>},
+    <span class="ident">error::ResponseError</span>, <span class="ident">header::HeaderValue</span>, <span class="ident">message::RequestHead</span>, <span class="ident">response::Response</span>,
+    <span class="ident">ResponseBuilder</span>,
 };
 
 <span class="kw">mod</span> <span class="ident">codec</span>;

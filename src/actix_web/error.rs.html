@@ -201,8 +201,6 @@
 <span id="200">200</span>
 <span id="201">201</span>
 <span id="202">202</span>
-<span id="203">203</span>
-<span id="204">204</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Error and Result module</span>
 
@@ -211,7 +209,7 @@
 <span class="kw">use</span> <span class="ident">serde_json::error::Error</span> <span class="kw">as</span> <span class="ident">JsonError</span>;
 <span class="kw">use</span> <span class="ident">url::ParseError</span> <span class="kw">as</span> <span class="ident">UrlParseError</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">http::StatusCode</span>, <span class="ident">HttpResponse</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::http::StatusCode</span>;
 
 <span class="doccomment">/// Errors which can occur when attempting to generate resource uri.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Display</span>, <span class="ident">From</span>)]</span>
@@ -296,12 +294,11 @@
 
 <span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">JsonPayloadError</span> {}
 
-<span class="doccomment">/// Return `BadRequest` for `JsonPayloadError`</span>
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">JsonPayloadError</span> {
-    <span class="kw">fn</span> <span class="ident">error_response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span> {
+    <span class="kw">fn</span> <span class="ident">status_code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusCode</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">JsonPayloadError::Overflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HttpResponse::new</span>(<span class="ident">StatusCode::PAYLOAD_TOO_LARGE</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HttpResponse::new</span>(<span class="ident">StatusCode::BAD_REQUEST</span>),
+            <span class="ident">JsonPayloadError::Overflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::PAYLOAD_TOO_LARGE</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
         }
     }
 }
@@ -374,26 +371,25 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_urlencoded_error</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">HttpResponse</span> <span class="op">=</span>
-            <span class="ident">UrlencodedError::Overflow</span> { <span class="ident">size</span>: <span class="number">0</span>, <span class="ident">limit</span>: <span class="number">0</span> }.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">UrlencodedError::Overflow</span> { <span class="ident">size</span>: <span class="number">0</span>, <span class="ident">limit</span>: <span class="number">0</span> }.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::PAYLOAD_TOO_LARGE</span>);
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">UrlencodedError::UnknownLength</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">UrlencodedError::UnknownLength</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::LENGTH_REQUIRED</span>);
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">UrlencodedError::ContentType</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">UrlencodedError::ContentType</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::BAD_REQUEST</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_json_payload_error</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">JsonPayloadError::Overflow</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">JsonPayloadError::Overflow</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::PAYLOAD_TOO_LARGE</span>);
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">JsonPayloadError::ContentType</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">JsonPayloadError::ContentType</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::BAD_REQUEST</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_query_payload_error</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">QueryPayloadError::Deserialize</span>(
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">QueryPayloadError::Deserialize</span>(
             <span class="ident">serde_urlencoded::from_str</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>(<span class="string">&quot;bad query&quot;</span>).<span class="ident">unwrap_err</span>(),
         )
         .<span class="ident">error_response</span>();
@@ -402,9 +398,9 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_readlines_error</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">ReadlinesError::LimitOverflow</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">ReadlinesError::LimitOverflow</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::PAYLOAD_TOO_LARGE</span>);
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">HttpResponse</span> <span class="op">=</span> <span class="ident">ReadlinesError::EncodingError</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">ReadlinesError::EncodingError</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::BAD_REQUEST</span>);
     }
 }

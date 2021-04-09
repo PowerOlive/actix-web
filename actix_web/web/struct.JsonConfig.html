@@ -24,7 +24,7 @@
     .<span class="ident">content_type</span>(<span class="op">|</span><span class="ident">mime</span><span class="op">|</span> <span class="ident">mime</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime::TEXT_PLAIN</span>)
     <span class="comment">// use custom error handler</span>
     .<span class="ident">error_handler</span>(<span class="op">|</span><span class="ident">err</span>, <span class="ident">req</span><span class="op">|</span> {
-        <span class="ident">error::InternalError::from_response</span>(<span class="ident">err</span>, <span class="ident">HttpResponse::Conflict</span>().<span class="ident">finish</span>()).<span class="ident">into</span>()
+        <span class="ident">error::InternalError::from_response</span>(<span class="ident">err</span>, <span class="ident">HttpResponse::Conflict</span>().<span class="ident">into</span>()).<span class="ident">into</span>()
     });
 
 <span class="ident">App::new</span>()

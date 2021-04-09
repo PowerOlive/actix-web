@@ -25,7 +25,7 @@
             .<span class="ident">app_data</span>(<span class="ident">PathConfig::default</span>().<span class="ident">error_handler</span>(<span class="op">|</span><span class="ident">err</span>, <span class="ident">req</span><span class="op">|</span> {
                 <span class="ident">error::InternalError::from_response</span>(
                     <span class="ident">err</span>,
-                    <span class="ident">HttpResponse::Conflict</span>().<span class="ident">finish</span>(),
+                    <span class="ident">HttpResponse::Conflict</span>().<span class="ident">into</span>(),
                 )
                 .<span class="ident">into</span>()
             }))

@@ -840,8 +840,8 @@
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Message</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Head</span><span class="op">&gt;</span> {
-    <span class="comment">// Rc here should not be cloned by anyone.</span>
-    <span class="comment">// It&#39;s used to reuse allocation of T and no shared ownership is allowed.</span>
+    <span class="doccomment">/// Rc here should not be cloned by anyone.</span>
+    <span class="doccomment">/// It&#39;s used to reuse allocation of T and no shared ownership is allowed.</span>
     <span class="ident">head</span>: <span class="ident">Rc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 }
 

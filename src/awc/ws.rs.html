@@ -566,8 +566,6 @@
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">str</span>};
 
 <span class="kw">use</span> <span class="ident">actix_codec::Framed</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">actix_http::cookie</span>::{<span class="ident">Cookie</span>, <span class="ident">CookieJar</span>};
 <span class="kw">use</span> <span class="ident">actix_http</span>::{<span class="ident">ws</span>, <span class="ident">Payload</span>, <span class="ident">RequestHead</span>};
 <span class="kw">use</span> <span class="ident">actix_rt::time::timeout</span>;
 <span class="kw">use</span> <span class="ident">actix_service::Service</span>;
@@ -575,6 +573,8 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http::ws</span>::{<span class="ident">CloseCode</span>, <span class="ident">CloseReason</span>, <span class="ident">Codec</span>, <span class="ident">Frame</span>, <span class="ident">Message</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::connect</span>::{<span class="ident">BoxedSocket</span>, <span class="ident">ConnectRequest</span>};
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cookie</span>::{<span class="ident">Cookie</span>, <span class="ident">CookieJar</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>::{<span class="ident">InvalidUrl</span>, <span class="ident">SendRequestError</span>, <span class="ident">WsClientError</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::http::header</span>::{<span class="self">self</span>, <span class="ident">HeaderName</span>, <span class="ident">HeaderValue</span>, <span class="ident">IntoHeaderValue</span>, <span class="ident">AUTHORIZATION</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::http</span>::{<span class="ident">ConnectionType</span>, <span class="ident">Error</span> <span class="kw">as</span> <span class="ident">HttpError</span>, <span class="ident">Method</span>, <span class="ident">StatusCode</span>, <span class="ident">Uri</span>, <span class="ident">Version</span>};
@@ -815,7 +815,7 @@
             <span class="kw">let</span> <span class="ident">cookie</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">jar</span>
                 .<span class="ident">delta</span>()
                 <span class="comment">// ensure only name=value is written to cookie header</span>
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">Cookie::new</span>(<span class="ident">c</span>.<span class="ident">name</span>(), <span class="ident">c</span>.<span class="ident">value</span>()).<span class="ident">encoded</span>().<span class="ident">to_string</span>())
+                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span>.<span class="ident">stripped</span>().<span class="ident">encoded</span>().<span class="ident">to_string</span>())
                 .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>()
                 .<span class="ident">join</span>(<span class="string">&quot;; &quot;</span>);
 
