@@ -54,7 +54,7 @@
 <span id="51">51</span>
 <span id="52">52</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">mime</span>::<span class="ident">Mime</span>;
+<span class="kw">use</span> <span class="ident">mime::Mime</span>;
 
 <span class="doccomment">/// Transforms MIME `text/*` types into their UTF-8 equivalent, if supported.</span>
 <span class="doccomment">///</span>
@@ -68,28 +68,28 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">equiv_utf8_text</span>(<span class="ident">ct</span>: <span class="ident">Mime</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Mime</span> {
     <span class="comment">// use (roughly) order of file-type popularity for a web server</span>
 
-    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime</span>::<span class="ident">APPLICATION_JAVASCRIPT</span> {
-        <span class="kw">return</span> <span class="ident">mime</span>::<span class="ident">APPLICATION_JAVASCRIPT_UTF_8</span>;
+    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime::APPLICATION_JAVASCRIPT</span> {
+        <span class="kw">return</span> <span class="ident">mime::APPLICATION_JAVASCRIPT_UTF_8</span>;
     }
 
-    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime</span>::<span class="ident">TEXT_HTML</span> {
-        <span class="kw">return</span> <span class="ident">mime</span>::<span class="ident">TEXT_HTML_UTF_8</span>;
+    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime::TEXT_HTML</span> {
+        <span class="kw">return</span> <span class="ident">mime::TEXT_HTML_UTF_8</span>;
     }
 
-    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime</span>::<span class="ident">TEXT_CSS</span> {
-        <span class="kw">return</span> <span class="ident">mime</span>::<span class="ident">TEXT_CSS_UTF_8</span>;
+    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime::TEXT_CSS</span> {
+        <span class="kw">return</span> <span class="ident">mime::TEXT_CSS_UTF_8</span>;
     }
 
-    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime</span>::<span class="ident">TEXT_PLAIN</span> {
-        <span class="kw">return</span> <span class="ident">mime</span>::<span class="ident">TEXT_PLAIN_UTF_8</span>;
+    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime::TEXT_PLAIN</span> {
+        <span class="kw">return</span> <span class="ident">mime::TEXT_PLAIN_UTF_8</span>;
     }
 
-    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime</span>::<span class="ident">TEXT_CSV</span> {
-        <span class="kw">return</span> <span class="ident">mime</span>::<span class="ident">TEXT_CSV_UTF_8</span>;
+    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime::TEXT_CSV</span> {
+        <span class="kw">return</span> <span class="ident">mime::TEXT_CSV_UTF_8</span>;
     }
 
-    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime</span>::<span class="ident">TEXT_TAB_SEPARATED_VALUES</span> {
-        <span class="kw">return</span> <span class="ident">mime</span>::<span class="ident">TEXT_TAB_SEPARATED_VALUES_UTF_8</span>;
+    <span class="kw">if</span> <span class="ident">ct</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mime::TEXT_TAB_SEPARATED_VALUES</span> {
+        <span class="kw">return</span> <span class="ident">mime::TEXT_TAB_SEPARATED_VALUES_UTF_8</span>;
     }
 
     <span class="ident">ct</span>
@@ -101,9 +101,9 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_equiv_utf8_text</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">equiv_utf8_text</span>(<span class="ident">mime</span>::<span class="ident">TEXT_PLAIN</span>), <span class="ident">mime</span>::<span class="ident">TEXT_PLAIN_UTF_8</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">equiv_utf8_text</span>(<span class="ident">mime</span>::<span class="ident">TEXT_XML</span>), <span class="ident">mime</span>::<span class="ident">TEXT_XML</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">equiv_utf8_text</span>(<span class="ident">mime</span>::<span class="ident">IMAGE_PNG</span>), <span class="ident">mime</span>::<span class="ident">IMAGE_PNG</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">equiv_utf8_text</span>(<span class="ident">mime::TEXT_PLAIN</span>), <span class="ident">mime::TEXT_PLAIN_UTF_8</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">equiv_utf8_text</span>(<span class="ident">mime::TEXT_XML</span>), <span class="ident">mime::TEXT_XML</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">equiv_utf8_text</span>(<span class="ident">mime::IMAGE_PNG</span>), <span class="ident">mime::IMAGE_PNG</span>);
     }
 }
 </pre></div>

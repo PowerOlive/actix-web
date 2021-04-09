@@ -16,14 +16,14 @@
 <span class="doccomment">//! Multipart form support for Actix Web.</span>
 
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">rust_2018_idioms</span>)]</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">borrow_interior_mutable_const</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::borrow_interior_mutable_const</span>)]</span>
 
 <span class="kw">mod</span> <span class="ident">error</span>;
 <span class="kw">mod</span> <span class="ident">extractor</span>;
 <span class="kw">mod</span> <span class="ident">server</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">error</span>::<span class="ident">MultipartError</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">server</span>::{<span class="ident">Field</span>, <span class="ident">Multipart</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::error::MultipartError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::server</span>::{<span class="ident">Field</span>, <span class="ident">Multipart</span>};
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="actix_multipart" data-search-js="../../search-index.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

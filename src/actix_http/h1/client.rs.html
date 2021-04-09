@@ -225,22 +225,22 @@
 <span id="224">224</span>
 <span id="225">225</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
+<span class="kw">use</span> <span class="ident">std::io</span>;
 
 <span class="kw">use</span> <span class="ident">actix_codec</span>::{<span class="ident">Decoder</span>, <span class="ident">Encoder</span>};
-<span class="kw">use</span> <span class="ident">bitflags</span>::<span class="ident">bitflags</span>;
+<span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
 <span class="kw">use</span> <span class="ident">bytes</span>::{<span class="ident">Bytes</span>, <span class="ident">BytesMut</span>};
 <span class="kw">use</span> <span class="ident">http</span>::{<span class="ident">Method</span>, <span class="ident">Version</span>};
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">decoder</span>::{<span class="ident">PayloadDecoder</span>, <span class="ident">PayloadItem</span>, <span class="ident">PayloadType</span>};
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::decoder</span>::{<span class="ident">PayloadDecoder</span>, <span class="ident">PayloadItem</span>, <span class="ident">PayloadType</span>};
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">decoder</span>, <span class="ident">encoder</span>, <span class="ident">reserve_readbuf</span>};
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Message</span>, <span class="ident">MessageType</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">body</span>::<span class="ident">BodySize</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">config</span>::<span class="ident">ServiceConfig</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::{<span class="ident">ParseError</span>, <span class="ident">PayloadError</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">message</span>::{<span class="ident">ConnectionType</span>, <span class="ident">RequestHeadType</span>, <span class="ident">ResponseHead</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::body::BodySize</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::config::ServiceConfig</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>::{<span class="ident">ParseError</span>, <span class="ident">PayloadError</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::message</span>::{<span class="ident">ConnectionType</span>, <span class="ident">RequestHeadType</span>, <span class="ident">ResponseHead</span>};
 
-<span class="macro">bitflags</span><span class="macro">!</span> {
+<span class="macro">bitflags!</span> {
     <span class="kw">struct</span> <span class="ident">Flags</span>: <span class="ident">u8</span> {
         <span class="kw">const</span> <span class="ident">HEAD</span>              <span class="op">=</span> <span class="number">0b0000_0001</span>;
         <span class="kw">const</span> <span class="ident">KEEPALIVE_ENABLED</span> <span class="op">=</span> <span class="number">0b0000_1000</span>;
@@ -260,19 +260,19 @@
 
 <span class="kw">struct</span> <span class="ident">ClientCodecInner</span> {
     <span class="ident">config</span>: <span class="ident">ServiceConfig</span>,
-    <span class="ident">decoder</span>: <span class="ident">decoder</span>::<span class="ident">MessageDecoder</span><span class="op">&lt;</span><span class="ident">ResponseHead</span><span class="op">&gt;</span>,
+    <span class="ident">decoder</span>: <span class="ident">decoder::MessageDecoder</span><span class="op">&lt;</span><span class="ident">ResponseHead</span><span class="op">&gt;</span>,
     <span class="ident">payload</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PayloadDecoder</span><span class="op">&gt;</span>,
     <span class="ident">version</span>: <span class="ident">Version</span>,
     <span class="ident">ctype</span>: <span class="ident">ConnectionType</span>,
 
     <span class="comment">// encoder part</span>
     <span class="ident">flags</span>: <span class="ident">Flags</span>,
-    <span class="ident">encoder</span>: <span class="ident">encoder</span>::<span class="ident">MessageEncoder</span><span class="op">&lt;</span><span class="ident">RequestHeadType</span><span class="op">&gt;</span>,
+    <span class="ident">encoder</span>: <span class="ident">encoder::MessageEncoder</span><span class="op">&lt;</span><span class="ident">RequestHeadType</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ClientCodec</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">ClientCodec</span>::<span class="ident">new</span>(<span class="ident">ServiceConfig</span>::<span class="ident">default</span>())
+        <span class="ident">ClientCodec::new</span>(<span class="ident">ServiceConfig::default</span>())
     }
 }
 
@@ -282,42 +282,42 @@
     <span class="doccomment">/// `keepalive_enabled` how response `connection` header get generated.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="ident">ServiceConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">keep_alive_enabled</span>() {
-            <span class="ident">Flags</span>::<span class="ident">KEEPALIVE_ENABLED</span>
+            <span class="ident">Flags::KEEPALIVE_ENABLED</span>
         } <span class="kw">else</span> {
-            <span class="ident">Flags</span>::<span class="ident">empty</span>()
+            <span class="ident">Flags::empty</span>()
         };
         <span class="ident">ClientCodec</span> {
             <span class="ident">inner</span>: <span class="ident">ClientCodecInner</span> {
                 <span class="ident">config</span>,
-                <span class="ident">decoder</span>: <span class="ident">decoder</span>::<span class="ident">MessageDecoder</span>::<span class="ident">default</span>(),
+                <span class="ident">decoder</span>: <span class="ident">decoder::MessageDecoder::default</span>(),
                 <span class="ident">payload</span>: <span class="prelude-val">None</span>,
-                <span class="ident">version</span>: <span class="ident">Version</span>::<span class="ident">HTTP_11</span>,
-                <span class="ident">ctype</span>: <span class="ident">ConnectionType</span>::<span class="ident">Close</span>,
+                <span class="ident">version</span>: <span class="ident">Version::HTTP_11</span>,
+                <span class="ident">ctype</span>: <span class="ident">ConnectionType::Close</span>,
 
                 <span class="ident">flags</span>,
-                <span class="ident">encoder</span>: <span class="ident">encoder</span>::<span class="ident">MessageEncoder</span>::<span class="ident">default</span>(),
+                <span class="ident">encoder</span>: <span class="ident">encoder::MessageEncoder::default</span>(),
             },
         }
     }
 
     <span class="doccomment">/// Check if request is upgrade</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">upgrade</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ctype</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ConnectionType</span>::<span class="ident">Upgrade</span>
+        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ctype</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ConnectionType::Upgrade</span>
     }
 
     <span class="doccomment">/// Check if last response is keep-alive</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keepalive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ctype</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ConnectionType</span>::<span class="ident">KeepAlive</span>
+        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ctype</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ConnectionType::KeepAlive</span>
     }
 
     <span class="doccomment">/// Check last request&#39;s message type</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">message_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MessageType</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">Flags</span>::<span class="ident">STREAM</span>) {
-            <span class="ident">MessageType</span>::<span class="ident">Stream</span>
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">Flags::STREAM</span>) {
+            <span class="ident">MessageType::Stream</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">payload</span>.<span class="ident">is_none</span>() {
-            <span class="ident">MessageType</span>::<span class="prelude-val">None</span>
+            <span class="ident">MessageType::None</span>
         } <span class="kw">else</span> {
-            <span class="ident">MessageType</span>::<span class="ident">Payload</span>
+            <span class="ident">MessageType::Payload</span>
         }
     }
 
@@ -330,7 +330,7 @@
 <span class="kw">impl</span> <span class="ident">ClientPayloadCodec</span> {
     <span class="doccomment">/// Check if last response is keep-alive</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keepalive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ctype</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ConnectionType</span>::<span class="ident">KeepAlive</span>
+        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ctype</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ConnectionType::KeepAlive</span>
     }
 
     <span class="doccomment">/// Transform payload codec to a message codec</span>
@@ -343,26 +343,26 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">ResponseHead</span>;
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">ParseError</span>;
 
-    <span class="kw">fn</span> <span class="ident">decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">payload</span>.<span class="ident">is_some</span>(), <span class="string">&quot;Payload decoder is set&quot;</span>);
+    <span class="kw">fn</span> <span class="ident">decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
+        <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">payload</span>.<span class="ident">is_some</span>(), <span class="string">&quot;Payload decoder is set&quot;</span>);
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">req</span>, <span class="ident">payload</span>)) <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">decoder</span>.<span class="ident">decode</span>(<span class="ident">src</span>)<span class="question-mark">?</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">ctype</span>) <span class="op">=</span> <span class="ident">req</span>.<span class="ident">ctype</span>() {
                 <span class="comment">// do not use peer&#39;s keep-alive</span>
-                <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ctype</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">ctype</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ConnectionType</span>::<span class="ident">KeepAlive</span> {
+                <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ctype</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">ctype</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ConnectionType::KeepAlive</span> {
                     <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ctype</span>
                 } <span class="kw">else</span> {
                     <span class="ident">ctype</span>
                 };
             }
 
-            <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">Flags</span>::<span class="ident">HEAD</span>) {
+            <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">Flags::HEAD</span>) {
                 <span class="kw">match</span> <span class="ident">payload</span> {
-                    <span class="ident">PayloadType</span>::<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">payload</span> <span class="op">=</span> <span class="prelude-val">None</span>,
-                    <span class="ident">PayloadType</span>::<span class="ident">Payload</span>(<span class="ident">pl</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">payload</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">pl</span>),
-                    <span class="ident">PayloadType</span>::<span class="ident">Stream</span>(<span class="ident">pl</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">PayloadType::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">payload</span> <span class="op">=</span> <span class="prelude-val">None</span>,
+                    <span class="ident">PayloadType::Payload</span>(<span class="ident">pl</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">payload</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">pl</span>),
+                    <span class="ident">PayloadType::Stream</span>(<span class="ident">pl</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">payload</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">pl</span>);
-                        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">flags</span>.<span class="ident">insert</span>(<span class="ident">Flags</span>::<span class="ident">STREAM</span>);
+                        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">flags</span>.<span class="ident">insert</span>(<span class="ident">Flags::STREAM</span>);
                     }
                 }
             } <span class="kw">else</span> {
@@ -380,18 +380,18 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Bytes</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">PayloadError</span>;
 
-    <span class="kw">fn</span> <span class="ident">decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="macro">debug_assert</span><span class="macro">!</span>(
+    <span class="kw">fn</span> <span class="ident">decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
+        <span class="macro">debug_assert!</span>(
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">payload</span>.<span class="ident">is_some</span>(),
             <span class="string">&quot;Payload decoder is not specified&quot;</span>
         );
 
         <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">payload</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>().<span class="ident">decode</span>(<span class="ident">src</span>)<span class="question-mark">?</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">PayloadItem</span>::<span class="ident">Chunk</span>(<span class="ident">chunk</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">PayloadItem::Chunk</span>(<span class="ident">chunk</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">reserve_readbuf</span>(<span class="ident">src</span>);
                 <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">chunk</span>))
             }
-            <span class="prelude-val">Some</span>(<span class="ident">PayloadItem</span>::<span class="ident">Eof</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">PayloadItem::Eof</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">payload</span>.<span class="ident">take</span>();
                 <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>)
             }
@@ -401,32 +401,32 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Encoder</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span>(<span class="ident">RequestHeadType</span>, <span class="ident">BodySize</span>)<span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ClientCodec</span> {
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">Error</span>;
+    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">io::Error</span>;
 
     <span class="kw">fn</span> <span class="ident">encode</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">item</span>: <span class="ident">Message</span><span class="op">&lt;</span>(<span class="ident">RequestHeadType</span>, <span class="ident">BodySize</span>)<span class="op">&gt;</span>,
         <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">item</span> {
-            <span class="ident">Message</span>::<span class="ident">Item</span>((<span class="kw-2">mut</span> <span class="ident">head</span>, <span class="ident">length</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Message::Item</span>((<span class="kw-2">mut</span> <span class="ident">head</span>, <span class="ident">length</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">inner</span>;
                 <span class="ident">inner</span>.<span class="ident">version</span> <span class="op">=</span> <span class="ident">head</span>.<span class="ident">as_ref</span>().<span class="ident">version</span>;
                 <span class="ident">inner</span>
                     .<span class="ident">flags</span>
-                    .<span class="ident">set</span>(<span class="ident">Flags</span>::<span class="ident">HEAD</span>, <span class="ident">head</span>.<span class="ident">as_ref</span>().<span class="ident">method</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Method</span>::<span class="ident">HEAD</span>);
+                    .<span class="ident">set</span>(<span class="ident">Flags::HEAD</span>, <span class="ident">head</span>.<span class="ident">as_ref</span>().<span class="ident">method</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Method::HEAD</span>);
 
                 <span class="comment">// connection status</span>
                 <span class="ident">inner</span>.<span class="ident">ctype</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">head</span>.<span class="ident">as_ref</span>().<span class="ident">connection_type</span>() {
-                    <span class="ident">ConnectionType</span>::<span class="ident">KeepAlive</span> <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="kw">if</span> <span class="ident">inner</span>.<span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">Flags</span>::<span class="ident">KEEPALIVE_ENABLED</span>) {
-                            <span class="ident">ConnectionType</span>::<span class="ident">KeepAlive</span>
+                    <span class="ident">ConnectionType::KeepAlive</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="kw">if</span> <span class="ident">inner</span>.<span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">Flags::KEEPALIVE_ENABLED</span>) {
+                            <span class="ident">ConnectionType::KeepAlive</span>
                         } <span class="kw">else</span> {
-                            <span class="ident">ConnectionType</span>::<span class="ident">Close</span>
+                            <span class="ident">ConnectionType::Close</span>
                         }
                     }
-                    <span class="ident">ConnectionType</span>::<span class="ident">Upgrade</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ConnectionType</span>::<span class="ident">Upgrade</span>,
-                    <span class="ident">ConnectionType</span>::<span class="ident">Close</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ConnectionType</span>::<span class="ident">Close</span>,
+                    <span class="ident">ConnectionType::Upgrade</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ConnectionType::Upgrade</span>,
+                    <span class="ident">ConnectionType::Close</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ConnectionType::Close</span>,
                 };
 
                 <span class="ident">inner</span>.<span class="ident">encoder</span>.<span class="ident">encode</span>(
@@ -440,10 +440,10 @@
                     <span class="kw-2">&amp;</span><span class="ident">inner</span>.<span class="ident">config</span>,
                 )<span class="question-mark">?</span>;
             }
-            <span class="ident">Message</span>::<span class="ident">Chunk</span>(<span class="prelude-val">Some</span>(<span class="ident">bytes</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Message::Chunk</span>(<span class="prelude-val">Some</span>(<span class="ident">bytes</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">encoder</span>.<span class="ident">encode_chunk</span>(<span class="ident">bytes</span>.<span class="ident">as_ref</span>(), <span class="ident">dst</span>)<span class="question-mark">?</span>;
             }
-            <span class="ident">Message</span>::<span class="ident">Chunk</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Message::Chunk</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">encoder</span>.<span class="ident">encode_eof</span>(<span class="ident">dst</span>)<span class="question-mark">?</span>;
             }
         }

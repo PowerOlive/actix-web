@@ -73,10 +73,10 @@
 
 <span class="kw">use</span> <span class="ident">percent_encoding</span>::{<span class="ident">AsciiSet</span>, <span class="ident">CONTROLS</span>};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">http</span>::<span class="ident">header</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">http::header</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">ParseError</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">HttpMessage</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error::ParseError</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::HttpMessage</span>;
 
 <span class="kw">mod</span> <span class="ident">as_name</span>;
 <span class="kw">mod</span> <span class="ident">into_pair</span>;
@@ -87,15 +87,15 @@
 <span class="kw">mod</span> <span class="ident">shared</span>;
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">shared</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::shared</span>::<span class="kw-2">*</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">as_name</span>::<span class="ident">AsHeaderName</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">into_pair</span>::<span class="ident">IntoHeaderPair</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">into_value</span>::<span class="ident">IntoHeaderValue</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::as_name::AsHeaderName</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::into_pair::IntoHeaderPair</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::into_value::IntoHeaderValue</span>;
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">map</span>::<span class="ident">GetAll</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">map</span>::<span class="ident">HeaderMap</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">utils</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::map::GetAll</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::map::HeaderMap</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::utils</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// A trait for any object that already represents a valid header field and value.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Header</span>: <span class="ident">IntoHeaderValue</span> {
@@ -107,9 +107,9 @@
 }
 
 <span class="doccomment">/// Convert `http::HeaderMap` to our `HeaderMap`.</span>
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">http</span>::<span class="ident">HeaderMap</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">HeaderMap</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw-2">mut</span> <span class="ident">map</span>: <span class="ident">http</span>::<span class="ident">HeaderMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HeaderMap</span> {
-        <span class="ident">HeaderMap</span>::<span class="ident">from_drain</span>(<span class="ident">map</span>.<span class="ident">drain</span>())
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">http::HeaderMap</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">HeaderMap</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw-2">mut</span> <span class="ident">map</span>: <span class="ident">http::HeaderMap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HeaderMap</span> {
+        <span class="ident">HeaderMap::from_drain</span>(<span class="ident">map</span>.<span class="ident">drain</span>())
     }
 }
 

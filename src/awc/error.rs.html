@@ -84,16 +84,16 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! HTTP client errors</span>
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">client</span>::{<span class="ident">ConnectError</span>, <span class="ident">FreezeRequestError</span>, <span class="ident">InvalidUrl</span>, <span class="ident">SendRequestError</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">error</span>::<span class="ident">PayloadError</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">http</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">HttpError</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">ws</span>::<span class="ident">HandshakeError</span> <span class="kw">as</span> <span class="ident">WsHandshakeError</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">ws</span>::<span class="ident">ProtocolError</span> <span class="kw">as</span> <span class="ident">WsProtocolError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http::client</span>::{<span class="ident">ConnectError</span>, <span class="ident">FreezeRequestError</span>, <span class="ident">InvalidUrl</span>, <span class="ident">SendRequestError</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http::error::PayloadError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http::http::Error</span> <span class="kw">as</span> <span class="ident">HttpError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http::ws::HandshakeError</span> <span class="kw">as</span> <span class="ident">WsHandshakeError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http::ws::ProtocolError</span> <span class="kw">as</span> <span class="ident">WsProtocolError</span>;
 
-<span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">ResponseError</span>;
-<span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">JsonError</span>;
+<span class="kw">use</span> <span class="ident">actix_http::ResponseError</span>;
+<span class="kw">use</span> <span class="ident">serde_json::error::Error</span> <span class="kw">as</span> <span class="ident">JsonError</span>;
 
-<span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">http</span>::{<span class="ident">header</span>::<span class="ident">HeaderValue</span>, <span class="ident">StatusCode</span>};
+<span class="kw">use</span> <span class="ident">actix_http::http</span>::{<span class="ident">header::HeaderValue</span>, <span class="ident">StatusCode</span>};
 <span class="kw">use</span> <span class="ident">derive_more</span>::{<span class="ident">Display</span>, <span class="ident">From</span>};
 
 <span class="doccomment">/// Websocket client error</span>
@@ -132,17 +132,17 @@
     <span class="ident">SendRequest</span>(<span class="ident">SendRequestError</span>),
 }
 
-<span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">for</span> <span class="ident">WsClientError</span> {}
+<span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">WsClientError</span> {}
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">InvalidUrl</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WsClientError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">InvalidUrl</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">WsClientError</span>::<span class="ident">SendRequest</span>(<span class="ident">err</span>.<span class="ident">into</span>())
+        <span class="ident">WsClientError::SendRequest</span>(<span class="ident">err</span>.<span class="ident">into</span>())
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">HttpError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WsClientError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">HttpError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">WsClientError</span>::<span class="ident">SendRequest</span>(<span class="ident">err</span>.<span class="ident">into</span>())
+        <span class="ident">WsClientError::SendRequest</span>(<span class="ident">err</span>.<span class="ident">into</span>())
     }
 }
 
@@ -160,7 +160,7 @@
     <span class="ident">Payload</span>(<span class="ident">PayloadError</span>),
 }
 
-<span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">for</span> <span class="ident">JsonPayloadError</span> {}
+<span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">JsonPayloadError</span> {}
 
 <span class="doccomment">/// Return `InternalServerError` for `JsonPayloadError`</span>
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">JsonPayloadError</span> {}

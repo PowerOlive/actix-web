@@ -115,19 +115,19 @@
 <span id="114">114</span>
 <span id="115">115</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">future</span>::<span class="ident">Future</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>};
+<span class="kw">use</span> <span class="ident">std::future::Future</span>;
+<span class="kw">use</span> <span class="ident">std::pin::Pin</span>;
+<span class="kw">use</span> <span class="ident">std::task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>};
 
 <span class="kw">use</span> <span class="ident">actix_codec</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>, <span class="ident">Framed</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">body</span>::{<span class="ident">BodySize</span>, <span class="ident">MessageBody</span>, <span class="ident">ResponseBody</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">h1</span>::{<span class="ident">Codec</span>, <span class="ident">Message</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">response</span>::<span class="ident">Response</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::body</span>::{<span class="ident">BodySize</span>, <span class="ident">MessageBody</span>, <span class="ident">ResponseBody</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error::Error</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::h1</span>::{<span class="ident">Codec</span>, <span class="ident">Message</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::response::Response</span>;
 
 <span class="doccomment">/// Send HTTP/1 response</span>
-<span class="attribute">#[<span class="ident">pin_project</span>::<span class="ident">pin_project</span>]</span>
+<span class="attribute">#[<span class="ident">pin_project::pin_project</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SendResponse</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span><span class="op">&gt;</span> {
     <span class="ident">res</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span>(<span class="ident">Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">BodySize</span>)<span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">pin</span>]</span>
@@ -159,7 +159,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Framed</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Codec</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
     <span class="comment">// TODO: rethink if we need loops in polls</span>
-    <span class="kw">fn</span> <span class="ident">poll</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Output</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">poll</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Output</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">project</span>();
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">body_done</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">body</span>.<span class="ident">is_none</span>();
@@ -178,16 +178,16 @@
                         .<span class="ident">is_write_buf_full</span>()
                 {
                     <span class="kw">match</span> <span class="ident">this</span>.<span class="ident">body</span>.<span class="ident">as_mut</span>().<span class="ident">as_pin_mut</span>().<span class="ident">unwrap</span>().<span class="ident">poll_next</span>(<span class="ident">cx</span>)<span class="question-mark">?</span> {
-                        <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="ident">item</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="ident">Poll::Ready</span>(<span class="ident">item</span>) <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="comment">// body is done when item is None</span>
                             <span class="ident">body_done</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">is_none</span>();
                             <span class="kw">if</span> <span class="ident">body_done</span> {
                                 <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">body</span>.<span class="ident">take</span>();
                             }
                             <span class="kw">let</span> <span class="ident">framed</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">framed</span>.<span class="ident">as_mut</span>().<span class="ident">as_pin_mut</span>().<span class="ident">unwrap</span>();
-                            <span class="ident">framed</span>.<span class="ident">write</span>(<span class="ident">Message</span>::<span class="ident">Chunk</span>(<span class="ident">item</span>))<span class="question-mark">?</span>;
+                            <span class="ident">framed</span>.<span class="ident">write</span>(<span class="ident">Message::Chunk</span>(<span class="ident">item</span>))<span class="question-mark">?</span>;
                         }
-                        <span class="ident">Poll</span>::<span class="ident">Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">body_ready</span> <span class="op">=</span> <span class="bool-val">false</span>,
+                        <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">body_ready</span> <span class="op">=</span> <span class="bool-val">false</span>,
                     }
                 }
             }
@@ -197,14 +197,14 @@
             <span class="comment">// flush write buffer</span>
             <span class="kw">if</span> <span class="op">!</span><span class="ident">framed</span>.<span class="ident">is_write_buf_empty</span>() {
                 <span class="kw">match</span> <span class="ident">framed</span>.<span class="ident">flush</span>(<span class="ident">cx</span>)<span class="question-mark">?</span> {
-                    <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">Poll::Ready</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">if</span> <span class="ident">body_ready</span> {
                             <span class="kw">continue</span>;
                         } <span class="kw">else</span> {
-                            <span class="kw">return</span> <span class="ident">Poll</span>::<span class="ident">Pending</span>;
+                            <span class="kw">return</span> <span class="ident">Poll::Pending</span>;
                         }
                     }
-                    <span class="ident">Poll</span>::<span class="ident">Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">Poll</span>::<span class="ident">Pending</span>,
+                    <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">Poll::Pending</span>,
                 }
             }
 
@@ -218,7 +218,7 @@
                 <span class="kw">if</span> <span class="ident">body_ready</span> {
                     <span class="kw">continue</span>;
                 } <span class="kw">else</span> {
-                    <span class="kw">return</span> <span class="ident">Poll</span>::<span class="ident">Pending</span>;
+                    <span class="kw">return</span> <span class="ident">Poll::Pending</span>;
                 }
             } <span class="kw">else</span> {
                 <span class="kw">break</span>;
@@ -227,7 +227,7 @@
 
         <span class="kw">let</span> <span class="ident">framed</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">framed</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>();
 
-        <span class="ident">Poll</span>::<span class="ident">Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">framed</span>))
+        <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">framed</span>))
     }
 }
 </pre></div>

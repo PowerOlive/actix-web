@@ -75,10 +75,10 @@
 <span id="74">74</span>
 <span id="75">75</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">http</span>::<span class="ident">Method</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::<span class="ident">header</span>;
+<span class="kw">use</span> <span class="ident">actix_http::http::Method</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::http::header</span>;
 
-<span class="kw">crate</span>::<span class="macro">header</span><span class="macro">!</span> {
+<span class="kw">crate</span><span class="macro">::header!</span> {
     <span class="doccomment">/// `Allow` header, defined in [RFC7231](http://tools.ietf.org/html/rfc7231#section-7.4.1)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The `Allow` header field lists the set of methods advertised as</span>
@@ -122,32 +122,32 @@
     <span class="doccomment">///     ])</span>
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
-    (<span class="ident">Allow</span>, <span class="ident">header</span>::<span class="ident">ALLOW</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Method</span>)<span class="op">*</span>
+    (<span class="ident">Allow</span>, <span class="ident">header::ALLOW</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Method</span>)<span class="op">*</span>
 
     <span class="ident">test_allow</span> {
         <span class="comment">// From the RFC</span>
-        <span class="macro">test_header</span><span class="macro">!</span>(
+        <span class="macro">test_header!</span>(
             <span class="ident">test1</span>,
-            <span class="macro">vec</span><span class="macro">!</span>[<span class="string">b&quot;GET, HEAD, PUT&quot;</span>],
-            <span class="prelude-val">Some</span>(<span class="ident">HeaderField</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Method</span>::<span class="ident">GET</span>, <span class="ident">Method</span>::<span class="ident">HEAD</span>, <span class="ident">Method</span>::<span class="ident">PUT</span>])));
+            <span class="macro">vec!</span>[<span class="string">b&quot;GET, HEAD, PUT&quot;</span>],
+            <span class="prelude-val">Some</span>(<span class="ident">HeaderField</span>(<span class="macro">vec!</span>[<span class="ident">Method::GET</span>, <span class="ident">Method::HEAD</span>, <span class="ident">Method::PUT</span>])));
         <span class="comment">// Own tests</span>
-        <span class="macro">test_header</span><span class="macro">!</span>(
+        <span class="macro">test_header!</span>(
             <span class="ident">test2</span>,
-            <span class="macro">vec</span><span class="macro">!</span>[<span class="string">b&quot;OPTIONS, GET, PUT, POST, DELETE, HEAD, TRACE, CONNECT, PATCH&quot;</span>],
-            <span class="prelude-val">Some</span>(<span class="ident">HeaderField</span>(<span class="macro">vec</span><span class="macro">!</span>[
-                <span class="ident">Method</span>::<span class="ident">OPTIONS</span>,
-                <span class="ident">Method</span>::<span class="ident">GET</span>,
-                <span class="ident">Method</span>::<span class="ident">PUT</span>,
-                <span class="ident">Method</span>::<span class="ident">POST</span>,
-                <span class="ident">Method</span>::<span class="ident">DELETE</span>,
-                <span class="ident">Method</span>::<span class="ident">HEAD</span>,
-                <span class="ident">Method</span>::<span class="ident">TRACE</span>,
-                <span class="ident">Method</span>::<span class="ident">CONNECT</span>,
-                <span class="ident">Method</span>::<span class="ident">PATCH</span>])));
-        <span class="macro">test_header</span><span class="macro">!</span>(
+            <span class="macro">vec!</span>[<span class="string">b&quot;OPTIONS, GET, PUT, POST, DELETE, HEAD, TRACE, CONNECT, PATCH&quot;</span>],
+            <span class="prelude-val">Some</span>(<span class="ident">HeaderField</span>(<span class="macro">vec!</span>[
+                <span class="ident">Method::OPTIONS</span>,
+                <span class="ident">Method::GET</span>,
+                <span class="ident">Method::PUT</span>,
+                <span class="ident">Method::POST</span>,
+                <span class="ident">Method::DELETE</span>,
+                <span class="ident">Method::HEAD</span>,
+                <span class="ident">Method::TRACE</span>,
+                <span class="ident">Method::CONNECT</span>,
+                <span class="ident">Method::PATCH</span>])));
+        <span class="macro">test_header!</span>(
             <span class="ident">test3</span>,
-            <span class="macro">vec</span><span class="macro">!</span>[<span class="string">b&quot;&quot;</span>],
-            <span class="prelude-val">Some</span>(<span class="ident">HeaderField</span>(<span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">Method</span><span class="op">&gt;</span>::<span class="ident">new</span>())));
+            <span class="macro">vec!</span>[<span class="string">b&quot;&quot;</span>],
+            <span class="prelude-val">Some</span>(<span class="ident">HeaderField</span>(<span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">Method</span><span class="op">&gt;</span><span class="ident">::new</span>())));
     }
 }
 </pre></div>

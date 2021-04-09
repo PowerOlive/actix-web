@@ -507,10 +507,10 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustls&quot;</span>)]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">tls_rustls</span> <span class="kw">as</span> <span class="ident">rustls</span>;
 
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">net</span>, <span class="ident">sync</span>::<span class="ident">mpsc</span>, <span class="ident">thread</span>, <span class="ident">time</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">net</span>, <span class="ident">sync::mpsc</span>, <span class="ident">thread</span>, <span class="ident">time</span>};
 
 <span class="kw">use</span> <span class="ident">actix_codec</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>, <span class="ident">Framed</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">test</span>::<span class="ident">TestBuffer</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http::test::TestBuffer</span>;
 <span class="kw">use</span> <span class="ident">actix_http</span>::{
     <span class="ident">http</span>::{<span class="ident">HeaderMap</span>, <span class="ident">Method</span>},
     <span class="ident">ws</span>, <span class="ident">HttpService</span>, <span class="ident">Request</span>,
@@ -520,11 +520,11 @@
     <span class="ident">dev</span>::{<span class="ident">AppConfig</span>, <span class="ident">MessageBody</span>, <span class="ident">Server</span>, <span class="ident">Service</span>},
     <span class="ident">rt</span>, <span class="ident">web</span>, <span class="ident">Error</span>, <span class="ident">HttpResponse</span>,
 };
-<span class="kw">use</span> <span class="ident">awc</span>::{<span class="ident">error</span>::<span class="ident">PayloadError</span>, <span class="ident">Client</span>, <span class="ident">ClientRequest</span>, <span class="ident">ClientResponse</span>, <span class="ident">Connector</span>};
-<span class="kw">use</span> <span class="ident">futures_core</span>::<span class="ident">Stream</span>;
+<span class="kw">use</span> <span class="ident">awc</span>::{<span class="ident">error::PayloadError</span>, <span class="ident">Client</span>, <span class="ident">ClientRequest</span>, <span class="ident">ClientResponse</span>, <span class="ident">Connector</span>};
+<span class="kw">use</span> <span class="ident">futures_core::Stream</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http_test</span>::<span class="ident">unused_addr</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_web</span>::<span class="ident">test</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http_test::unused_addr</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_web::test</span>::{
     <span class="ident">call_service</span>, <span class="ident">default_service</span>, <span class="ident">init_service</span>, <span class="ident">load_stream</span>, <span class="ident">ok_service</span>, <span class="ident">read_body</span>,
     <span class="ident">read_body_json</span>, <span class="ident">read_response</span>, <span class="ident">read_response_json</span>, <span class="ident">TestRequest</span>,
 };
@@ -557,13 +557,13 @@
     <span class="ident">F</span>: <span class="ident">Fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">I</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">I</span>: <span class="ident">IntoServiceFactory</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">Request</span><span class="op">&gt;</span>,
     <span class="ident">S</span>: <span class="ident">ServiceFactory</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Config</span> <span class="op">=</span> <span class="ident">AppConfig</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">S</span>::<span class="ident">InitError</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
-    <span class="ident">S</span>::<span class="ident">Response</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
+    <span class="ident">S::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">S::InitError</span>: <span class="ident">fmt::Debug</span>,
+    <span class="ident">S::Response</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="op">&lt;</span><span class="ident">S::Service</span> <span class="kw">as</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Future</span>: <span class="lifetime">&#39;static</span>,
     <span class="ident">B</span>: <span class="ident">MessageBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="ident">start_with</span>(<span class="ident">TestServerConfig</span>::<span class="ident">default</span>(), <span class="ident">factory</span>)
+    <span class="ident">start_with</span>(<span class="ident">TestServerConfig::default</span>(), <span class="ident">factory</span>)
 }
 
 <span class="doccomment">/// Start test server with custom configuration</span>
@@ -596,108 +596,108 @@
     <span class="ident">F</span>: <span class="ident">Fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">I</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">I</span>: <span class="ident">IntoServiceFactory</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">Request</span><span class="op">&gt;</span>,
     <span class="ident">S</span>: <span class="ident">ServiceFactory</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Config</span> <span class="op">=</span> <span class="ident">AppConfig</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">S</span>::<span class="ident">InitError</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>,
-    <span class="ident">S</span>::<span class="ident">Response</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>: <span class="lifetime">&#39;static</span>,
+    <span class="ident">S::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">S::InitError</span>: <span class="ident">fmt::Debug</span>,
+    <span class="ident">S::Response</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="op">&lt;</span><span class="ident">S::Service</span> <span class="kw">as</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Future</span>: <span class="lifetime">&#39;static</span>,
     <span class="ident">B</span>: <span class="ident">MessageBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">mpsc</span>::<span class="ident">channel</span>();
+    <span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">mpsc::channel</span>();
 
     <span class="kw">let</span> <span class="ident">tls</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">cfg</span>.<span class="ident">stream</span> {
-        <span class="ident">StreamType</span>::<span class="ident">Tcp</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+        <span class="ident">StreamType::Tcp</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;openssl&quot;</span>)]</span>
-        <span class="ident">StreamType</span>::<span class="ident">Openssl</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+        <span class="ident">StreamType::Openssl</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustls&quot;</span>)]</span>
-        <span class="ident">StreamType</span>::<span class="ident">Rustls</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+        <span class="ident">StreamType::Rustls</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
     };
 
     <span class="comment">// run server in separate thread</span>
-    <span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="ident">sys</span> <span class="op">=</span> <span class="ident">rt</span>::<span class="ident">System</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">tcp</span> <span class="op">=</span> <span class="ident">net</span>::<span class="ident">TcpListener</span>::<span class="ident">bind</span>(<span class="string">&quot;127.0.0.1:0&quot;</span>).<span class="ident">unwrap</span>();
+    <span class="ident">thread::spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+        <span class="kw">let</span> <span class="ident">sys</span> <span class="op">=</span> <span class="ident">rt::System::new</span>();
+        <span class="kw">let</span> <span class="ident">tcp</span> <span class="op">=</span> <span class="ident">net::TcpListener::bind</span>(<span class="string">&quot;127.0.0.1:0&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">local_addr</span> <span class="op">=</span> <span class="ident">tcp</span>.<span class="ident">local_addr</span>().<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">factory</span> <span class="op">=</span> <span class="ident">factory</span>.<span class="ident">clone</span>();
         <span class="kw">let</span> <span class="ident">srv_cfg</span> <span class="op">=</span> <span class="ident">cfg</span>.<span class="ident">clone</span>();
         <span class="kw">let</span> <span class="ident">timeout</span> <span class="op">=</span> <span class="ident">cfg</span>.<span class="ident">client_timeout</span>;
-        <span class="kw">let</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Server</span>::<span class="ident">build</span>().<span class="ident">workers</span>(<span class="number">1</span>).<span class="ident">disable_signals</span>();
+        <span class="kw">let</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Server::build</span>().<span class="ident">workers</span>(<span class="number">1</span>).<span class="ident">disable_signals</span>();
 
         <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">srv_cfg</span>.<span class="ident">stream</span> {
-            <span class="ident">StreamType</span>::<span class="ident">Tcp</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">srv_cfg</span>.<span class="ident">tp</span> {
-                <span class="ident">HttpVer</span>::<span class="ident">Http1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+            <span class="ident">StreamType::Tcp</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">srv_cfg</span>.<span class="ident">tp</span> {
+                <span class="ident">HttpVer::Http1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">app_cfg</span> <span class="op">=</span>
-                        <span class="ident">AppConfig</span>::<span class="ident">__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
-                    <span class="ident">HttpService</span>::<span class="ident">build</span>()
+                        <span class="ident">AppConfig::__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
+                    <span class="ident">HttpService::build</span>()
                         .<span class="ident">client_timeout</span>(<span class="ident">timeout</span>)
                         .<span class="ident">h1</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">app_cfg</span>.<span class="ident">clone</span>()))
                         .<span class="ident">tcp</span>()
                 }),
-                <span class="ident">HttpVer</span>::<span class="ident">Http2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                <span class="ident">HttpVer::Http2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">app_cfg</span> <span class="op">=</span>
-                        <span class="ident">AppConfig</span>::<span class="ident">__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
-                    <span class="ident">HttpService</span>::<span class="ident">build</span>()
+                        <span class="ident">AppConfig::__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
+                    <span class="ident">HttpService::build</span>()
                         .<span class="ident">client_timeout</span>(<span class="ident">timeout</span>)
                         .<span class="ident">h2</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">app_cfg</span>.<span class="ident">clone</span>()))
                         .<span class="ident">tcp</span>()
                 }),
-                <span class="ident">HttpVer</span>::<span class="ident">Both</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                <span class="ident">HttpVer::Both</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">app_cfg</span> <span class="op">=</span>
-                        <span class="ident">AppConfig</span>::<span class="ident">__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
-                    <span class="ident">HttpService</span>::<span class="ident">build</span>()
+                        <span class="ident">AppConfig::__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
+                    <span class="ident">HttpService::build</span>()
                         .<span class="ident">client_timeout</span>(<span class="ident">timeout</span>)
                         .<span class="ident">finish</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">app_cfg</span>.<span class="ident">clone</span>()))
                         .<span class="ident">tcp</span>()
                 }),
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;openssl&quot;</span>)]</span>
-            <span class="ident">StreamType</span>::<span class="ident">Openssl</span>(<span class="ident">acceptor</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">cfg</span>.<span class="ident">tp</span> {
-                <span class="ident">HttpVer</span>::<span class="ident">Http1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+            <span class="ident">StreamType::Openssl</span>(<span class="ident">acceptor</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">cfg</span>.<span class="ident">tp</span> {
+                <span class="ident">HttpVer::Http1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">app_cfg</span> <span class="op">=</span>
-                        <span class="ident">AppConfig</span>::<span class="ident">__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
-                    <span class="ident">HttpService</span>::<span class="ident">build</span>()
+                        <span class="ident">AppConfig::__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
+                    <span class="ident">HttpService::build</span>()
                         .<span class="ident">client_timeout</span>(<span class="ident">timeout</span>)
                         .<span class="ident">h1</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">app_cfg</span>.<span class="ident">clone</span>()))
                         .<span class="ident">openssl</span>(<span class="ident">acceptor</span>.<span class="ident">clone</span>())
                 }),
-                <span class="ident">HttpVer</span>::<span class="ident">Http2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                <span class="ident">HttpVer::Http2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">app_cfg</span> <span class="op">=</span>
-                        <span class="ident">AppConfig</span>::<span class="ident">__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
-                    <span class="ident">HttpService</span>::<span class="ident">build</span>()
+                        <span class="ident">AppConfig::__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
+                    <span class="ident">HttpService::build</span>()
                         .<span class="ident">client_timeout</span>(<span class="ident">timeout</span>)
                         .<span class="ident">h2</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">app_cfg</span>.<span class="ident">clone</span>()))
                         .<span class="ident">openssl</span>(<span class="ident">acceptor</span>.<span class="ident">clone</span>())
                 }),
-                <span class="ident">HttpVer</span>::<span class="ident">Both</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                <span class="ident">HttpVer::Both</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">app_cfg</span> <span class="op">=</span>
-                        <span class="ident">AppConfig</span>::<span class="ident">__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
-                    <span class="ident">HttpService</span>::<span class="ident">build</span>()
+                        <span class="ident">AppConfig::__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
+                    <span class="ident">HttpService::build</span>()
                         .<span class="ident">client_timeout</span>(<span class="ident">timeout</span>)
                         .<span class="ident">finish</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">app_cfg</span>.<span class="ident">clone</span>()))
                         .<span class="ident">openssl</span>(<span class="ident">acceptor</span>.<span class="ident">clone</span>())
                 }),
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustls&quot;</span>)]</span>
-            <span class="ident">StreamType</span>::<span class="ident">Rustls</span>(<span class="ident">config</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">cfg</span>.<span class="ident">tp</span> {
-                <span class="ident">HttpVer</span>::<span class="ident">Http1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+            <span class="ident">StreamType::Rustls</span>(<span class="ident">config</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">cfg</span>.<span class="ident">tp</span> {
+                <span class="ident">HttpVer::Http1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">app_cfg</span> <span class="op">=</span>
-                        <span class="ident">AppConfig</span>::<span class="ident">__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
-                    <span class="ident">HttpService</span>::<span class="ident">build</span>()
+                        <span class="ident">AppConfig::__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
+                    <span class="ident">HttpService::build</span>()
                         .<span class="ident">client_timeout</span>(<span class="ident">timeout</span>)
                         .<span class="ident">h1</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">app_cfg</span>.<span class="ident">clone</span>()))
                         .<span class="ident">rustls</span>(<span class="ident">config</span>.<span class="ident">clone</span>())
                 }),
-                <span class="ident">HttpVer</span>::<span class="ident">Http2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                <span class="ident">HttpVer::Http2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">app_cfg</span> <span class="op">=</span>
-                        <span class="ident">AppConfig</span>::<span class="ident">__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
-                    <span class="ident">HttpService</span>::<span class="ident">build</span>()
+                        <span class="ident">AppConfig::__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
+                    <span class="ident">HttpService::build</span>()
                         .<span class="ident">client_timeout</span>(<span class="ident">timeout</span>)
                         .<span class="ident">h2</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">app_cfg</span>.<span class="ident">clone</span>()))
                         .<span class="ident">rustls</span>(<span class="ident">config</span>.<span class="ident">clone</span>())
                 }),
-                <span class="ident">HttpVer</span>::<span class="ident">Both</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                <span class="ident">HttpVer::Both</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">builder</span>.<span class="ident">listen</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">tcp</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">app_cfg</span> <span class="op">=</span>
-                        <span class="ident">AppConfig</span>::<span class="ident">__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
-                    <span class="ident">HttpService</span>::<span class="ident">build</span>()
+                        <span class="ident">AppConfig::__priv_test_new</span>(<span class="bool-val">false</span>, <span class="ident">local_addr</span>.<span class="ident">to_string</span>(), <span class="ident">local_addr</span>);
+                    <span class="ident">HttpService::build</span>()
                         .<span class="ident">client_timeout</span>(<span class="ident">timeout</span>)
                         .<span class="ident">finish</span>(<span class="ident">map_config</span>(<span class="ident">factory</span>(), <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">app_cfg</span>.<span class="ident">clone</span>()))
                         .<span class="ident">rustls</span>(<span class="ident">config</span>.<span class="ident">clone</span>())
@@ -708,7 +708,7 @@
 
         <span class="ident">sys</span>.<span class="ident">block_on</span>(<span class="kw">async</span> {
             <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="ident">srv</span>.<span class="ident">run</span>();
-            <span class="ident">tx</span>.<span class="ident">send</span>((<span class="ident">rt</span>::<span class="ident">System</span>::<span class="ident">current</span>(), <span class="ident">srv</span>, <span class="ident">local_addr</span>)).<span class="ident">unwrap</span>();
+            <span class="ident">tx</span>.<span class="ident">send</span>((<span class="ident">rt::System::current</span>(), <span class="ident">srv</span>, <span class="ident">local_addr</span>)).<span class="ident">unwrap</span>();
         });
 
         <span class="ident">sys</span>.<span class="ident">run</span>()
@@ -720,27 +720,27 @@
         <span class="kw">let</span> <span class="ident">connector</span> <span class="op">=</span> {
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;openssl&quot;</span>)]</span>
             {
-                <span class="kw">use</span> <span class="ident">openssl</span>::<span class="ident">ssl</span>::{<span class="ident">SslConnector</span>, <span class="ident">SslMethod</span>, <span class="ident">SslVerifyMode</span>};
+                <span class="kw">use</span> <span class="ident">openssl::ssl</span>::{<span class="ident">SslConnector</span>, <span class="ident">SslMethod</span>, <span class="ident">SslVerifyMode</span>};
 
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">SslConnector</span>::<span class="ident">builder</span>(<span class="ident">SslMethod</span>::<span class="ident">tls</span>()).<span class="ident">unwrap</span>();
-                <span class="ident">builder</span>.<span class="ident">set_verify</span>(<span class="ident">SslVerifyMode</span>::<span class="ident">NONE</span>);
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">SslConnector::builder</span>(<span class="ident">SslMethod::tls</span>()).<span class="ident">unwrap</span>();
+                <span class="ident">builder</span>.<span class="ident">set_verify</span>(<span class="ident">SslVerifyMode::NONE</span>);
                 <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">builder</span>
                     .<span class="ident">set_alpn_protos</span>(<span class="string">b&quot;\x02h2\x08http/1.1&quot;</span>)
-                    .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">log</span>::<span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Can not set alpn protocol: {:?}&quot;</span>, <span class="ident">e</span>));
-                <span class="ident">Connector</span>::<span class="ident">new</span>()
-                    .<span class="ident">conn_lifetime</span>(<span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">0</span>))
-                    .<span class="ident">timeout</span>(<span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">30000</span>))
+                    .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">log::error!</span>(<span class="string">&quot;Can not set alpn protocol: {:?}&quot;</span>, <span class="ident">e</span>));
+                <span class="ident">Connector::new</span>()
+                    .<span class="ident">conn_lifetime</span>(<span class="ident">time::Duration::from_secs</span>(<span class="number">0</span>))
+                    .<span class="ident">timeout</span>(<span class="ident">time::Duration::from_millis</span>(<span class="number">30000</span>))
                     .<span class="ident">ssl</span>(<span class="ident">builder</span>.<span class="ident">build</span>())
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;openssl&quot;</span>))]</span>
             {
-                <span class="ident">Connector</span>::<span class="ident">new</span>()
-                    .<span class="ident">conn_lifetime</span>(<span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">0</span>))
-                    .<span class="ident">timeout</span>(<span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">30000</span>))
+                <span class="ident">Connector::new</span>()
+                    .<span class="ident">conn_lifetime</span>(<span class="ident">time::Duration::from_secs</span>(<span class="number">0</span>))
+                    .<span class="ident">timeout</span>(<span class="ident">time::Duration::from_millis</span>(<span class="number">30000</span>))
             }
         };
 
-        <span class="ident">Client</span>::<span class="ident">builder</span>().<span class="ident">connector</span>(<span class="ident">connector</span>).<span class="ident">finish</span>()
+        <span class="ident">Client::builder</span>().<span class="ident">connector</span>(<span class="ident">connector</span>).<span class="ident">finish</span>()
     };
 
     <span class="ident">TestServer</span> {
@@ -763,14 +763,14 @@
 <span class="kw">enum</span> <span class="ident">StreamType</span> {
     <span class="ident">Tcp</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;openssl&quot;</span>)]</span>
-    <span class="ident">Openssl</span>(<span class="ident">openssl</span>::<span class="ident">ssl</span>::<span class="ident">SslAcceptor</span>),
+    <span class="ident">Openssl</span>(<span class="ident">openssl::ssl::SslAcceptor</span>),
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustls&quot;</span>)]</span>
-    <span class="ident">Rustls</span>(<span class="ident">rustls</span>::<span class="ident">ServerConfig</span>),
+    <span class="ident">Rustls</span>(<span class="ident">rustls::ServerConfig</span>),
 }
 
 <span class="doccomment">/// Create default test server config.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">config</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestServerConfig</span> {
-    <span class="ident">TestServerConfig</span>::<span class="ident">default</span>()
+    <span class="ident">TestServerConfig::default</span>()
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
@@ -782,7 +782,7 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">TestServerConfig</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">TestServerConfig</span>::<span class="ident">new</span>()
+        <span class="ident">TestServerConfig::new</span>()
     }
 }
 
@@ -790,35 +790,35 @@
     <span class="doccomment">/// Create default server configuration</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestServerConfig</span> {
         <span class="ident">TestServerConfig</span> {
-            <span class="ident">tp</span>: <span class="ident">HttpVer</span>::<span class="ident">Both</span>,
-            <span class="ident">stream</span>: <span class="ident">StreamType</span>::<span class="ident">Tcp</span>,
+            <span class="ident">tp</span>: <span class="ident">HttpVer::Both</span>,
+            <span class="ident">stream</span>: <span class="ident">StreamType::Tcp</span>,
             <span class="ident">client_timeout</span>: <span class="number">5000</span>,
         }
     }
 
     <span class="doccomment">/// Accept HTTP/1.1 only.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">h1</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">tp</span> <span class="op">=</span> <span class="ident">HttpVer</span>::<span class="ident">Http1</span>;
+        <span class="self">self</span>.<span class="ident">tp</span> <span class="op">=</span> <span class="ident">HttpVer::Http1</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Accept HTTP/2 only.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">h2</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">tp</span> <span class="op">=</span> <span class="ident">HttpVer</span>::<span class="ident">Http2</span>;
+        <span class="self">self</span>.<span class="ident">tp</span> <span class="op">=</span> <span class="ident">HttpVer::Http2</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Accept secure connections via OpenSSL.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;openssl&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">openssl</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">acceptor</span>: <span class="ident">openssl</span>::<span class="ident">ssl</span>::<span class="ident">SslAcceptor</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">stream</span> <span class="op">=</span> <span class="ident">StreamType</span>::<span class="ident">Openssl</span>(<span class="ident">acceptor</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">openssl</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">acceptor</span>: <span class="ident">openssl::ssl::SslAcceptor</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">stream</span> <span class="op">=</span> <span class="ident">StreamType::Openssl</span>(<span class="ident">acceptor</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Accept secure connections via Rustls.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rustls&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rustls</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">config</span>: <span class="ident">rustls</span>::<span class="ident">ServerConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">stream</span> <span class="op">=</span> <span class="ident">StreamType</span>::<span class="ident">Rustls</span>(<span class="ident">config</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rustls</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">config</span>: <span class="ident">rustls::ServerConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">stream</span> <span class="op">=</span> <span class="ident">StreamType::Rustls</span>(<span class="ident">config</span>);
         <span class="self">self</span>
     }
 
@@ -834,16 +834,16 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// See [`start`] for usage example.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TestServer</span> {
-    <span class="ident">addr</span>: <span class="ident">net</span>::<span class="ident">SocketAddr</span>,
-    <span class="ident">client</span>: <span class="ident">awc</span>::<span class="ident">Client</span>,
-    <span class="ident">system</span>: <span class="ident">rt</span>::<span class="ident">System</span>,
+    <span class="ident">addr</span>: <span class="ident">net::SocketAddr</span>,
+    <span class="ident">client</span>: <span class="ident">awc::Client</span>,
+    <span class="ident">system</span>: <span class="ident">rt::System</span>,
     <span class="ident">tls</span>: <span class="ident">bool</span>,
     <span class="ident">server</span>: <span class="ident">Server</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TestServer</span> {
     <span class="doccomment">/// Construct test server url</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">net</span>::<span class="ident">SocketAddr</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">net::SocketAddr</span> {
         <span class="self">self</span>.<span class="ident">addr</span>
     }
 
@@ -852,9 +852,9 @@
         <span class="kw">let</span> <span class="ident">scheme</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">tls</span> { <span class="string">&quot;https&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;http&quot;</span> };
 
         <span class="kw">if</span> <span class="ident">uri</span>.<span class="ident">starts_with</span>(<span class="string">&#39;/&#39;</span>) {
-            <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}://localhost:{}{}&quot;</span>, <span class="ident">scheme</span>, <span class="self">self</span>.<span class="ident">addr</span>.<span class="ident">port</span>(), <span class="ident">uri</span>)
+            <span class="macro">format!</span>(<span class="string">&quot;{}://localhost:{}{}&quot;</span>, <span class="ident">scheme</span>, <span class="self">self</span>.<span class="ident">addr</span>.<span class="ident">port</span>(), <span class="ident">uri</span>)
         } <span class="kw">else</span> {
-            <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}://localhost:{}/{}&quot;</span>, <span class="ident">scheme</span>, <span class="self">self</span>.<span class="ident">addr</span>.<span class="ident">port</span>(), <span class="ident">uri</span>)
+            <span class="macro">format!</span>(<span class="string">&quot;{}://localhost:{}/{}&quot;</span>, <span class="ident">scheme</span>, <span class="self">self</span>.<span class="ident">addr</span>.<span class="ident">port</span>(), <span class="ident">uri</span>)
         }
     }
 
@@ -901,9 +901,9 @@
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">load_body</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="kw-2">mut</span> <span class="ident">response</span>: <span class="ident">ClientResponse</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">web</span>::<span class="ident">Bytes</span>, <span class="ident">PayloadError</span><span class="op">&gt;</span>
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">web::Bytes</span>, <span class="ident">PayloadError</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">S</span>: <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">web</span>::<span class="ident">Bytes</span>, <span class="ident">PayloadError</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">S</span>: <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">web::Bytes</span>, <span class="ident">PayloadError</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
         <span class="ident">response</span>.<span class="ident">body</span>().<span class="ident">limit</span>(<span class="number">10_485_760</span>).<span class="kw">await</span>
     }
@@ -912,7 +912,7 @@
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">ws_at</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Framed</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span>, <span class="ident">ws</span>::<span class="ident">Codec</span><span class="op">&gt;</span>, <span class="ident">awc</span>::<span class="ident">error</span>::<span class="ident">WsClientError</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Framed</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span>, <span class="ident">ws::Codec</span><span class="op">&gt;</span>, <span class="ident">awc::error::WsClientError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">url</span>(<span class="ident">path</span>);
         <span class="kw">let</span> <span class="ident">connect</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">client</span>.<span class="ident">ws</span>(<span class="ident">url</span>).<span class="ident">connect</span>();
         <span class="ident">connect</span>.<span class="kw">await</span>.<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">framed</span>)<span class="op">|</span> <span class="ident">framed</span>)
@@ -921,7 +921,7 @@
     <span class="doccomment">/// Connect to a WebSocket server.</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">ws</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Framed</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span>, <span class="ident">ws</span>::<span class="ident">Codec</span><span class="op">&gt;</span>, <span class="ident">awc</span>::<span class="ident">error</span>::<span class="ident">WsClientError</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Framed</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span>, <span class="ident">ws::Codec</span><span class="op">&gt;</span>, <span class="ident">awc::error::WsClientError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">ws_at</span>(<span class="string">&quot;/&quot;</span>).<span class="kw">await</span>
     }
 
@@ -937,7 +937,7 @@
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">stop</span>(<span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">server</span>.<span class="ident">stop</span>(<span class="bool-val">true</span>).<span class="kw">await</span>;
         <span class="self">self</span>.<span class="ident">system</span>.<span class="ident">stop</span>();
-        <span class="ident">rt</span>::<span class="ident">time</span>::<span class="ident">sleep</span>(<span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">100</span>)).<span class="kw">await</span>;
+        <span class="ident">rt::time::sleep</span>(<span class="ident">time::Duration::from_millis</span>(<span class="number">100</span>)).<span class="kw">await</span>;
     }
 }
 

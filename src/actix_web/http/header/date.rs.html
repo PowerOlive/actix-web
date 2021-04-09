@@ -45,9 +45,9 @@
 <span id="44">44</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">HttpDate</span>, <span class="ident">DATE</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">SystemTime</span>;
+<span class="kw">use</span> <span class="ident">std::time::SystemTime</span>;
 
-<span class="kw">crate</span>::<span class="macro">header</span><span class="macro">!</span> {
+<span class="kw">crate</span><span class="macro">::header!</span> {
     <span class="doccomment">/// `Date` header, defined in [RFC7231](http://tools.ietf.org/html/rfc7231#section-7.1.1.2)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The `Date` header field represents the date and time at which the</span>
@@ -78,14 +78,14 @@
     (<span class="ident">Date</span>, <span class="ident">DATE</span>) <span class="op">=</span><span class="op">&gt;</span> [<span class="ident">HttpDate</span>]
 
     <span class="ident">test_date</span> {
-        <span class="macro">test_header</span><span class="macro">!</span>(<span class="ident">test1</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">b&quot;Tue, 15 Nov 1994 08:12:31 GMT&quot;</span>]);
+        <span class="macro">test_header!</span>(<span class="ident">test1</span>, <span class="macro">vec!</span>[<span class="string">b&quot;Tue, 15 Nov 1994 08:12:31 GMT&quot;</span>]);
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Date</span> {
     <span class="doccomment">/// Create a date instance set to the current system time</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">now</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Date</span> {
-        <span class="ident">Date</span>(<span class="ident">SystemTime</span>::<span class="ident">now</span>().<span class="ident">into</span>())
+        <span class="ident">Date</span>(<span class="ident">SystemTime::now</span>().<span class="ident">into</span>())
     }
 }
 </pre></div>

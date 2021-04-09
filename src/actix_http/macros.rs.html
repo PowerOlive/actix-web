@@ -97,7 +97,7 @@
 <span id="96">96</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">downcast_get_type_id</span> {
+<span class="macro">macro_rules!</span> <span class="ident">downcast_get_type_id</span> {
     () <span class="op">=</span><span class="op">&gt;</span> {
         <span class="doccomment">/// A helper method to get the type ID of the type</span>
         <span class="doccomment">/// this trait is implemented on.</span>
@@ -113,18 +113,18 @@
         <span class="doccomment">/// this module. This ensures that safe code cannot violate</span>
         <span class="doccomment">/// type-safety by implementing this method.</span>
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-        <span class="kw">fn</span> <span class="ident">__private_get_type_id__</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">std</span>::<span class="ident">any</span>::<span class="ident">TypeId</span>, <span class="ident">PrivateHelper</span>)
+        <span class="kw">fn</span> <span class="ident">__private_get_type_id__</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">std::any::TypeId</span>, <span class="ident">PrivateHelper</span>)
         <span class="kw">where</span>
             <span class="self">Self</span>: <span class="lifetime">&#39;static</span>,
         {
-            (<span class="ident">std</span>::<span class="ident">any</span>::<span class="ident">TypeId</span>::<span class="ident">of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>(), <span class="ident">PrivateHelper</span>(()))
+            (<span class="ident">std::any::TypeId::of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>(), <span class="ident">PrivateHelper</span>(()))
         }
     };
 }
 
 <span class="comment">//Generate implementation for dyn $name</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">downcast</span> {
+<span class="macro">macro_rules!</span> <span class="ident">downcast</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="doccomment">/// A struct with a private constructor, for use with</span>
         <span class="doccomment">/// `__private_get_type_id__`. Its single field is private,</span>
@@ -135,7 +135,7 @@
         <span class="kw">impl</span> <span class="kw">dyn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> {
             <span class="doccomment">/// Downcasts generic body to a specific type.</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downcast_ref</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">__private_get_type_id__</span>().<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">std</span>::<span class="ident">any</span>::<span class="ident">TypeId</span>::<span class="ident">of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
+                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">__private_get_type_id__</span>().<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">std::any::TypeId::of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
                     <span class="comment">// SAFETY: external crates cannot override the default</span>
                     <span class="comment">// implementation of `__private_get_type_id__`, since</span>
                     <span class="comment">// it requires returning a private type. We can therefore</span>
@@ -149,7 +149,7 @@
 
             <span class="doccomment">/// Downcasts a generic body to a mutable specific type.</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downcast_mut</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">__private_get_type_id__</span>().<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">std</span>::<span class="ident">any</span>::<span class="ident">TypeId</span>::<span class="ident">of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
+                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">__private_get_type_id__</span>().<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">std::any::TypeId::of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
                     <span class="comment">// SAFETY: external crates cannot override the default</span>
                     <span class="comment">// implementation of `__private_get_type_id__`, since</span>
                     <span class="comment">// it requires returning a private type. We can therefore</span>
@@ -170,26 +170,26 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
 
     <span class="kw">trait</span> <span class="ident">MB</span> {
-        <span class="macro">downcast_get_type_id</span><span class="macro">!</span>();
+        <span class="macro">downcast_get_type_id!</span>();
     }
 
-    <span class="macro">downcast</span><span class="macro">!</span>(<span class="ident">MB</span>);
+    <span class="macro">downcast!</span>(<span class="ident">MB</span>);
 
     <span class="kw">impl</span> <span class="ident">MB</span> <span class="kw">for</span> <span class="ident">String</span> {}
     <span class="kw">impl</span> <span class="ident">MB</span> <span class="kw">for</span> () {}
 
-    <span class="attribute">#[<span class="ident">actix_rt</span>::<span class="ident">test</span>]</span>
+    <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_any_casting</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;hello cast&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">&quot;hello cast&quot;</span>);
         <span class="kw">let</span> <span class="ident">resp_body</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">MB</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">body</span>;
         <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">resp_body</span>.<span class="ident">downcast_ref</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">body</span>, <span class="string">&quot;hello cast&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">body</span>, <span class="string">&quot;hello cast&quot;</span>);
         <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">resp_body</span>.<span class="ident">downcast_mut</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
         <span class="ident">body</span>.<span class="ident">push</span>(<span class="string">&#39;!&#39;</span>);
         <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">resp_body</span>.<span class="ident">downcast_ref</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">body</span>, <span class="string">&quot;hello cast!&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">body</span>, <span class="string">&quot;hello cast!&quot;</span>);
         <span class="kw">let</span> <span class="ident">not_body</span> <span class="op">=</span> <span class="ident">resp_body</span>.<span class="ident">downcast_ref</span>::<span class="op">&lt;</span>()<span class="op">&gt;</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">not_body</span>.<span class="ident">is_none</span>());
+        <span class="macro">assert!</span>(<span class="ident">not_body</span>.<span class="ident">is_none</span>());
     }
 }
 </pre></div>

@@ -526,10 +526,10 @@
 <span class="doccomment">//! }</span>
 <span class="doccomment">//! ```</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span>;
+<span class="kw">use</span> <span class="ident">std::convert::TryFrom</span>;
 
-<span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">http</span>::{<span class="self">self</span>, <span class="ident">header</span>, <span class="ident">uri</span>::<span class="ident">Uri</span>};
-<span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">RequestHead</span>;
+<span class="kw">use</span> <span class="ident">actix_http::http</span>::{<span class="self">self</span>, <span class="ident">header</span>, <span class="ident">uri::Uri</span>};
+<span class="kw">use</span> <span class="ident">actix_http::RequestHead</span>;
 
 <span class="doccomment">/// Trait defines resource guards. Guards are used for route selection.</span>
 <span class="doccomment">///</span>
@@ -598,7 +598,7 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Any</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Guard</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="ident">guard</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AnyGuard</span> {
-    <span class="ident">AnyGuard</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">guard</span>)])
+    <span class="ident">AnyGuard</span>(<span class="macro">vec!</span>[<span class="ident">Box::new</span>(<span class="ident">guard</span>)])
 }
 
 <span class="doccomment">/// Matches any of supplied guards.</span>
@@ -607,7 +607,7 @@
 <span class="kw">impl</span> <span class="ident">AnyGuard</span> {
     <span class="doccomment">/// Add guard to a list of guards to check</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">or</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Guard</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">guard</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">push</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">guard</span>));
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">guard</span>));
         <span class="self">self</span>
     }
 }
@@ -638,7 +638,7 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">All</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Guard</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="ident">guard</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AllGuard</span> {
-    <span class="ident">AllGuard</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">guard</span>)])
+    <span class="ident">AllGuard</span>(<span class="macro">vec!</span>[<span class="ident">Box::new</span>(<span class="ident">guard</span>)])
 }
 
 <span class="doccomment">/// Matches if all of supplied guards.</span>
@@ -647,7 +647,7 @@
 <span class="kw">impl</span> <span class="ident">AllGuard</span> {
     <span class="doccomment">/// Add new guard to the list of guards to check</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">and</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Guard</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">guard</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">push</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">guard</span>));
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">guard</span>));
         <span class="self">self</span>
     }
 }
@@ -665,7 +665,7 @@
 
 <span class="doccomment">/// Return guard that matches if supplied guard does not match.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Not</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Guard</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="ident">guard</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NotGuard</span> {
-    <span class="ident">NotGuard</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">guard</span>))
+    <span class="ident">NotGuard</span>(<span class="ident">Box::new</span>(<span class="ident">guard</span>))
 }
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -679,7 +679,7 @@
 
 <span class="doccomment">/// HTTP method guard.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MethodGuard</span>(<span class="ident">http</span>::<span class="ident">Method</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MethodGuard</span>(<span class="ident">http::Method</span>);
 
 <span class="kw">impl</span> <span class="ident">Guard</span> <span class="kw">for</span> <span class="ident">MethodGuard</span> {
     <span class="kw">fn</span> <span class="ident">check</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">RequestHead</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
@@ -689,51 +689,51 @@
 
 <span class="doccomment">/// Guard to match *GET* HTTP method.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Get</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MethodGuard</span> {
-    <span class="ident">MethodGuard</span>(<span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">GET</span>)
+    <span class="ident">MethodGuard</span>(<span class="ident">http::Method::GET</span>)
 }
 
 <span class="doccomment">/// Predicate to match *POST* HTTP method.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Post</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MethodGuard</span> {
-    <span class="ident">MethodGuard</span>(<span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">POST</span>)
+    <span class="ident">MethodGuard</span>(<span class="ident">http::Method::POST</span>)
 }
 
 <span class="doccomment">/// Predicate to match *PUT* HTTP method.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Put</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MethodGuard</span> {
-    <span class="ident">MethodGuard</span>(<span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">PUT</span>)
+    <span class="ident">MethodGuard</span>(<span class="ident">http::Method::PUT</span>)
 }
 
 <span class="doccomment">/// Predicate to match *DELETE* HTTP method.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Delete</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MethodGuard</span> {
-    <span class="ident">MethodGuard</span>(<span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">DELETE</span>)
+    <span class="ident">MethodGuard</span>(<span class="ident">http::Method::DELETE</span>)
 }
 
 <span class="doccomment">/// Predicate to match *HEAD* HTTP method.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Head</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MethodGuard</span> {
-    <span class="ident">MethodGuard</span>(<span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">HEAD</span>)
+    <span class="ident">MethodGuard</span>(<span class="ident">http::Method::HEAD</span>)
 }
 
 <span class="doccomment">/// Predicate to match *OPTIONS* HTTP method.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Options</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MethodGuard</span> {
-    <span class="ident">MethodGuard</span>(<span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">OPTIONS</span>)
+    <span class="ident">MethodGuard</span>(<span class="ident">http::Method::OPTIONS</span>)
 }
 
 <span class="doccomment">/// Predicate to match *CONNECT* HTTP method.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Connect</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MethodGuard</span> {
-    <span class="ident">MethodGuard</span>(<span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">CONNECT</span>)
+    <span class="ident">MethodGuard</span>(<span class="ident">http::Method::CONNECT</span>)
 }
 
 <span class="doccomment">/// Predicate to match *PATCH* HTTP method.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Patch</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MethodGuard</span> {
-    <span class="ident">MethodGuard</span>(<span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">PATCH</span>)
+    <span class="ident">MethodGuard</span>(<span class="ident">http::Method::PATCH</span>)
 }
 
 <span class="doccomment">/// Predicate to match *TRACE* HTTP method.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Trace</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MethodGuard</span> {
-    <span class="ident">MethodGuard</span>(<span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">TRACE</span>)
+    <span class="ident">MethodGuard</span>(<span class="ident">http::Method::TRACE</span>)
 }
 
 <span class="doccomment">/// Predicate to match specified HTTP method.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Method</span>(<span class="ident">method</span>: <span class="ident">http</span>::<span class="ident">Method</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MethodGuard</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Method</span>(<span class="ident">method</span>: <span class="ident">http::Method</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MethodGuard</span> {
     <span class="ident">MethodGuard</span>(<span class="ident">method</span>)
 }
 
@@ -741,13 +741,13 @@
 <span class="doccomment">/// value.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">Header</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HeaderGuard</span> {
     <span class="ident">HeaderGuard</span>(
-        <span class="ident">header</span>::<span class="ident">HeaderName</span>::<span class="ident">try_from</span>(<span class="ident">name</span>).<span class="ident">unwrap</span>(),
-        <span class="ident">header</span>::<span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="ident">value</span>),
+        <span class="ident">header::HeaderName::try_from</span>(<span class="ident">name</span>).<span class="ident">unwrap</span>(),
+        <span class="ident">header::HeaderValue::from_static</span>(<span class="ident">value</span>),
     )
 }
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HeaderGuard</span>(<span class="ident">header</span>::<span class="ident">HeaderName</span>, <span class="ident">header</span>::<span class="ident">HeaderValue</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HeaderGuard</span>(<span class="ident">header::HeaderName</span>, <span class="ident">header::HeaderValue</span>);
 
 <span class="kw">impl</span> <span class="ident">Guard</span> <span class="kw">for</span> <span class="ident">HeaderGuard</span> {
     <span class="kw">fn</span> <span class="ident">check</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">RequestHead</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
@@ -776,12 +776,12 @@
 }
 
 <span class="kw">fn</span> <span class="ident">get_host_uri</span>(<span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">RequestHead</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Uri</span><span class="op">&gt;</span> {
-    <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
+    <span class="kw">use</span> <span class="ident">core::str::FromStr</span>;
     <span class="ident">req</span>.<span class="ident">headers</span>
-        .<span class="ident">get</span>(<span class="ident">header</span>::<span class="ident">HOST</span>)
+        .<span class="ident">get</span>(<span class="ident">header::HOST</span>)
         .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">host_value</span><span class="op">|</span> <span class="ident">host_value</span>.<span class="ident">to_str</span>().<span class="ident">ok</span>())
         .<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">req</span>.<span class="ident">uri</span>.<span class="ident">host</span>())
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">host</span>: <span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">|</span> <span class="ident">Uri</span>::<span class="ident">from_str</span>(<span class="ident">host</span>).<span class="ident">ok</span>())
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">host</span>: <span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">|</span> <span class="ident">Uri::from_str</span>(<span class="ident">host</span>).<span class="ident">ok</span>())
         .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">host_success</span><span class="op">|</span> <span class="ident">host_success</span>)
 }
 
@@ -824,178 +824,178 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">actix_http</span>::<span class="ident">http</span>::{<span class="ident">header</span>, <span class="ident">Method</span>};
+    <span class="kw">use</span> <span class="ident">actix_http::http</span>::{<span class="ident">header</span>, <span class="ident">Method</span>};
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">test</span>::<span class="ident">TestRequest</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::test::TestRequest</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_header</span>() {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
-            .<span class="ident">insert_header</span>((<span class="ident">header</span>::<span class="ident">TRANSFER_ENCODING</span>, <span class="string">&quot;chunked&quot;</span>))
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
+            .<span class="ident">insert_header</span>((<span class="ident">header::TRANSFER_ENCODING</span>, <span class="string">&quot;chunked&quot;</span>))
             .<span class="ident">to_http_request</span>();
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Header</span>(<span class="string">&quot;transfer-encoding&quot;</span>, <span class="string">&quot;chunked&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Header</span>(<span class="string">&quot;transfer-encoding&quot;</span>, <span class="string">&quot;other&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Header</span>(<span class="string">&quot;content-type&quot;</span>, <span class="string">&quot;other&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_host</span>() {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
             .<span class="ident">insert_header</span>((
-                <span class="ident">header</span>::<span class="ident">HOST</span>,
-                <span class="ident">header</span>::<span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;www.rust-lang.org&quot;</span>),
+                <span class="ident">header::HOST</span>,
+                <span class="ident">header::HeaderValue::from_static</span>(<span class="string">&quot;www.rust-lang.org&quot;</span>),
             ))
             .<span class="ident">to_http_request</span>();
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;www.rust-lang.org&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;www.rust-lang.org&quot;</span>).<span class="ident">scheme</span>(<span class="string">&quot;https&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;blog.rust-lang.org&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;blog.rust-lang.org&quot;</span>).<span class="ident">scheme</span>(<span class="string">&quot;https&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;crates.io&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;localhost&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_host_scheme</span>() {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
             .<span class="ident">insert_header</span>((
-                <span class="ident">header</span>::<span class="ident">HOST</span>,
-                <span class="ident">header</span>::<span class="ident">HeaderValue</span>::<span class="ident">from_static</span>(<span class="string">&quot;https://www.rust-lang.org&quot;</span>),
+                <span class="ident">header::HOST</span>,
+                <span class="ident">header::HeaderValue::from_static</span>(<span class="string">&quot;https://www.rust-lang.org&quot;</span>),
             ))
             .<span class="ident">to_http_request</span>();
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;www.rust-lang.org&quot;</span>).<span class="ident">scheme</span>(<span class="string">&quot;https&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;www.rust-lang.org&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;www.rust-lang.org&quot;</span>).<span class="ident">scheme</span>(<span class="string">&quot;http&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;blog.rust-lang.org&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;blog.rust-lang.org&quot;</span>).<span class="ident">scheme</span>(<span class="string">&quot;https&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;crates.io&quot;</span>).<span class="ident">scheme</span>(<span class="string">&quot;https&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;localhost&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_host_without_header</span>() {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
             .<span class="ident">uri</span>(<span class="string">&quot;www.rust-lang.org&quot;</span>)
             .<span class="ident">to_http_request</span>();
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;www.rust-lang.org&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;www.rust-lang.org&quot;</span>).<span class="ident">scheme</span>(<span class="string">&quot;https&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;blog.rust-lang.org&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;blog.rust-lang.org&quot;</span>).<span class="ident">scheme</span>(<span class="string">&quot;https&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;crates.io&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
         <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="ident">Host</span>(<span class="string">&quot;localhost&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">pred</span>.<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_methods</span>() {
-        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>().<span class="ident">to_http_request</span>();
-        <span class="kw">let</span> <span class="ident">req2</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
-            .<span class="ident">method</span>(<span class="ident">Method</span>::<span class="ident">POST</span>)
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>().<span class="ident">to_http_request</span>();
+        <span class="kw">let</span> <span class="ident">req2</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
+            .<span class="ident">method</span>(<span class="ident">Method::POST</span>)
             .<span class="ident">to_http_request</span>();
 
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Get</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">Get</span>().<span class="ident">check</span>(<span class="ident">req2</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Post</span>().<span class="ident">check</span>(<span class="ident">req2</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">Post</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">Get</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Get</span>().<span class="ident">check</span>(<span class="ident">req2</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">Post</span>().<span class="ident">check</span>(<span class="ident">req2</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Post</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>().<span class="ident">method</span>(<span class="ident">Method</span>::<span class="ident">PUT</span>).<span class="ident">to_http_request</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Put</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">Put</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>().<span class="ident">method</span>(<span class="ident">Method::PUT</span>).<span class="ident">to_http_request</span>();
+        <span class="macro">assert!</span>(<span class="ident">Put</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Put</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
-            .<span class="ident">method</span>(<span class="ident">Method</span>::<span class="ident">DELETE</span>)
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
+            .<span class="ident">method</span>(<span class="ident">Method::DELETE</span>)
             .<span class="ident">to_http_request</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Delete</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">Delete</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">Delete</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Delete</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
-            .<span class="ident">method</span>(<span class="ident">Method</span>::<span class="ident">HEAD</span>)
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
+            .<span class="ident">method</span>(<span class="ident">Method::HEAD</span>)
             .<span class="ident">to_http_request</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Head</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">Head</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">Head</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Head</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
-            .<span class="ident">method</span>(<span class="ident">Method</span>::<span class="ident">OPTIONS</span>)
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
+            .<span class="ident">method</span>(<span class="ident">Method::OPTIONS</span>)
             .<span class="ident">to_http_request</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Options</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">Options</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">Options</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Options</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
-            .<span class="ident">method</span>(<span class="ident">Method</span>::<span class="ident">CONNECT</span>)
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
+            .<span class="ident">method</span>(<span class="ident">Method::CONNECT</span>)
             .<span class="ident">to_http_request</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Connect</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">Connect</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">Connect</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Connect</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
-            .<span class="ident">method</span>(<span class="ident">Method</span>::<span class="ident">PATCH</span>)
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
+            .<span class="ident">method</span>(<span class="ident">Method::PATCH</span>)
             .<span class="ident">to_http_request</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Patch</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">Patch</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">Patch</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Patch</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
 
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
-            .<span class="ident">method</span>(<span class="ident">Method</span>::<span class="ident">TRACE</span>)
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
+            .<span class="ident">method</span>(<span class="ident">Method::TRACE</span>)
             .<span class="ident">to_http_request</span>();
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Trace</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">Trace</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">Trace</span>().<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Trace</span>().<span class="ident">check</span>(<span class="ident">req</span>.<span class="ident">head</span>()));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_preds</span>() {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest</span>::<span class="ident">default</span>()
-            .<span class="ident">method</span>(<span class="ident">Method</span>::<span class="ident">TRACE</span>)
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">TestRequest::default</span>()
+            .<span class="ident">method</span>(<span class="ident">Method::TRACE</span>)
             .<span class="ident">to_http_request</span>();
 
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Not</span>(<span class="ident">Get</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">Not</span>(<span class="ident">Trace</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">Not</span>(<span class="ident">Get</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Not</span>(<span class="ident">Trace</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
 
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">All</span>(<span class="ident">Trace</span>()).<span class="ident">and</span>(<span class="ident">Trace</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">All</span>(<span class="ident">Get</span>()).<span class="ident">and</span>(<span class="ident">Trace</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">All</span>(<span class="ident">Trace</span>()).<span class="ident">and</span>(<span class="ident">Trace</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">All</span>(<span class="ident">Get</span>()).<span class="ident">and</span>(<span class="ident">Trace</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
 
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">Any</span>(<span class="ident">Get</span>()).<span class="ident">or</span>(<span class="ident">Trace</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">Any</span>(<span class="ident">Get</span>()).<span class="ident">or</span>(<span class="ident">Get</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="ident">Any</span>(<span class="ident">Get</span>()).<span class="ident">or</span>(<span class="ident">Trace</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Any</span>(<span class="ident">Get</span>()).<span class="ident">or</span>(<span class="ident">Get</span>()).<span class="ident">check</span>(<span class="ident">r</span>.<span class="ident">head</span>()));
     }
 }
 </pre></div>
