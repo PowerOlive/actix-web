@@ -967,6 +967,17 @@
 <span id="966">966</span>
 <span id="967">967</span>
 <span id="968">968</span>
+<span id="969">969</span>
+<span id="970">970</span>
+<span id="971">971</span>
+<span id="972">972</span>
+<span id="973">973</span>
+<span id="974">974</span>
+<span id="975">975</span>
+<span id="976">976</span>
+<span id="977">977</span>
+<span id="978">978</span>
+<span id="979">979</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">cell</span>::{<span class="ident">Ref</span>, <span class="ident">RefMut</span>},
@@ -994,7 +1005,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">cookie</span>::{<span class="ident">Cookie</span>, <span class="ident">CookieJar</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error::Error</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>::{<span class="ident">Error</span>, <span class="ident">JsonPayloadError</span>};
 
 <span class="doccomment">/// An HTTP Response</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span> <span class="op">=</span> <span class="ident">Body</span><span class="op">&gt;</span> {
@@ -1355,7 +1366,10 @@
     }
 
     <span class="doccomment">/// Replaced with [`Self::insert_header()`].</span>
-    <span class="attribute">#[<span class="ident">deprecated</span> <span class="op">=</span> <span class="string">&quot;Replaced with `insert_header((key, value))`.&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;4.0.0&quot;</span>,
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Replaced with `insert_header((key, value))`. Will be removed in v5.&quot;</span>
+    )]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_header</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>, <span class="ident">value</span>: <span class="ident">V</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">K</span>: <span class="ident">TryInto</span><span class="op">&lt;</span><span class="ident">HeaderName</span><span class="op">&gt;</span>,
@@ -1376,7 +1390,10 @@
     }
 
     <span class="doccomment">/// Replaced with [`Self::append_header()`].</span>
-    <span class="attribute">#[<span class="ident">deprecated</span> <span class="op">=</span> <span class="string">&quot;Replaced with `append_header((key, value))`.&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(
+        <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;4.0.0&quot;</span>,
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;Replaced with `append_header((key, value))`. Will be removed in v5.&quot;</span>
+    )]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">header</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>, <span class="ident">value</span>: <span class="ident">V</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">K</span>: <span class="ident">TryInto</span><span class="op">&lt;</span><span class="ident">HeaderName</span><span class="op">&gt;</span>,
@@ -1542,7 +1559,7 @@
 
     <span class="doccomment">/// Set a body and generate `Response`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// `ResponseBuilder` can not be used after this call.</span>
+    <span class="doccomment">/// `HttpResponseBuilder` can not be used after this call.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">body</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">body</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span> {
         <span class="self">self</span>.<span class="ident">message_body</span>(<span class="ident">body</span>.<span class="ident">into</span>())
@@ -1550,7 +1567,7 @@
 
     <span class="doccomment">/// Set a body and generate `Response`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// `ResponseBuilder` can not be used after this call.</span>
+    <span class="doccomment">/// `HttpResponseBuilder` can not be used after this call.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">message_body</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">body</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">err</span>.<span class="ident">take</span>() {
             <span class="kw">return</span> <span class="ident">HttpResponse::from_error</span>(<span class="ident">Error::from</span>(<span class="ident">err</span>)).<span class="ident">into_body</span>();
@@ -1578,7 +1595,7 @@
 
     <span class="doccomment">/// Set a streaming body and generate `Response`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// `ResponseBuilder` can not be used after this call.</span>
+    <span class="doccomment">/// `HttpResponseBuilder` can not be used after this call.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">streaming</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">stream</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span>
     <span class="kw">where</span>
@@ -1590,7 +1607,7 @@
 
     <span class="doccomment">/// Set a json body and generate `Response`</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// `ResponseBuilder` can not be used after this call.</span>
+    <span class="doccomment">/// `HttpResponseBuilder` can not be used after this call.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">json</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="kw">impl</span> <span class="ident">Serialize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span> {
         <span class="kw">match</span> <span class="ident">serde_json::to_string</span>(<span class="kw-2">&amp;</span><span class="ident">value</span>) {
             <span class="prelude-val">Ok</span>(<span class="ident">body</span>) <span class="op">=</span><span class="op">&gt;</span> {
@@ -1606,19 +1623,19 @@
 
                 <span class="self">self</span>.<span class="ident">body</span>(<span class="ident">Body::from</span>(<span class="ident">body</span>))
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HttpResponse::from_error</span>(<span class="ident">Error::from</span>(<span class="ident">e</span>)),
+            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">HttpResponse::from_error</span>(<span class="ident">JsonPayloadError::Serialize</span>(<span class="ident">err</span>).<span class="ident">into</span>()),
         }
     }
 
     <span class="doccomment">/// Set an empty body and generate `Response`</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// `ResponseBuilder` can not be used after this call.</span>
+    <span class="doccomment">/// `HttpResponseBuilder` can not be used after this call.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HttpResponse</span> {
         <span class="self">self</span>.<span class="ident">body</span>(<span class="ident">Body::Empty</span>)
     }
 
-    <span class="doccomment">/// This method construct new `ResponseBuilder`</span>
+    <span class="doccomment">/// This method construct new `HttpResponseBuilder`</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">head</span>: <span class="self">self</span>.<span class="ident">head</span>.<span class="ident">take</span>(),
@@ -1784,32 +1801,33 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="ident">bytes</span>::{<span class="ident">Bytes</span>, <span class="ident">BytesMut</span>};
-    <span class="kw">use</span> <span class="ident">serde_json::json</span>;
 
-    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">HttpResponse</span> <span class="kw">as</span> <span class="ident">Response</span>, <span class="ident">HttpResponseBuilder</span> <span class="kw">as</span> <span class="ident">ResponseBuilder</span>};
+    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">HttpResponse</span>, <span class="ident">HttpResponseBuilder</span>};
     <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dev</span>::{<span class="ident">Body</span>, <span class="ident">MessageBody</span>, <span class="ident">ResponseBody</span>};
     <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::http::header</span>::{<span class="self">self</span>, <span class="ident">HeaderValue</span>, <span class="ident">CONTENT_TYPE</span>, <span class="ident">COOKIE</span>};
     <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::http::StatusCode</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_debug</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">Response::Ok</span>()
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HttpResponse::Ok</span>()
             .<span class="ident">append_header</span>((<span class="ident">COOKIE</span>, <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;cookie1=value1; &quot;</span>)))
             .<span class="ident">append_header</span>((<span class="ident">COOKIE</span>, <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;cookie2=value2; &quot;</span>)))
             .<span class="ident">finish</span>();
         <span class="kw">let</span> <span class="ident">dbg</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">resp</span>);
-        <span class="macro">assert!</span>(<span class="ident">dbg</span>.<span class="ident">contains</span>(<span class="string">&quot;Response&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">dbg</span>.<span class="ident">contains</span>(<span class="string">&quot;HttpResponse&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_basic_builder</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">Response::Ok</span>().<span class="ident">insert_header</span>((<span class="string">&quot;X-TEST&quot;</span>, <span class="string">&quot;value&quot;</span>)).<span class="ident">finish</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HttpResponse::Ok</span>()
+            .<span class="ident">insert_header</span>((<span class="string">&quot;X-TEST&quot;</span>, <span class="string">&quot;value&quot;</span>))
+            .<span class="ident">finish</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::OK</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_upgrade</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">ResponseBuilder::new</span>(<span class="ident">StatusCode::OK</span>)
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HttpResponseBuilder::new</span>(<span class="ident">StatusCode::OK</span>)
             .<span class="ident">upgrade</span>(<span class="string">&quot;websocket&quot;</span>)
             .<span class="ident">finish</span>();
         <span class="macro">assert!</span>(<span class="ident">resp</span>.<span class="ident">upgrade</span>());
@@ -1821,13 +1839,15 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_force_close</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">ResponseBuilder::new</span>(<span class="ident">StatusCode::OK</span>).<span class="ident">force_close</span>().<span class="ident">finish</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HttpResponseBuilder::new</span>(<span class="ident">StatusCode::OK</span>)
+            .<span class="ident">force_close</span>()
+            .<span class="ident">finish</span>();
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">resp</span>.<span class="ident">keep_alive</span>())
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_content_type</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">ResponseBuilder::new</span>(<span class="ident">StatusCode::OK</span>)
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HttpResponseBuilder::new</span>(<span class="ident">StatusCode::OK</span>)
             .<span class="ident">content_type</span>(<span class="string">&quot;text/plain&quot;</span>)
             .<span class="ident">body</span>(<span class="ident">Body::Empty</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">headers</span>().<span class="ident">get</span>(<span class="ident">CONTENT_TYPE</span>).<span class="ident">unwrap</span>(), <span class="string">&quot;text/plain&quot;</span>)
@@ -1848,7 +1868,7 @@
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_json</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">Response::Ok</span>().<span class="ident">json</span>(<span class="macro">vec!</span>[<span class="string">&quot;v1&quot;</span>, <span class="string">&quot;v2&quot;</span>, <span class="string">&quot;v3&quot;</span>]);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="macro">vec!</span>[<span class="string">&quot;v1&quot;</span>, <span class="string">&quot;v2&quot;</span>, <span class="string">&quot;v3&quot;</span>]);
         <span class="kw">let</span> <span class="ident">ct</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">headers</span>().<span class="ident">get</span>(<span class="ident">CONTENT_TYPE</span>).<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">ct</span>, <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;application/json&quot;</span>));
         <span class="macro">assert_eq!</span>(
@@ -1856,7 +1876,7 @@
             <span class="string">br#&quot;[&quot;v1&quot;,&quot;v2&quot;,&quot;v3&quot;]&quot;#</span>
         );
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">Response::Ok</span>().<span class="ident">json</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;v1&quot;</span>, <span class="string">&quot;v2&quot;</span>, <span class="string">&quot;v3&quot;</span>]);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HttpResponse::Ok</span>().<span class="ident">json</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;v1&quot;</span>, <span class="string">&quot;v2&quot;</span>, <span class="string">&quot;v3&quot;</span>]);
         <span class="kw">let</span> <span class="ident">ct</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">headers</span>().<span class="ident">get</span>(<span class="ident">CONTENT_TYPE</span>).<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">ct</span>, <span class="ident">HeaderValue::from_static</span>(<span class="string">&quot;application/json&quot;</span>));
         <span class="macro">assert_eq!</span>(
@@ -1865,7 +1885,7 @@
         );
 
         <span class="comment">// content type override</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">Response::Ok</span>()
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HttpResponse::Ok</span>()
             .<span class="ident">insert_header</span>((<span class="ident">CONTENT_TYPE</span>, <span class="string">&quot;text/json&quot;</span>))
             .<span class="ident">json</span>(<span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;v1&quot;</span>, <span class="string">&quot;v2&quot;</span>, <span class="string">&quot;v3&quot;</span>]);
         <span class="kw">let</span> <span class="ident">ct</span> <span class="op">=</span> <span class="ident">resp</span>.<span class="ident">headers</span>().<span class="ident">get</span>(<span class="ident">CONTENT_TYPE</span>).<span class="ident">unwrap</span>();
@@ -1878,8 +1898,10 @@
 
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_serde_json_in_body</span>() {
-        <span class="kw">use</span> <span class="ident">serde_json::json</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">Response::Ok</span>().<span class="ident">body</span>(<span class="macro">json!</span>({<span class="string">&quot;test-key&quot;</span>:<span class="string">&quot;test-value&quot;</span>}));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HttpResponse::Ok</span>().<span class="ident">body</span>(
+            <span class="ident">serde_json::to_vec</span>(<span class="kw-2">&amp;</span><span class="macro">serde_json::json!</span>({ <span class="string">&quot;test-key&quot;</span>: <span class="string">&quot;test-value&quot;</span> })).<span class="ident">unwrap</span>(),
+        );
+
         <span class="macro">assert_eq!</span>(
             <span class="ident">read_body</span>(<span class="ident">resp</span>.<span class="ident">take_body</span>()).<span class="kw">await</span>.<span class="ident">as_ref</span>(),
             <span class="string">br#&quot;{&quot;test-key&quot;:&quot;test-value&quot;}&quot;#</span>
@@ -1888,7 +1910,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">response_builder_header_insert_kv</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Response::Ok</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">HttpResponse::Ok</span>();
         <span class="ident">res</span>.<span class="ident">insert_header</span>((<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/octet-stream&quot;</span>));
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">res</span>.<span class="ident">finish</span>();
 
@@ -1900,7 +1922,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">response_builder_header_insert_typed</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Response::Ok</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">HttpResponse::Ok</span>();
         <span class="ident">res</span>.<span class="ident">insert_header</span>((<span class="ident">header::CONTENT_TYPE</span>, <span class="ident">mime::APPLICATION_OCTET_STREAM</span>));
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">res</span>.<span class="ident">finish</span>();
 
@@ -1912,7 +1934,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">response_builder_header_append_kv</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Response::Ok</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">HttpResponse::Ok</span>();
         <span class="ident">res</span>.<span class="ident">append_header</span>((<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/octet-stream&quot;</span>));
         <span class="ident">res</span>.<span class="ident">append_header</span>((<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>));
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">res</span>.<span class="ident">finish</span>();
@@ -1925,7 +1947,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">response_builder_header_append_typed</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Response::Ok</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">HttpResponse::Ok</span>();
         <span class="ident">res</span>.<span class="ident">append_header</span>((<span class="ident">header::CONTENT_TYPE</span>, <span class="ident">mime::APPLICATION_OCTET_STREAM</span>));
         <span class="ident">res</span>.<span class="ident">append_header</span>((<span class="ident">header::CONTENT_TYPE</span>, <span class="ident">mime::APPLICATION_JSON</span>));
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">res</span>.<span class="ident">finish</span>();

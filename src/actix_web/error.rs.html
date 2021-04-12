@@ -201,18 +201,47 @@
 <span id="200">200</span>
 <span id="201">201</span>
 <span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Error and Result module</span>
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">actix_http::error</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">derive_more</span>::{<span class="ident">Display</span>, <span class="ident">Error</span>, <span class="ident">From</span>};
 <span class="kw">use</span> <span class="ident">serde_json::error::Error</span> <span class="kw">as</span> <span class="ident">JsonError</span>;
+<span class="kw">use</span> <span class="ident">serde_urlencoded::de::Error</span> <span class="kw">as</span> <span class="ident">FormDeError</span>;
+<span class="kw">use</span> <span class="ident">serde_urlencoded::ser::Error</span> <span class="kw">as</span> <span class="ident">FormError</span>;
 <span class="kw">use</span> <span class="ident">url::ParseError</span> <span class="kw">as</span> <span class="ident">UrlParseError</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::http::StatusCode</span>;
 
 <span class="doccomment">/// Errors which can occur when attempting to generate resource uri.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Display</span>, <span class="ident">From</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Display</span>, <span class="ident">Error</span>, <span class="ident">From</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UrlGenerationError</span> {
     <span class="doccomment">/// Resource not found</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Resource not found&quot;</span>)]</span>
@@ -227,13 +256,12 @@
     <span class="ident">ParseError</span>(<span class="ident">UrlParseError</span>),
 }
 
-<span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">UrlGenerationError</span> {}
-
 <span class="doccomment">/// `InternalServerError` for `UrlGeneratorError`</span>
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">UrlGenerationError</span> {}
 
 <span class="doccomment">/// A set of errors that can occur during parsing urlencoded payloads</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Error</span>, <span class="ident">From</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UrlencodedError</span> {
     <span class="doccomment">/// Can not decode chunked transfer encoding.</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Can not decode chunked transfer encoding.&quot;</span>)]</span>
@@ -256,8 +284,16 @@
     <span class="ident">ContentType</span>,
 
     <span class="doccomment">/// Parse error.</span>
-    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Parse error.&quot;</span>)]</span>
-    <span class="ident">Parse</span>,
+    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Parse error: {}.&quot;</span>, <span class="ident">_0</span>)]</span>
+    <span class="ident">Parse</span>(<span class="ident">FormDeError</span>),
+
+    <span class="doccomment">/// Encoding error.</span>
+    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Encoding error.&quot;</span>)]</span>
+    <span class="ident">Encoding</span>,
+
+    <span class="doccomment">/// Serialize error.</span>
+    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Serialize error: {}.&quot;</span>, <span class="ident">_0</span>)]</span>
+    <span class="ident">Serialize</span>(<span class="ident">FormError</span>),
 
     <span class="doccomment">/// Payload error.</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Error that occur during reading payload: {}.&quot;</span>, <span class="ident">_0</span>)]</span>
@@ -267,51 +303,65 @@
 <span class="doccomment">/// Return `BadRequest` for `UrlencodedError`</span>
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">UrlencodedError</span> {
     <span class="kw">fn</span> <span class="ident">status_code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusCode</span> {
-        <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">UrlencodedError::Overflow</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::PAYLOAD_TOO_LARGE</span>,
-            <span class="ident">UrlencodedError::UnknownLength</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::LENGTH_REQUIRED</span>,
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="self">Self</span><span class="ident">::Overflow</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::PAYLOAD_TOO_LARGE</span>,
+            <span class="self">Self</span><span class="ident">::UnknownLength</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::LENGTH_REQUIRED</span>,
+            <span class="self">Self</span><span class="ident">::Payload</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">err</span>.<span class="ident">status_code</span>(),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
         }
     }
 }
 
 <span class="doccomment">/// A set of errors that can occur during parsing json payloads</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">From</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Error</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">JsonPayloadError</span> {
     <span class="doccomment">/// Payload size is bigger than allowed. (default: 32kB)</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Json payload size is bigger than allowed&quot;</span>)]</span>
     <span class="ident">Overflow</span>,
+
     <span class="doccomment">/// Content type error</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Content type error&quot;</span>)]</span>
     <span class="ident">ContentType</span>,
+
     <span class="doccomment">/// Deserialize error</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Json deserialize error: {}&quot;</span>, <span class="ident">_0</span>)]</span>
     <span class="ident">Deserialize</span>(<span class="ident">JsonError</span>),
+
+    <span class="doccomment">/// Serialize error</span>
+    <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Json serialize error: {}&quot;</span>, <span class="ident">_0</span>)]</span>
+    <span class="ident">Serialize</span>(<span class="ident">JsonError</span>),
+
     <span class="doccomment">/// Payload error</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Error that occur during reading payload: {}&quot;</span>, <span class="ident">_0</span>)]</span>
     <span class="ident">Payload</span>(<span class="ident">PayloadError</span>),
 }
 
-<span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">JsonPayloadError</span> {}
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">PayloadError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">JsonPayloadError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">PayloadError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span><span class="ident">::Payload</span>(<span class="ident">err</span>)
+    }
+}
 
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">JsonPayloadError</span> {
     <span class="kw">fn</span> <span class="ident">status_code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusCode</span> {
-        <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">JsonPayloadError::Overflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::PAYLOAD_TOO_LARGE</span>,
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="self">Self</span><span class="ident">::Overflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::PAYLOAD_TOO_LARGE</span>,
+            <span class="self">Self</span><span class="ident">::Serialize</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::INTERNAL_SERVER_ERROR</span>,
+            <span class="self">Self</span><span class="ident">::Payload</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">err</span>.<span class="ident">status_code</span>(),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusCode::BAD_REQUEST</span>,
         }
     }
 }
 
 <span class="doccomment">/// A set of errors that can occur during parsing request paths</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">From</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Error</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PathError</span> {
     <span class="doccomment">/// Deserialize error</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Path deserialize error: {}&quot;</span>, <span class="ident">_0</span>)]</span>
     <span class="ident">Deserialize</span>(<span class="ident">serde::de::value::Error</span>),
 }
-
-<span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">PathError</span> {}
 
 <span class="doccomment">/// Return `BadRequest` for `PathError`</span>
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">PathError</span> {
@@ -322,6 +372,7 @@
 
 <span class="doccomment">/// A set of errors that can occur during parsing query strings.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Error</span>, <span class="ident">From</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">QueryPayloadError</span> {
     <span class="doccomment">/// Query deserialize error.</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Query deserialize error: {}&quot;</span>, <span class="ident">_0</span>)]</span>
@@ -336,24 +387,25 @@
 }
 
 <span class="doccomment">/// Error type returned when reading body as lines.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">From</span>, <span class="ident">Display</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Error</span>, <span class="ident">From</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ReadlinesError</span> {
-    <span class="doccomment">/// Error when decoding a line.</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Encoding error&quot;</span>)]</span>
     <span class="doccomment">/// Payload size is bigger than allowed. (default: 256kB)</span>
     <span class="ident">EncodingError</span>,
+
     <span class="doccomment">/// Payload error.</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Error that occur during reading payload: {}&quot;</span>, <span class="ident">_0</span>)]</span>
     <span class="ident">Payload</span>(<span class="ident">PayloadError</span>),
+
     <span class="doccomment">/// Line limit exceeded.</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Line limit exceeded&quot;</span>)]</span>
     <span class="ident">LimitOverflow</span>,
+
     <span class="doccomment">/// ContentType error.</span>
     <span class="attribute">#[<span class="ident">display</span>(<span class="ident">fmt</span> <span class="op">=</span> <span class="string">&quot;Content-type error&quot;</span>)]</span>
     <span class="ident">ContentTypeError</span>(<span class="ident">ContentTypeError</span>),
 }
-
-<span class="kw">impl</span> <span class="ident">std::error::Error</span> <span class="kw">for</span> <span class="ident">ReadlinesError</span> {}
 
 <span class="doccomment">/// Return `BadRequest` for `ReadlinesError`</span>
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">ReadlinesError</span> {
