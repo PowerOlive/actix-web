@@ -1223,7 +1223,7 @@
                 <span class="ident">results</span>.<span class="ident">push</span>(<span class="kw">match</span> <span class="ident">cap</span>.<span class="ident">get</span>(<span class="number">3</span>).<span class="ident">unwrap</span>().<span class="ident">as_str</span>() {
                     <span class="string">&quot;a&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">if</span> <span class="ident">key</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;r&quot;</span> {
-                            <span class="ident">FormatText::RealIPRemoteAddr</span>
+                            <span class="ident">FormatText::RealIpRemoteAddr</span>
                         } <span class="kw">else</span> {
                             <span class="macro">unreachable!</span>()
                         }
@@ -1277,7 +1277,7 @@
     <span class="ident">Time</span>,
     <span class="ident">TimeMillis</span>,
     <span class="ident">RemoteAddr</span>,
-    <span class="ident">RealIPRemoteAddr</span>,
+    <span class="ident">RealIpRemoteAddr</span>,
     <span class="ident">UrlPath</span>,
     <span class="ident">RequestHeader</span>(<span class="ident">HeaderName</span>),
     <span class="ident">ResponseHeader</span>(<span class="ident">HeaderName</span>),
@@ -1397,7 +1397,7 @@
                 };
                 <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">s</span>;
             }
-            <span class="ident">FormatText::RealIPRemoteAddr</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">FormatText::RealIpRemoteAddr</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">remote</span>) <span class="op">=</span> <span class="ident">req</span>.<span class="ident">connection_info</span>().<span class="ident">realip_remote_addr</span>() {
                     <span class="ident">FormatText::Str</span>(<span class="ident">remote</span>.<span class="ident">to_string</span>())
                 } <span class="kw">else</span> {

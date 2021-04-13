@@ -151,6 +151,10 @@
 <span id="150">150</span>
 <span id="151">151</span>
 <span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">fmt</span>, <span class="ident">mem</span>,
@@ -166,15 +170,19 @@
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">BodySize</span>, <span class="ident">BodyStream</span>, <span class="ident">MessageBody</span>, <span class="ident">SizedStream</span>};
 
 <span class="doccomment">/// Represents various types of HTTP message body.</span>
+<span class="comment">// #[deprecated(since = &quot;4.0.0&quot;, note = &quot;Use body types directly.&quot;)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Body</span> {
     <span class="doccomment">/// Empty response. `Content-Length` header is not set.</span>
     <span class="prelude-val">None</span>,
+
     <span class="doccomment">/// Zero sized response body. `Content-Length` header is set to `0`.</span>
     <span class="ident">Empty</span>,
+
     <span class="doccomment">/// Specific response body.</span>
     <span class="ident">Bytes</span>(<span class="ident">Bytes</span>),
+
     <span class="doccomment">/// Generic message body.</span>
-    <span class="ident">Message</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">MessageBody</span> <span class="op">+</span> <span class="ident">Unpin</span><span class="op">&gt;</span>),
+    <span class="ident">Message</span>(<span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">MessageBody</span><span class="op">&gt;</span><span class="op">&gt;</span>),
 }
 
 <span class="kw">impl</span> <span class="ident">Body</span> {
@@ -184,8 +192,8 @@
     }
 
     <span class="doccomment">/// Create body from generic message body.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_message</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">MessageBody</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="ident">body</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Body</span> {
-        <span class="ident">Body::Message</span>(<span class="ident">Box::new</span>(<span class="ident">body</span>))
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_message</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">MessageBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="ident">body</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Body</span> {
+        <span class="ident">Body::Message</span>(<span class="ident">Box::pin</span>(<span class="ident">body</span>))
     }
 }
 
@@ -214,7 +222,7 @@
                     <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">mem::take</span>(<span class="ident">bin</span>))))
                 }
             }
-            <span class="ident">Body::Message</span>(<span class="ident">body</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Pin::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">body</span>).<span class="ident">poll_next</span>(<span class="ident">cx</span>),
+            <span class="ident">Body::Message</span>(<span class="ident">body</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">body</span>.<span class="ident">as_mut</span>().<span class="ident">poll_next</span>(<span class="ident">cx</span>),
         }
     }
 }
@@ -288,7 +296,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SizedStream</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Body</span>
 <span class="kw">where</span>
-    <span class="ident">S</span>: <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">S</span>: <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">SizedStream</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Body</span> {
         <span class="ident">Body::from_message</span>(<span class="ident">s</span>)
@@ -297,7 +305,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">BodyStream</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Body</span>
 <span class="kw">where</span>
-    <span class="ident">S</span>: <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">S</span>: <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Bytes</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">E</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">BodyStream</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Body</span> {

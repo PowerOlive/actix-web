@@ -100,6 +100,9 @@
 <span id="99"> 99</span>
 <span id="100">100</span>
 <span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Status code based HTTP response builders.</span>
 
@@ -107,7 +110,10 @@
 
 <span class="kw">use</span> <span class="ident">http::StatusCode</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::response</span>::{<span class="ident">Response</span>, <span class="ident">ResponseBuilder</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">body::Body</span>,
+    <span class="ident">response</span>::{<span class="ident">Response</span>, <span class="ident">ResponseBuilder</span>},
+};
 
 <span class="macro">macro_rules!</span> <span class="ident">static_resp</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">status</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
@@ -118,7 +124,7 @@
     };
 }
 
-<span class="kw">impl</span> <span class="ident">Response</span> {
+<span class="kw">impl</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span> {
     <span class="macro">static_resp!</span>(<span class="ident">Continue</span>, <span class="ident">StatusCode::CONTINUE</span>);
     <span class="macro">static_resp!</span>(<span class="ident">SwitchingProtocols</span>, <span class="ident">StatusCode::SWITCHING_PROTOCOLS</span>);
     <span class="macro">static_resp!</span>(<span class="ident">Processing</span>, <span class="ident">StatusCode::PROCESSING</span>);

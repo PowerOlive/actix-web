@@ -347,8 +347,8 @@
 <span class="kw">use</span> <span class="ident">http</span>::{<span class="ident">header</span>, <span class="ident">Method</span>, <span class="ident">StatusCode</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">error::ResponseError</span>, <span class="ident">header::HeaderValue</span>, <span class="ident">message::RequestHead</span>, <span class="ident">response::Response</span>,
-    <span class="ident">ResponseBuilder</span>,
+    <span class="ident">body::Body</span>, <span class="ident">error::ResponseError</span>, <span class="ident">header::HeaderValue</span>, <span class="ident">message::RequestHead</span>,
+    <span class="ident">response::Response</span>, <span class="ident">ResponseBuilder</span>,
 };
 
 <span class="kw">mod</span> <span class="ident">codec</span>;
@@ -437,7 +437,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">HandshakeError</span> {
-    <span class="kw">fn</span> <span class="ident">error_response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Response</span> {
+    <span class="kw">fn</span> <span class="ident">error_response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">HandshakeError::GetMethodRequired</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Response::MethodNotAllowed</span>()
                 .<span class="ident">insert_header</span>((<span class="ident">header::ALLOW</span>, <span class="string">&quot;GET&quot;</span>))
@@ -658,17 +658,17 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_wserror_http_response</span>() {
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">HandshakeError::GetMethodRequired</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HandshakeError::GetMethodRequired</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::METHOD_NOT_ALLOWED</span>);
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">HandshakeError::NoWebsocketUpgrade</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HandshakeError::NoWebsocketUpgrade</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::BAD_REQUEST</span>);
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">HandshakeError::NoConnectionUpgrade</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HandshakeError::NoConnectionUpgrade</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::BAD_REQUEST</span>);
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">HandshakeError::NoVersionHeader</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HandshakeError::NoVersionHeader</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::BAD_REQUEST</span>);
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">HandshakeError::UnsupportedVersion</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HandshakeError::UnsupportedVersion</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::BAD_REQUEST</span>);
-        <span class="kw">let</span> <span class="ident">resp</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">HandshakeError::BadWebsocketKey</span>.<span class="ident">error_response</span>();
+        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">HandshakeError::BadWebsocketKey</span>.<span class="ident">error_response</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">resp</span>.<span class="ident">status</span>(), <span class="ident">StatusCode::BAD_REQUEST</span>);
     }
 }

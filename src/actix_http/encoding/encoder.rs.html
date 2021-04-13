@@ -282,8 +282,6 @@
 <span id="281">281</span>
 <span id="282">282</span>
 <span id="283">283</span>
-<span id="284">284</span>
-<span id="285">285</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Stream encoders.</span>
 
@@ -379,7 +377,7 @@
 <span class="kw">enum</span> <span class="ident">EncoderBody</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
     <span class="ident">Bytes</span>(<span class="ident">Bytes</span>),
     <span class="ident">Stream</span>(<span class="attribute">#[<span class="ident">pin</span>]</span> <span class="ident">B</span>),
-    <span class="ident">BoxedStream</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">MessageBody</span> <span class="op">+</span> <span class="ident">Unpin</span><span class="op">&gt;</span>),
+    <span class="ident">BoxedStream</span>(<span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">MessageBody</span><span class="op">&gt;</span><span class="op">&gt;</span>),
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">MessageBody</span><span class="op">&gt;</span> <span class="ident">MessageBody</span> <span class="kw">for</span> <span class="ident">EncoderBody</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
@@ -404,9 +402,7 @@
                 }
             }
             <span class="ident">EncoderBodyProj::Stream</span>(<span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">b</span>.<span class="ident">poll_next</span>(<span class="ident">cx</span>),
-            <span class="ident">EncoderBodyProj::BoxedStream</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">Pin::new</span>(<span class="ident">b</span>.<span class="ident">as_mut</span>()).<span class="ident">poll_next</span>(<span class="ident">cx</span>)
-            }
+            <span class="ident">EncoderBodyProj::BoxedStream</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">b</span>.<span class="ident">as_mut</span>().<span class="ident">poll_next</span>(<span class="ident">cx</span>),
         }
     }
 }

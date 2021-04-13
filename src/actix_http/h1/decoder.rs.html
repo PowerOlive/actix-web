@@ -1244,6 +1244,7 @@
 <span id="1243">1243</span>
 <span id="1244">1244</span>
 <span id="1245">1245</span>
+<span id="1246">1246</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std::convert::TryFrom</span>;
 <span class="kw">use</span> <span class="ident">std::io</span>;
@@ -2460,8 +2461,9 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parse_chunked_payload_chunk_extension</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(
-            <span class="kw-2">&amp;</span><span class="string">&quot;GET /test HTTP/1.1\r\n\
-              transfer-encoding: chunked\r\n\r\n&quot;</span>[..],
+            <span class="string">&quot;GET /test HTTP/1.1\r\n\
+            transfer-encoding: chunked\r\n\
+            \r\n&quot;</span>,
         );
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">MessageDecoder</span>::<span class="op">&lt;</span><span class="ident">Request</span><span class="op">&gt;</span><span class="ident">::default</span>();
@@ -2480,7 +2482,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_response_http10_read_until_eof</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(<span class="kw-2">&amp;</span><span class="string">&quot;HTTP/1.0 200 Ok\r\n\r\ntest data&quot;</span>[..]);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">BytesMut::from</span>(<span class="string">&quot;HTTP/1.0 200 Ok\r\n\r\ntest data&quot;</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">MessageDecoder</span>::<span class="op">&lt;</span><span class="ident">ResponseHead</span><span class="op">&gt;</span><span class="ident">::default</span>();
         <span class="kw">let</span> (<span class="ident">_msg</span>, <span class="ident">pl</span>) <span class="op">=</span> <span class="ident">reader</span>.<span class="ident">decode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>).<span class="ident">unwrap</span>().<span class="ident">unwrap</span>();

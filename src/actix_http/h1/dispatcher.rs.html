@@ -1746,7 +1746,7 @@
                     }
                     <span class="comment">// send expect error as response</span>
                     <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="kw">let</span> <span class="ident">res</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">into</span>().<span class="ident">into</span>();
+                        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Response::from_error</span>(<span class="ident">err</span>.<span class="ident">into</span>());
                         <span class="kw">let</span> (<span class="ident">res</span>, <span class="ident">body</span>) <span class="op">=</span> <span class="ident">res</span>.<span class="ident">replace_body</span>(());
                         <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">send_response</span>(<span class="ident">res</span>, <span class="ident">body</span>.<span class="ident">into_body</span>())<span class="question-mark">?</span>;
                     }
@@ -1795,8 +1795,7 @@
                         <span class="comment">// to notify the dispatcher a new state is set and the outer loop</span>
                         <span class="comment">// should be continue.</span>
                         <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> {
-                            <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">into</span>();
-                            <span class="kw">let</span> <span class="ident">res</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">into</span>();
+                            <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Response::from_error</span>(<span class="ident">err</span>.<span class="ident">into</span>());
                             <span class="kw">let</span> (<span class="ident">res</span>, <span class="ident">body</span>) <span class="op">=</span> <span class="ident">res</span>.<span class="ident">replace_body</span>(());
                             <span class="kw">return</span> <span class="self">self</span>.<span class="ident">send_response</span>(<span class="ident">res</span>, <span class="ident">body</span>.<span class="ident">into_body</span>());
                         }
@@ -1816,7 +1815,7 @@
                         <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
                         <span class="comment">// see the comment on ExpectCall state branch&#39;s Ready(Err(err)).</span>
                         <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> {
-                            <span class="kw">let</span> <span class="ident">res</span>: <span class="ident">Response</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">into</span>().<span class="ident">into</span>();
+                            <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Response::from_error</span>(<span class="ident">err</span>.<span class="ident">into</span>());
                             <span class="kw">let</span> (<span class="ident">res</span>, <span class="ident">body</span>) <span class="op">=</span> <span class="ident">res</span>.<span class="ident">replace_body</span>(());
                             <span class="self">self</span>.<span class="ident">send_response</span>(<span class="ident">res</span>, <span class="ident">body</span>.<span class="ident">into_body</span>())
                         }
@@ -2318,19 +2317,20 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">ok_service</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Response</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">ok_service</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">fn_service</span>(<span class="op">|</span><span class="ident">_req</span>: <span class="ident">Request</span><span class="op">|</span> <span class="ident">ready</span>(<span class="prelude-val">Ok</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Error</span><span class="op">&gt;</span>(<span class="ident">Response::Ok</span>().<span class="ident">finish</span>())))
     }
 
-    <span class="kw">fn</span> <span class="ident">echo_path_service</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Response</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">echo_path_service</span>(
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">fn_service</span>(<span class="op">|</span><span class="ident">req</span>: <span class="ident">Request</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">path</span>().<span class="ident">as_bytes</span>();
             <span class="ident">ready</span>(<span class="prelude-val">Ok</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Error</span><span class="op">&gt;</span>(<span class="ident">Response::Ok</span>().<span class="ident">body</span>(<span class="ident">Body::from_slice</span>(<span class="ident">path</span>))))
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">echo_payload_service</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Response</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&gt;</span>
-    {
+    <span class="kw">fn</span> <span class="ident">echo_payload_service</span>(
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">fn_service</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">req</span>: <span class="ident">Request</span><span class="op">|</span> {
             <span class="ident">Box::pin</span>(<span class="kw">async</span> <span class="kw">move</span> {
                 <span class="kw">use</span> <span class="ident">futures_util::stream::StreamExt</span> <span class="kw">as</span> <span class="kw">_</span>;
