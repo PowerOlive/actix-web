@@ -1336,6 +1336,12 @@
 <span id="1335">1335</span>
 <span id="1336">1336</span>
 <span id="1337">1337</span>
+<span id="1338">1338</span>
+<span id="1339">1339</span>
+<span id="1340">1340</span>
+<span id="1341">1341</span>
+<span id="1342">1342</span>
+<span id="1343">1343</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections::VecDeque</span>,
@@ -1360,6 +1366,7 @@
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::config::ServiceConfig</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>::{<span class="ident">DispatchError</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>::{<span class="ident">ParseError</span>, <span class="ident">PayloadError</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::http::StatusCode</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::request::Request</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::response::Response</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::service::HttpFlow</span>;
@@ -1901,7 +1908,7 @@
                                 );
                                 <span class="ident">this</span>.<span class="ident">flags</span>.<span class="ident">insert</span>(<span class="ident">Flags::READ_DISCONNECT</span>);
                                 <span class="ident">this</span>.<span class="ident">messages</span>.<span class="ident">push_back</span>(<span class="ident">DispatcherMessage::Error</span>(
-                                    <span class="ident">Response::InternalServerError</span>().<span class="ident">finish</span>().<span class="ident">drop_body</span>(),
+                                    <span class="ident">Response::internal_server_error</span>().<span class="ident">drop_body</span>(),
                                 ));
                                 <span class="kw-2">*</span><span class="ident">this</span>.<span class="ident">error</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">DispatchError::InternalError</span>);
                                 <span class="kw">break</span>;
@@ -1914,7 +1921,7 @@
                                 <span class="macro">error!</span>(<span class="string">&quot;Internal server error: unexpected eof&quot;</span>);
                                 <span class="ident">this</span>.<span class="ident">flags</span>.<span class="ident">insert</span>(<span class="ident">Flags::READ_DISCONNECT</span>);
                                 <span class="ident">this</span>.<span class="ident">messages</span>.<span class="ident">push_back</span>(<span class="ident">DispatcherMessage::Error</span>(
-                                    <span class="ident">Response::InternalServerError</span>().<span class="ident">finish</span>().<span class="ident">drop_body</span>(),
+                                    <span class="ident">Response::internal_server_error</span>().<span class="ident">drop_body</span>(),
                                 ));
                                 <span class="kw-2">*</span><span class="ident">this</span>.<span class="ident">error</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">DispatchError::InternalError</span>);
                                 <span class="kw">break</span>;
@@ -1937,7 +1944,8 @@
                     }
                     <span class="comment">// Requests overflow buffer size should be responded with 431</span>
                     <span class="ident">this</span>.<span class="ident">messages</span>.<span class="ident">push_back</span>(<span class="ident">DispatcherMessage::Error</span>(
-                        <span class="ident">Response::RequestHeaderFieldsTooLarge</span>().<span class="ident">finish</span>().<span class="ident">drop_body</span>(),
+                        <span class="ident">Response::new</span>(<span class="ident">StatusCode::REQUEST_HEADER_FIELDS_TOO_LARGE</span>)
+                            .<span class="ident">drop_body</span>(),
                     ));
                     <span class="ident">this</span>.<span class="ident">flags</span>.<span class="ident">insert</span>(<span class="ident">Flags::READ_DISCONNECT</span>);
                     <span class="kw-2">*</span><span class="ident">this</span>.<span class="ident">error</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">ParseError::TooLarge</span>.<span class="ident">into</span>());
@@ -1950,7 +1958,7 @@
 
                     <span class="comment">// Malformed requests should be responded with 400</span>
                     <span class="ident">this</span>.<span class="ident">messages</span>.<span class="ident">push_back</span>(<span class="ident">DispatcherMessage::Error</span>(
-                        <span class="ident">Response::BadRequest</span>().<span class="ident">finish</span>().<span class="ident">drop_body</span>(),
+                        <span class="ident">Response::bad_request</span>().<span class="ident">drop_body</span>(),
                     ));
                     <span class="ident">this</span>.<span class="ident">flags</span>.<span class="ident">insert</span>(<span class="ident">Flags::READ_DISCONNECT</span>);
                     <span class="kw-2">*</span><span class="ident">this</span>.<span class="ident">error</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">err</span>.<span class="ident">into</span>());
@@ -2023,7 +2031,8 @@
                                 <span class="kw">if</span> <span class="op">!</span><span class="ident">this</span>.<span class="ident">flags</span>.<span class="ident">contains</span>(<span class="ident">Flags::STARTED</span>) {
                                     <span class="macro">trace!</span>(<span class="string">&quot;Slow request timeout&quot;</span>);
                                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">send_response</span>(
-                                        <span class="ident">Response::RequestTimeout</span>().<span class="ident">finish</span>().<span class="ident">drop_body</span>(),
+                                        <span class="ident">Response::new</span>(<span class="ident">StatusCode::REQUEST_TIMEOUT</span>)
+                                            .<span class="ident">drop_body</span>(),
                                         <span class="ident">ResponseBody::Other</span>(<span class="ident">Body::Empty</span>),
                                     );
                                     <span class="ident">this</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">project</span>();
@@ -2290,6 +2299,7 @@
 
     <span class="kw">use</span> <span class="ident">actix_service::fn_service</span>;
     <span class="kw">use</span> <span class="ident">actix_utils::future</span>::{<span class="ident">ready</span>, <span class="ident">Ready</span>};
+    <span class="kw">use</span> <span class="ident">bytes::Bytes</span>;
     <span class="kw">use</span> <span class="ident">futures_util::future::lazy</span>;
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
@@ -2318,19 +2328,21 @@
     }
 
     <span class="kw">fn</span> <span class="ident">ok_service</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">fn_service</span>(<span class="op">|</span><span class="ident">_req</span>: <span class="ident">Request</span><span class="op">|</span> <span class="ident">ready</span>(<span class="prelude-val">Ok</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Error</span><span class="op">&gt;</span>(<span class="ident">Response::Ok</span>().<span class="ident">finish</span>())))
+        <span class="ident">fn_service</span>(<span class="op">|</span><span class="ident">_req</span>: <span class="ident">Request</span><span class="op">|</span> <span class="ident">ready</span>(<span class="prelude-val">Ok</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Error</span><span class="op">&gt;</span>(<span class="ident">Response::ok</span>())))
     }
 
     <span class="kw">fn</span> <span class="ident">echo_path_service</span>(
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">fn_service</span>(<span class="op">|</span><span class="ident">req</span>: <span class="ident">Request</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">path</span>().<span class="ident">as_bytes</span>();
-            <span class="ident">ready</span>(<span class="prelude-val">Ok</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Error</span><span class="op">&gt;</span>(<span class="ident">Response::Ok</span>().<span class="ident">body</span>(<span class="ident">Body::from_slice</span>(<span class="ident">path</span>))))
+            <span class="ident">ready</span>(<span class="prelude-val">Ok</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Error</span><span class="op">&gt;</span>(
+                <span class="ident">Response::ok</span>().<span class="ident">set_body</span>(<span class="ident">Body::from_slice</span>(<span class="ident">path</span>)),
+            ))
         })
     }
 
     <span class="kw">fn</span> <span class="ident">echo_payload_service</span>(
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Service</span><span class="op">&lt;</span><span class="ident">Request</span>, <span class="ident">Response</span> <span class="op">=</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Bytes</span><span class="op">&gt;</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">fn_service</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">req</span>: <span class="ident">Request</span><span class="op">|</span> {
             <span class="ident">Box::pin</span>(<span class="kw">async</span> <span class="kw">move</span> {
                 <span class="kw">use</span> <span class="ident">futures_util::stream::StreamExt</span> <span class="kw">as</span> <span class="kw">_</span>;
@@ -2341,7 +2353,7 @@
                     <span class="ident">body</span>.<span class="ident">extend_from_slice</span>(<span class="ident">chunk</span>.<span class="ident">unwrap</span>().<span class="ident">chunk</span>())
                 }
 
-                <span class="prelude-val">Ok</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Error</span><span class="op">&gt;</span>(<span class="ident">Response::Ok</span>().<span class="ident">body</span>(<span class="ident">body</span>))
+                <span class="prelude-val">Ok</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Error</span><span class="op">&gt;</span>(<span class="ident">Response::ok</span>().<span class="ident">set_body</span>(<span class="ident">body</span>.<span class="ident">freeze</span>()))
             })
         })
     }

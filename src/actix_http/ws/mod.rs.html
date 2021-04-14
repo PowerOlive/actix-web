@@ -335,6 +335,14 @@
 <span id="334">334</span>
 <span id="335">335</span>
 <span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! WebSocket protocol implementation.</span>
 <span class="doccomment">//!</span>
@@ -439,29 +447,37 @@
 <span class="kw">impl</span> <span class="ident">ResponseError</span> <span class="kw">for</span> <span class="ident">HandshakeError</span> {
     <span class="kw">fn</span> <span class="ident">error_response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">HandshakeError::GetMethodRequired</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Response::MethodNotAllowed</span>()
-                .<span class="ident">insert_header</span>((<span class="ident">header::ALLOW</span>, <span class="string">&quot;GET&quot;</span>))
-                .<span class="ident">finish</span>(),
+            <span class="ident">HandshakeError::GetMethodRequired</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Response::build</span>(<span class="ident">StatusCode::METHOD_NOT_ALLOWED</span>)
+                    .<span class="ident">insert_header</span>((<span class="ident">header::ALLOW</span>, <span class="string">&quot;GET&quot;</span>))
+                    .<span class="ident">finish</span>()
+            }
 
-            <span class="ident">HandshakeError::NoWebsocketUpgrade</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Response::BadRequest</span>()
-                .<span class="ident">reason</span>(<span class="string">&quot;No WebSocket Upgrade header found&quot;</span>)
-                .<span class="ident">finish</span>(),
+            <span class="ident">HandshakeError::NoWebsocketUpgrade</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Response::build</span>(<span class="ident">StatusCode::BAD_REQUEST</span>)
+                    .<span class="ident">reason</span>(<span class="string">&quot;No WebSocket Upgrade header found&quot;</span>)
+                    .<span class="ident">finish</span>()
+            }
 
-            <span class="ident">HandshakeError::NoConnectionUpgrade</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Response::BadRequest</span>()
-                .<span class="ident">reason</span>(<span class="string">&quot;No Connection upgrade&quot;</span>)
-                .<span class="ident">finish</span>(),
+            <span class="ident">HandshakeError::NoConnectionUpgrade</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Response::build</span>(<span class="ident">StatusCode::BAD_REQUEST</span>)
+                    .<span class="ident">reason</span>(<span class="string">&quot;No Connection upgrade&quot;</span>)
+                    .<span class="ident">finish</span>()
+            }
 
-            <span class="ident">HandshakeError::NoVersionHeader</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Response::BadRequest</span>()
+            <span class="ident">HandshakeError::NoVersionHeader</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Response::build</span>(<span class="ident">StatusCode::BAD_REQUEST</span>)
                 .<span class="ident">reason</span>(<span class="string">&quot;WebSocket version header is required&quot;</span>)
                 .<span class="ident">finish</span>(),
 
-            <span class="ident">HandshakeError::UnsupportedVersion</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Response::BadRequest</span>()
-                .<span class="ident">reason</span>(<span class="string">&quot;Unsupported WebSocket version&quot;</span>)
-                .<span class="ident">finish</span>(),
-
-            <span class="ident">HandshakeError::BadWebsocketKey</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">Response::BadRequest</span>().<span class="ident">reason</span>(<span class="string">&quot;Handshake error&quot;</span>).<span class="ident">finish</span>()
+            <span class="ident">HandshakeError::UnsupportedVersion</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Response::build</span>(<span class="ident">StatusCode::BAD_REQUEST</span>)
+                    .<span class="ident">reason</span>(<span class="string">&quot;Unsupported WebSocket version&quot;</span>)
+                    .<span class="ident">finish</span>()
             }
+
+            <span class="ident">HandshakeError::BadWebsocketKey</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Response::build</span>(<span class="ident">StatusCode::BAD_REQUEST</span>)
+                .<span class="ident">reason</span>(<span class="string">&quot;Handshake error&quot;</span>)
+                .<span class="ident">finish</span>(),
         }
     }
 }

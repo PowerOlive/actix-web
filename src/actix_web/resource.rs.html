@@ -750,7 +750,7 @@
 <span class="kw">use</span> <span class="ident">std::future::Future</span>;
 <span class="kw">use</span> <span class="ident">std::rc::Rc</span>;
 
-<span class="kw">use</span> <span class="ident">actix_http</span>::{<span class="ident">Error</span>, <span class="ident">Extensions</span>, <span class="ident">Response</span>};
+<span class="kw">use</span> <span class="ident">actix_http</span>::{<span class="ident">Error</span>, <span class="ident">Extensions</span>};
 <span class="kw">use</span> <span class="ident">actix_router::IntoPattern</span>;
 <span class="kw">use</span> <span class="ident">actix_service::boxed</span>::{<span class="self">self</span>, <span class="ident">BoxService</span>, <span class="ident">BoxServiceFactory</span>};
 <span class="kw">use</span> <span class="ident">actix_service</span>::{
@@ -760,7 +760,6 @@
 <span class="kw">use</span> <span class="ident">futures_core::future::LocalBoxFuture</span>;
 <span class="kw">use</span> <span class="ident">futures_util::future::join_all</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::data::Data</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dev</span>::{<span class="ident">insert_slash</span>, <span class="ident">AppService</span>, <span class="ident">HttpServiceFactory</span>, <span class="ident">ResourceDef</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::extract::FromRequest</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::guard::Guard</span>;
@@ -768,6 +767,7 @@
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::responder::Responder</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::route</span>::{<span class="ident">Route</span>, <span class="ident">RouteService</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::service</span>::{<span class="ident">ServiceRequest</span>, <span class="ident">ServiceResponse</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">data::Data</span>, <span class="ident">HttpResponse</span>};
 
 <span class="kw">type</span> <span class="ident">HttpService</span> <span class="op">=</span> <span class="ident">BoxService</span><span class="op">&lt;</span><span class="ident">ServiceRequest</span>, <span class="ident">ServiceResponse</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 <span class="kw">type</span> <span class="ident">HttpNewService</span> <span class="op">=</span> <span class="ident">BoxServiceFactory</span><span class="op">&lt;</span>(), <span class="ident">ServiceRequest</span>, <span class="ident">ServiceResponse</span>, <span class="ident">Error</span>, ()<span class="op">&gt;</span>;
@@ -818,7 +818,7 @@
             <span class="ident">guards</span>: <span class="ident">Vec::new</span>(),
             <span class="ident">app_data</span>: <span class="prelude-val">None</span>,
             <span class="ident">default</span>: <span class="ident">boxed::factory</span>(<span class="ident">fn_service</span>(<span class="op">|</span><span class="ident">req</span>: <span class="ident">ServiceRequest</span><span class="op">|</span> <span class="kw">async</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">req</span>.<span class="ident">into_response</span>(<span class="ident">Response::MethodNotAllowed</span>().<span class="ident">finish</span>()))
+                <span class="prelude-val">Ok</span>(<span class="ident">req</span>.<span class="ident">into_response</span>(<span class="ident">HttpResponse::MethodNotAllowed</span>()))
             })),
         }
     }
