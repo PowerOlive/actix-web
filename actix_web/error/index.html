@@ -5,12 +5,12 @@
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.Error.html" title="actix_web::error::Error struct">Error</a></td><td class="docblock-short"><p>General purpose actix web error.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.InternalError.html" title="actix_web::error::InternalError struct">InternalError</a></td><td class="docblock-short"><p>Helper type that can wrap any error and generate custom response.</p>
 </td></tr></table><h2 id="enums" class="section-header"><a href="#enums">Enums</a></h2>
-<table><tr class="module-item"><td><a class="enum" href="enum.ContentTypeError.html" title="actix_web::error::ContentTypeError enum">ContentTypeError</a></td><td class="docblock-short"><p>A set of error that can occur during parsing content type</p>
-</td></tr><tr class="module-item"><td><a class="enum" href="enum.DispatchError.html" title="actix_web::error::DispatchError enum">DispatchError</a></td><td class="docblock-short"><p>A set of errors that can occur during dispatching HTTP requests</p>
+<table><tr class="module-item"><td><a class="enum" href="enum.ContentTypeError.html" title="actix_web::error::ContentTypeError enum">ContentTypeError</a></td><td class="docblock-short"><p>A set of error that can occur during parsing content type.</p>
+</td></tr><tr class="module-item"><td><a class="enum" href="enum.DispatchError.html" title="actix_web::error::DispatchError enum">DispatchError</a></td><td class="docblock-short"><p>A set of errors that can occur during dispatching HTTP requests.</p>
 </td></tr><tr class="module-item"><td><a class="enum" href="enum.JsonPayloadError.html" title="actix_web::error::JsonPayloadError enum">JsonPayloadError</a></td><td class="docblock-short"><p>A set of errors that can occur during parsing json payloads</p>
-</td></tr><tr class="module-item"><td><a class="enum" href="enum.ParseError.html" title="actix_web::error::ParseError enum">ParseError</a></td><td class="docblock-short"><p>A set of errors that can occur during parsing HTTP streams</p>
+</td></tr><tr class="module-item"><td><a class="enum" href="enum.ParseError.html" title="actix_web::error::ParseError enum">ParseError</a></td><td class="docblock-short"><p>A set of errors that can occur during parsing HTTP streams.</p>
 </td></tr><tr class="module-item"><td><a class="enum" href="enum.PathError.html" title="actix_web::error::PathError enum">PathError</a></td><td class="docblock-short"><p>A set of errors that can occur during parsing request paths</p>
-</td></tr><tr class="module-item"><td><a class="enum" href="enum.PayloadError.html" title="actix_web::error::PayloadError enum">PayloadError</a></td><td class="docblock-short"><p>A set of errors that can occur during payload parsing</p>
+</td></tr><tr class="module-item"><td><a class="enum" href="enum.PayloadError.html" title="actix_web::error::PayloadError enum">PayloadError</a></td><td class="docblock-short"><p>A set of errors that can occur during payload parsing.</p>
 </td></tr><tr class="module-item"><td><a class="enum" href="enum.QueryPayloadError.html" title="actix_web::error::QueryPayloadError enum">QueryPayloadError</a></td><td class="docblock-short"><p>A set of errors that can occur during parsing query strings.</p>
 </td></tr><tr class="module-item"><td><a class="enum" href="enum.ReadlinesError.html" title="actix_web::error::ReadlinesError enum">ReadlinesError</a></td><td class="docblock-short"><p>Error type returned when reading body as lines.</p>
 </td></tr><tr class="module-item"><td><a class="enum" href="enum.UrlGenerationError.html" title="actix_web::error::UrlGenerationError enum">UrlGenerationError</a></td><td class="docblock-short"><p>Errors which can occur when attempting to generate resource uri.</p>
@@ -18,84 +18,45 @@
 </td></tr></table><h2 id="traits" class="section-header"><a href="#traits">Traits</a></h2>
 <table><tr class="module-item"><td><a class="trait" href="trait.ResponseError.html" title="actix_web::error::ResponseError trait">ResponseError</a></td><td class="docblock-short"><p>Error that can be converted to <code>Response</code></p>
 </td></tr></table><h2 id="functions" class="section-header"><a href="#functions">Functions</a></h2>
-<table><tr class="module-item"><td><a class="fn" href="fn.ErrorBadGateway.html" title="actix_web::error::ErrorBadGateway fn">ErrorBadGateway</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and
-generate <em>BAD GATEWAY</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorBadRequest.html" title="actix_web::error::ErrorBadRequest fn">ErrorBadRequest</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate <em>BAD
-REQUEST</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorConflict.html" title="actix_web::error::ErrorConflict fn">ErrorConflict</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate <em>CONFLICT</em>
-response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorExpectationFailed.html" title="actix_web::error::ErrorExpectationFailed fn">ErrorExpectationFailed</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>EXPECTATION FAILED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorFailedDependency.html" title="actix_web::error::ErrorFailedDependency fn">ErrorFailedDependency</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>FAILED DEPENDENCY</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorForbidden.html" title="actix_web::error::ErrorForbidden fn">ErrorForbidden</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate <em>FORBIDDEN</em>
-response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorGatewayTimeout.html" title="actix_web::error::ErrorGatewayTimeout fn">ErrorGatewayTimeout</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and
-generate <em>GATEWAY TIMEOUT</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorGone.html" title="actix_web::error::ErrorGone fn">ErrorGone</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate <em>GONE</em>
-response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorHttpVersionNotSupported.html" title="actix_web::error::ErrorHttpVersionNotSupported fn">ErrorHttpVersionNotSupported</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and
-generate <em>HTTP VERSION NOT SUPPORTED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorImATeapot.html" title="actix_web::error::ErrorImATeapot fn">ErrorImATeapot</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>IM A TEAPOT</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorInsufficientStorage.html" title="actix_web::error::ErrorInsufficientStorage fn">ErrorInsufficientStorage</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and
-generate <em>INSUFFICIENT STORAGE</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorInternalServerError.html" title="actix_web::error::ErrorInternalServerError fn">ErrorInternalServerError</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and
-generate <em>INTERNAL SERVER ERROR</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorLengthRequired.html" title="actix_web::error::ErrorLengthRequired fn">ErrorLengthRequired</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate <em>LENGTH
-REQUIRED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorLocked.html" title="actix_web::error::ErrorLocked fn">ErrorLocked</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>LOCKED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorLoopDetected.html" title="actix_web::error::ErrorLoopDetected fn">ErrorLoopDetected</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and
-generate <em>LOOP DETECTED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorMethodNotAllowed.html" title="actix_web::error::ErrorMethodNotAllowed fn">ErrorMethodNotAllowed</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate <em>METHOD NOT
-ALLOWED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorMisdirectedRequest.html" title="actix_web::error::ErrorMisdirectedRequest fn">ErrorMisdirectedRequest</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>MISDIRECTED REQUEST</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorNetworkAuthenticationRequired.html" title="actix_web::error::ErrorNetworkAuthenticationRequired fn">ErrorNetworkAuthenticationRequired</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and
-generate <em>NETWORK AUTHENTICATION REQUIRED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorNotAcceptable.html" title="actix_web::error::ErrorNotAcceptable fn">ErrorNotAcceptable</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate <em>NOT
-ACCEPTABLE</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorNotExtended.html" title="actix_web::error::ErrorNotExtended fn">ErrorNotExtended</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and
-generate <em>NOT EXTENDED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorNotFound.html" title="actix_web::error::ErrorNotFound fn">ErrorNotFound</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate <em>NOT FOUND</em>
-response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorNotImplemented.html" title="actix_web::error::ErrorNotImplemented fn">ErrorNotImplemented</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and
-generate <em>NOT IMPLEMENTED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorPayloadTooLarge.html" title="actix_web::error::ErrorPayloadTooLarge fn">ErrorPayloadTooLarge</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>PAYLOAD TOO LARGE</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorPaymentRequired.html" title="actix_web::error::ErrorPaymentRequired fn">ErrorPaymentRequired</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>PAYMENT_REQUIRED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorPreconditionFailed.html" title="actix_web::error::ErrorPreconditionFailed fn">ErrorPreconditionFailed</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>PRECONDITION FAILED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorPreconditionRequired.html" title="actix_web::error::ErrorPreconditionRequired fn">ErrorPreconditionRequired</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>PRECONDITION REQUIRED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorProxyAuthenticationRequired.html" title="actix_web::error::ErrorProxyAuthenticationRequired fn">ErrorProxyAuthenticationRequired</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate <em>PROXY
-AUTHENTICATION REQUIRED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorRangeNotSatisfiable.html" title="actix_web::error::ErrorRangeNotSatisfiable fn">ErrorRangeNotSatisfiable</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>RANGE NOT SATISFIABLE</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorRequestHeaderFieldsTooLarge.html" title="actix_web::error::ErrorRequestHeaderFieldsTooLarge fn">ErrorRequestHeaderFieldsTooLarge</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>REQUEST HEADER FIELDS TOO LARGE</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorRequestTimeout.html" title="actix_web::error::ErrorRequestTimeout fn">ErrorRequestTimeout</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate <em>REQUEST
-TIMEOUT</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorServiceUnavailable.html" title="actix_web::error::ErrorServiceUnavailable fn">ErrorServiceUnavailable</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and
-generate <em>SERVICE UNAVAILABLE</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorTooManyRequests.html" title="actix_web::error::ErrorTooManyRequests fn">ErrorTooManyRequests</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>TOO MANY REQUESTS</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUnauthorized.html" title="actix_web::error::ErrorUnauthorized fn">ErrorUnauthorized</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>UNAUTHORIZED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUnavailableForLegalReasons.html" title="actix_web::error::ErrorUnavailableForLegalReasons fn">ErrorUnavailableForLegalReasons</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>UNAVAILABLE FOR LEGAL REASONS</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUnprocessableEntity.html" title="actix_web::error::ErrorUnprocessableEntity fn">ErrorUnprocessableEntity</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>UNPROCESSABLE ENTITY</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUnsupportedMediaType.html" title="actix_web::error::ErrorUnsupportedMediaType fn">ErrorUnsupportedMediaType</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>UNSUPPORTED MEDIA TYPE</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUpgradeRequired.html" title="actix_web::error::ErrorUpgradeRequired fn">ErrorUpgradeRequired</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>UPGRADE REQUIRED</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUriTooLong.html" title="actix_web::error::ErrorUriTooLong fn">ErrorUriTooLong</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and generate
-<em>URI TOO LONG</em> response.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorVariantAlsoNegotiates.html" title="actix_web::error::ErrorVariantAlsoNegotiates fn">ErrorVariantAlsoNegotiates</a></td><td class="docblock-short"><p>Helper function that creates wrapper of any error and
-generate <em>VARIANT ALSO NEGOTIATES</em> response.</p>
+<table><tr class="module-item"><td><a class="fn" href="fn.ErrorBadGateway.html" title="actix_web::error::ErrorBadGateway fn">ErrorBadGateway</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>BAD_GATEWAY</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorBadRequest.html" title="actix_web::error::ErrorBadRequest fn">ErrorBadRequest</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>BAD_REQUEST</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorConflict.html" title="actix_web::error::ErrorConflict fn">ErrorConflict</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>CONFLICT</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorExpectationFailed.html" title="actix_web::error::ErrorExpectationFailed fn">ErrorExpectationFailed</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>EXPECTATION_FAILED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorFailedDependency.html" title="actix_web::error::ErrorFailedDependency fn">ErrorFailedDependency</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>FAILED_DEPENDENCY</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorForbidden.html" title="actix_web::error::ErrorForbidden fn">ErrorForbidden</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>FORBIDDEN</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorGatewayTimeout.html" title="actix_web::error::ErrorGatewayTimeout fn">ErrorGatewayTimeout</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>GATEWAY_TIMEOUT</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorGone.html" title="actix_web::error::ErrorGone fn">ErrorGone</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>GONE</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorHttpVersionNotSupported.html" title="actix_web::error::ErrorHttpVersionNotSupported fn">ErrorHttpVersionNotSupported</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>HTTP_VERSION_NOT_SUPPORTED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorImATeapot.html" title="actix_web::error::ErrorImATeapot fn">ErrorImATeapot</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>IM_A_TEAPOT</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorInsufficientStorage.html" title="actix_web::error::ErrorInsufficientStorage fn">ErrorInsufficientStorage</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>INSUFFICIENT_STORAGE</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorInternalServerError.html" title="actix_web::error::ErrorInternalServerError fn">ErrorInternalServerError</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>INTERNAL_SERVER_ERROR</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorLengthRequired.html" title="actix_web::error::ErrorLengthRequired fn">ErrorLengthRequired</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>LENGTH_REQUIRED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorLocked.html" title="actix_web::error::ErrorLocked fn">ErrorLocked</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>LOCKED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorLoopDetected.html" title="actix_web::error::ErrorLoopDetected fn">ErrorLoopDetected</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>LOOP_DETECTED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorMethodNotAllowed.html" title="actix_web::error::ErrorMethodNotAllowed fn">ErrorMethodNotAllowed</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>METHOD_NOT_ALLOWED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorMisdirectedRequest.html" title="actix_web::error::ErrorMisdirectedRequest fn">ErrorMisdirectedRequest</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>MISDIRECTED_REQUEST</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorNetworkAuthenticationRequired.html" title="actix_web::error::ErrorNetworkAuthenticationRequired fn">ErrorNetworkAuthenticationRequired</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>NETWORK_AUTHENTICATION_REQUIRED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorNotAcceptable.html" title="actix_web::error::ErrorNotAcceptable fn">ErrorNotAcceptable</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>NOT_ACCEPTABLE</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorNotExtended.html" title="actix_web::error::ErrorNotExtended fn">ErrorNotExtended</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>NOT_EXTENDED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorNotFound.html" title="actix_web::error::ErrorNotFound fn">ErrorNotFound</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>NOT_FOUND</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorNotImplemented.html" title="actix_web::error::ErrorNotImplemented fn">ErrorNotImplemented</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>NOT_IMPLEMENTED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorPayloadTooLarge.html" title="actix_web::error::ErrorPayloadTooLarge fn">ErrorPayloadTooLarge</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>PAYLOAD_TOO_LARGE</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorPaymentRequired.html" title="actix_web::error::ErrorPaymentRequired fn">ErrorPaymentRequired</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>PAYMENT_REQUIRED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorPreconditionFailed.html" title="actix_web::error::ErrorPreconditionFailed fn">ErrorPreconditionFailed</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>PRECONDITION_FAILED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorPreconditionRequired.html" title="actix_web::error::ErrorPreconditionRequired fn">ErrorPreconditionRequired</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>PRECONDITION_REQUIRED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorProxyAuthenticationRequired.html" title="actix_web::error::ErrorProxyAuthenticationRequired fn">ErrorProxyAuthenticationRequired</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>PROXY_AUTHENTICATION_REQUIRED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorRangeNotSatisfiable.html" title="actix_web::error::ErrorRangeNotSatisfiable fn">ErrorRangeNotSatisfiable</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>RANGE_NOT_SATISFIABLE</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorRequestHeaderFieldsTooLarge.html" title="actix_web::error::ErrorRequestHeaderFieldsTooLarge fn">ErrorRequestHeaderFieldsTooLarge</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>REQUEST_HEADER_FIELDS_TOO_LARGE</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorRequestTimeout.html" title="actix_web::error::ErrorRequestTimeout fn">ErrorRequestTimeout</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>REQUEST_TIMEOUT</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorServiceUnavailable.html" title="actix_web::error::ErrorServiceUnavailable fn">ErrorServiceUnavailable</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>SERVICE_UNAVAILABLE</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorTooManyRequests.html" title="actix_web::error::ErrorTooManyRequests fn">ErrorTooManyRequests</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>TOO_MANY_REQUESTS</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUnauthorized.html" title="actix_web::error::ErrorUnauthorized fn">ErrorUnauthorized</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>UNAUTHORIZED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUnavailableForLegalReasons.html" title="actix_web::error::ErrorUnavailableForLegalReasons fn">ErrorUnavailableForLegalReasons</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>UNAVAILABLE_FOR_LEGAL_REASONS</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUnprocessableEntity.html" title="actix_web::error::ErrorUnprocessableEntity fn">ErrorUnprocessableEntity</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>UNPROCESSABLE_ENTITY</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUnsupportedMediaType.html" title="actix_web::error::ErrorUnsupportedMediaType fn">ErrorUnsupportedMediaType</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>UNSUPPORTED_MEDIA_TYPE</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUpgradeRequired.html" title="actix_web::error::ErrorUpgradeRequired fn">ErrorUpgradeRequired</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>UPGRADE_REQUIRED</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorUriTooLong.html" title="actix_web::error::ErrorUriTooLong fn">ErrorUriTooLong</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>URI_TOO_LONG</code> response.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.ErrorVariantAlsoNegotiates.html" title="actix_web::error::ErrorVariantAlsoNegotiates fn">ErrorVariantAlsoNegotiates</a></td><td class="docblock-short"><p>Helper function that wraps any error and generates a <code>VARIANT_ALSO_NEGOTIATES</code> response.</p>
 </td></tr></table><h2 id="types" class="section-header"><a href="#types">Type Definitions</a></h2>
 <table><tr class="module-item"><td><a class="type" href="type.Result.html" title="actix_web::error::Result type">Result</a></td><td class="docblock-short"><p>A specialized <a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="std::result::Result"><code>std::result::Result</code></a>
 for actix web operations</p>
