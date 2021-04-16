@@ -75,10 +75,10 @@
 <span id="74">74</span>
 <span id="75">75</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">actix_http::http::Method</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::http::header</span>;
+<span class="kw">use</span> <span class="ident">actix_http::http::Method</span>;
 
-<span class="kw">crate</span><span class="macro">::header!</span> {
+<span class="kw">crate</span><span class="macro">::__define_common_header!</span> {
     <span class="doccomment">/// `Allow` header, defined in [RFC7231](http://tools.ietf.org/html/rfc7231#section-7.4.1)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The `Allow` header field lists the set of methods advertised as</span>
@@ -126,12 +126,12 @@
 
     <span class="ident">test_allow</span> {
         <span class="comment">// From the RFC</span>
-        <span class="macro">test_header!</span>(
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(
             <span class="ident">test1</span>,
             <span class="macro">vec!</span>[<span class="string">b&quot;GET, HEAD, PUT&quot;</span>],
             <span class="prelude-val">Some</span>(<span class="ident">HeaderField</span>(<span class="macro">vec!</span>[<span class="ident">Method::GET</span>, <span class="ident">Method::HEAD</span>, <span class="ident">Method::PUT</span>])));
         <span class="comment">// Own tests</span>
-        <span class="macro">test_header!</span>(
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(
             <span class="ident">test2</span>,
             <span class="macro">vec!</span>[<span class="string">b&quot;OPTIONS, GET, PUT, POST, DELETE, HEAD, TRACE, CONNECT, PATCH&quot;</span>],
             <span class="prelude-val">Some</span>(<span class="ident">HeaderField</span>(<span class="macro">vec!</span>[
@@ -144,7 +144,7 @@
                 <span class="ident">Method::TRACE</span>,
                 <span class="ident">Method::CONNECT</span>,
                 <span class="ident">Method::PATCH</span>])));
-        <span class="macro">test_header!</span>(
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(
             <span class="ident">test3</span>,
             <span class="macro">vec!</span>[<span class="string">b&quot;&quot;</span>],
             <span class="prelude-val">Some</span>(<span class="ident">HeaderField</span>(<span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">Method</span><span class="op">&gt;</span><span class="ident">::new</span>())));

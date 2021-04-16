@@ -39,10 +39,11 @@
 <span id="38">38</span>
 <span id="39">39</span>
 <span id="40">40</span>
+<span id="41">41</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">HttpDate</span>, <span class="ident">LAST_MODIFIED</span>};
 
-<span class="kw">crate</span><span class="macro">::header!</span> {
+<span class="kw">crate</span><span class="macro">::__define_common_header!</span> {
     <span class="doccomment">/// `Last-Modified` header, defined in</span>
     <span class="doccomment">/// [RFC7232](http://tools.ietf.org/html/rfc7232#section-2.2)</span>
     <span class="doccomment">///</span>
@@ -78,7 +79,8 @@
 
         <span class="ident">test_last_modified</span> {
             <span class="comment">// Test case from RFC</span>
-            <span class="macro">test_header!</span>(<span class="ident">test1</span>, <span class="macro">vec!</span>[<span class="string">b&quot;Sat, 29 Oct 1994 19:43:31 GMT&quot;</span>]);}
+            <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(<span class="ident">test1</span>, <span class="macro">vec!</span>[<span class="string">b&quot;Sat, 29 Oct 1994 19:43:31 GMT&quot;</span>]);
+        }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="actix_web" data-search-js="../../../../search-index.js"></div>

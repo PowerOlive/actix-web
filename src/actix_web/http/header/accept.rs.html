@@ -279,7 +279,7 @@
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">qitem</span>, <span class="ident">QualityItem</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::http::header</span>;
 
-<span class="kw">crate</span><span class="macro">::header!</span> {
+<span class="kw">crate</span><span class="macro">::__define_common_header!</span> {
     <span class="doccomment">/// `Accept` header, defined in [RFC7231](http://tools.ietf.org/html/rfc7231#section-5.3.2)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The `Accept` header field can be used by user agents to specify</span>
@@ -355,14 +355,14 @@
 
     <span class="ident">test_accept</span> {
         <span class="comment">// Tests from the RFC</span>
-         <span class="macro">test_header!</span>(
+         <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(
             <span class="ident">test1</span>,
             <span class="macro">vec!</span>[<span class="string">b&quot;audio/*; q=0.2, audio/basic&quot;</span>],
             <span class="prelude-val">Some</span>(<span class="ident">Accept</span>(<span class="macro">vec!</span>[
                 <span class="ident">QualityItem::new</span>(<span class="string">&quot;audio/*&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="ident">q</span>(<span class="number">200</span>)),
                 <span class="ident">qitem</span>(<span class="string">&quot;audio/basic&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()),
                 ])));
-        <span class="macro">test_header!</span>(
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(
             <span class="ident">test2</span>,
             <span class="macro">vec!</span>[<span class="string">b&quot;text/plain; q=0.5, text/html, text/x-dvi; q=0.8, text/x-c&quot;</span>],
             <span class="prelude-val">Some</span>(<span class="ident">Accept</span>(<span class="macro">vec!</span>[
@@ -374,13 +374,13 @@
                 <span class="ident">qitem</span>(<span class="string">&quot;text/x-c&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()),
                 ])));
         <span class="comment">// Custom tests</span>
-        <span class="macro">test_header!</span>(
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(
             <span class="ident">test3</span>,
             <span class="macro">vec!</span>[<span class="string">b&quot;text/plain; charset=utf-8&quot;</span>],
             <span class="prelude-val">Some</span>(<span class="ident">Accept</span>(<span class="macro">vec!</span>[
                 <span class="ident">qitem</span>(<span class="ident">mime::TEXT_PLAIN_UTF_8</span>),
                 ])));
-        <span class="macro">test_header!</span>(
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(
             <span class="ident">test4</span>,
             <span class="macro">vec!</span>[<span class="string">b&quot;text/plain; charset=utf-8; q=0.5&quot;</span>],
             <span class="prelude-val">Some</span>(<span class="ident">Accept</span>(<span class="macro">vec!</span>[

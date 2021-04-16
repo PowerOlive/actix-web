@@ -68,11 +68,13 @@
 <span id="67">67</span>
 <span id="68">68</span>
 <span id="69">69</span>
+<span id="70">70</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">QualityItem</span>, <span class="ident">ACCEPT_LANGUAGE</span>};
 <span class="kw">use</span> <span class="ident">language_tags::LanguageTag</span>;
 
-<span class="kw">crate</span><span class="macro">::header!</span> {
+<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">QualityItem</span>, <span class="ident">ACCEPT_LANGUAGE</span>};
+
+<span class="kw">crate</span><span class="macro">::__define_common_header!</span> {
     <span class="doccomment">/// `Accept-Language` header, defined in</span>
     <span class="doccomment">/// [RFC7231](http://tools.ietf.org/html/rfc7231#section-5.3.5)</span>
     <span class="doccomment">///</span>
@@ -127,9 +129,9 @@
 
     <span class="ident">test_accept_language</span> {
         <span class="comment">// From the RFC</span>
-        <span class="macro">test_header!</span>(<span class="ident">test1</span>, <span class="macro">vec!</span>[<span class="string">b&quot;da, en-gb;q=0.8, en;q=0.7&quot;</span>]);
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(<span class="ident">test1</span>, <span class="macro">vec!</span>[<span class="string">b&quot;da, en-gb;q=0.8, en;q=0.7&quot;</span>]);
         <span class="comment">// Own test</span>
-        <span class="macro">test_header!</span>(
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(
             <span class="ident">test2</span>, <span class="macro">vec!</span>[<span class="string">b&quot;en-US, en; q=0.5, fr&quot;</span>],
             <span class="prelude-val">Some</span>(<span class="ident">AcceptLanguage</span>(<span class="macro">vec!</span>[
                 <span class="ident">qitem</span>(<span class="string">&quot;en-US&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()),

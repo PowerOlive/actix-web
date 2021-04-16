@@ -96,7 +96,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">EntityTag</span>, <span class="ident">IF_NONE_MATCH</span>};
 
-<span class="kw">crate</span><span class="macro">::header!</span> {
+<span class="kw">crate</span><span class="macro">::__define_common_header!</span> {
     <span class="doccomment">/// `If-None-Match` header, defined in</span>
     <span class="doccomment">/// [RFC7232](https://tools.ietf.org/html/rfc7232#section-3.2)</span>
     <span class="doccomment">///</span>
@@ -151,11 +151,11 @@
     (<span class="ident">IfNoneMatch</span>, <span class="ident">IF_NONE_MATCH</span>) <span class="op">=</span><span class="op">&gt;</span> {<span class="ident">Any</span> <span class="op">/</span> (<span class="ident">EntityTag</span>)<span class="op">+</span>}
 
     <span class="ident">test_if_none_match</span> {
-        <span class="macro">test_header!</span>(<span class="ident">test1</span>, <span class="macro">vec!</span>[<span class="string">b&quot;\&quot;xyzzy\&quot;&quot;</span>]);
-        <span class="macro">test_header!</span>(<span class="ident">test2</span>, <span class="macro">vec!</span>[<span class="string">b&quot;W/\&quot;xyzzy\&quot;&quot;</span>]);
-        <span class="macro">test_header!</span>(<span class="ident">test3</span>, <span class="macro">vec!</span>[<span class="string">b&quot;\&quot;xyzzy\&quot;, \&quot;r2d2xxxx\&quot;, \&quot;c3piozzzz\&quot;&quot;</span>]);
-        <span class="macro">test_header!</span>(<span class="ident">test4</span>, <span class="macro">vec!</span>[<span class="string">b&quot;W/\&quot;xyzzy\&quot;, W/\&quot;r2d2xxxx\&quot;, W/\&quot;c3piozzzz\&quot;&quot;</span>]);
-        <span class="macro">test_header!</span>(<span class="ident">test5</span>, <span class="macro">vec!</span>[<span class="string">b&quot;*&quot;</span>]);
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(<span class="ident">test1</span>, <span class="macro">vec!</span>[<span class="string">b&quot;\&quot;xyzzy\&quot;&quot;</span>]);
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(<span class="ident">test2</span>, <span class="macro">vec!</span>[<span class="string">b&quot;W/\&quot;xyzzy\&quot;&quot;</span>]);
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(<span class="ident">test3</span>, <span class="macro">vec!</span>[<span class="string">b&quot;\&quot;xyzzy\&quot;, \&quot;r2d2xxxx\&quot;, \&quot;c3piozzzz\&quot;&quot;</span>]);
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(<span class="ident">test4</span>, <span class="macro">vec!</span>[<span class="string">b&quot;W/\&quot;xyzzy\&quot;, W/\&quot;r2d2xxxx\&quot;, W/\&quot;c3piozzzz\&quot;&quot;</span>]);
+        <span class="kw">crate</span><span class="macro">::__common_header_test!</span>(<span class="ident">test5</span>, <span class="macro">vec!</span>[<span class="string">b&quot;*&quot;</span>]);
     }
 }
 
