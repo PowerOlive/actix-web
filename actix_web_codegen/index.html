@@ -9,7 +9,7 @@ crate before the actix-web dependency is updated. Therefore, code examples here 
 explicit imports. Check the latest <a href="https://docs.rs/actix-web/*/actix_web/#attributes">actix-web attributes docs</a> to see which macros
 are re-exported.</p>
 <h1 id="runtime-setup" class="section-header"><a href="#runtime-setup">Runtime Setup</a></h1>
-<p>Used for setting up the actix async runtime. See <a href="../actix_web_codegen/attr.main.html" title="main">main</a> macro docs.</p>
+<p>Used for setting up the actix async runtime. See <a href="attr.main.html" title="main">main</a> macro docs.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">actix_web_codegen::main</span>]</span> <span class="comment">// or `#[actix_web::main]` in Actix Web apps</span>
@@ -19,7 +19,7 @@ are re-exported.</p>
 <h1 id="single-method-handler" class="section-header"><a href="#single-method-handler">Single Method Handler</a></h1>
 <p>There is a macro to set up a handler for each of the most common HTTP methods that also define
 additional guards and route-specific middleware.</p>
-<p>See docs for: <a href="../actix_web_codegen/attr.get.html">GET</a>, <a href="../actix_web_codegen/attr.post.html">POST</a>, <a href="../actix_web_codegen/attr.patch.html">PATCH</a>, <a href="../actix_web_codegen/attr.put.html">PUT</a>, <a href="../actix_web_codegen/attr.delete.html">DELETE</a>, <a href="../actix_web_codegen/attr.head.html">HEAD</a>, <a href="macro@macro@connect">CONNECT</a>, <a href="../actix_web_codegen/attr.options.html">OPTIONS</a>, <a href="../actix_web_codegen/attr.trace.html">TRACE</a></p>
+<p>See docs for: <a href="attr.get.html">GET</a>, <a href="attr.post.html">POST</a>, <a href="attr.patch.html">PATCH</a>, <a href="attr.put.html">PUT</a>, <a href="attr.delete.html">DELETE</a>, <a href="attr.head.html">HEAD</a>, <a href="macro@macro@connect">CONNECT</a>, <a href="attr.options.html">OPTIONS</a>, <a href="attr.trace.html">TRACE</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/test&quot;</span>)]</span>
@@ -28,7 +28,7 @@ additional guards and route-specific middleware.</p>
 }</pre></div>
 <h1 id="multiple-method-handlers" class="section-header"><a href="#multiple-method-handlers">Multiple Method Handlers</a></h1>
 <p>Similar to the single method handler macro but takes one or more arguments for the HTTP methods
-it should respond to. See <a href="../actix_web_codegen/attr.route.html" title="route">route</a> macro docs.</p>
+it should respond to. See <a href="attr.route.html" title="route">route</a> macro docs.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">route</span>(<span class="string">&quot;/test&quot;</span>, <span class="ident">method</span><span class="op">=</span><span class="string">&quot;GET&quot;</span>, <span class="ident">method</span><span class="op">=</span><span class="string">&quot;HEAD&quot;</span>)]</span>
@@ -47,5 +47,5 @@ it should respond to. See <a href="../actix_web_codegen/attr.route.html" title="
 </td></tr><tr class="module-item"><td><a class="attr" href="attr.put.html" title="actix_web_codegen::put attr">put</a></td><td class="docblock-short"><p>Creates route handler with <code>actix_web::guard::Put</code>.</p>
 </td></tr><tr class="module-item"><td><a class="attr" href="attr.route.html" title="actix_web_codegen::route attr">route</a></td><td class="docblock-short"><p>Creates resource handler, allowing multiple HTTP method guards.</p>
 </td></tr><tr class="module-item"><td><a class="attr" href="attr.trace.html" title="actix_web_codegen::trace attr">trace</a></td><td class="docblock-short"><p>Creates route handler with <code>actix_web::guard::Trace</code>.</p>
-</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="actix_web_codegen" data-search-js="../search-index.js"></div>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="actix_web_codegen" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
     <script src="../main.js"></script></body></html>
