@@ -563,6 +563,12 @@
 <span id="562">562</span>
 <span id="563">563</span>
 <span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">cell</span>::{<span class="ident">Ref</span>, <span class="ident">RefMut</span>},
@@ -598,7 +604,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// This type can be used to construct an instance of `Response` through a builder-like pattern.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HttpResponseBuilder</span> {
-    <span class="ident">head</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ResponseHead</span><span class="op">&gt;</span>,
+    <span class="ident">res</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">err</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">HttpError</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
     <span class="ident">cookies</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CookieJar</span><span class="op">&gt;</span>,
@@ -609,7 +615,7 @@
     <span class="doccomment">/// Create response builder</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">status</span>: <span class="ident">StatusCode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">head</span>: <span class="prelude-val">Some</span>(<span class="ident">ResponseHead::new</span>(<span class="ident">status</span>)),
+            <span class="ident">res</span>: <span class="prelude-val">Some</span>(<span class="ident">Response::new</span>(<span class="ident">status</span>)),
             <span class="ident">err</span>: <span class="prelude-val">None</span>,
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
             <span class="ident">cookies</span>: <span class="prelude-val">None</span>,
@@ -857,15 +863,19 @@
     <span class="doccomment">/// Responses extensions</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ref</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Extensions</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">head</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">head</span>.<span class="ident">as_ref</span>().<span class="ident">expect</span>(<span class="string">&quot;cannot reuse response builder&quot;</span>);
-        <span class="ident">head</span>.<span class="ident">extensions</span>()
+        <span class="self">self</span>.<span class="ident">res</span>
+            .<span class="ident">as_ref</span>()
+            .<span class="ident">expect</span>(<span class="string">&quot;cannot reuse response builder&quot;</span>)
+            .<span class="ident">extensions</span>()
     }
 
     <span class="doccomment">/// Mutable reference to a the response&#39;s extensions</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extensions_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RefMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Extensions</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">head</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">head</span>.<span class="ident">as_ref</span>().<span class="ident">expect</span>(<span class="string">&quot;cannot reuse response builder&quot;</span>);
-        <span class="ident">head</span>.<span class="ident">extensions_mut</span>()
+        <span class="self">self</span>.<span class="ident">res</span>
+            .<span class="ident">as_mut</span>()
+            .<span class="ident">expect</span>(<span class="string">&quot;cannot reuse response builder&quot;</span>)
+            .<span class="ident">extensions_mut</span>()
     }
 
     <span class="doccomment">/// Set a body and generate `Response`.</span>
@@ -884,12 +894,14 @@
             <span class="kw">return</span> <span class="ident">HttpResponse::from_error</span>(<span class="ident">Error::from</span>(<span class="ident">err</span>)).<span class="ident">into_body</span>();
         }
 
-        <span class="comment">// allow unused mut when cookies feature is disabled</span>
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_mut</span>)]</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">head</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">head</span>.<span class="ident">take</span>().<span class="ident">expect</span>(<span class="string">&quot;cannot reuse response builder&quot;</span>);
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">res</span>
+            .<span class="ident">take</span>()
+            .<span class="ident">expect</span>(<span class="string">&quot;cannot reuse response builder&quot;</span>)
+            .<span class="ident">set_body</span>(<span class="ident">body</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">HttpResponse::with_body</span>(<span class="ident">StatusCode::OK</span>, <span class="ident">body</span>);
-        <span class="kw-2">*</span><span class="ident">res</span>.<span class="ident">head_mut</span>() <span class="op">=</span> <span class="ident">head</span>;
+        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_mut</span>)]</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">HttpResponse::from</span>(<span class="ident">res</span>);
 
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">jar</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">cookies</span> {
@@ -949,7 +961,7 @@
     <span class="doccomment">/// This method construct new `HttpResponseBuilder`</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">head</span>: <span class="self">self</span>.<span class="ident">head</span>.<span class="ident">take</span>(),
+            <span class="ident">res</span>: <span class="self">self</span>.<span class="ident">res</span>.<span class="ident">take</span>(),
             <span class="ident">err</span>: <span class="self">self</span>.<span class="ident">err</span>.<span class="ident">take</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
             <span class="ident">cookies</span>: <span class="self">self</span>.<span class="ident">cookies</span>.<span class="ident">take</span>(),
@@ -962,7 +974,7 @@
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
 
-        <span class="self">self</span>.<span class="ident">head</span>.<span class="ident">as_mut</span>()
+        <span class="self">self</span>.<span class="ident">res</span>.<span class="ident">as_mut</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">res</span><span class="op">|</span> <span class="ident">res</span>.<span class="ident">head_mut</span>())
     }
 }
 
@@ -1129,5 +1141,5 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="actix_web" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="actix_web" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
