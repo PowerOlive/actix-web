@@ -1382,7 +1382,7 @@
     <span class="attribute">#[<span class="ident">actix_rt::test</span>]</span>
     <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_files_guards</span>() {
         <span class="kw">let</span> <span class="ident">srv</span> <span class="op">=</span> <span class="ident">test::init_service</span>(
-            <span class="ident">App::new</span>().<span class="ident">service</span>(<span class="ident">Files::new</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;.&quot;</span>).<span class="ident">use_guards</span>(<span class="ident">guard::Post</span>())),
+            <span class="ident">App::new</span>().<span class="ident">service</span>(<span class="ident">Files::new</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;.&quot;</span>).<span class="ident">method_guard</span>(<span class="ident">guard::Post</span>())),
         )
         .<span class="kw">await</span>;
 
