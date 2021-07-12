@@ -1,9 +1,17 @@
-use std::{cell::RefCell, fmt, io, path::PathBuf, rc::Rc};
+use std::{
+    cell::RefCell,
+    fmt, io,
+    path::{Path, PathBuf},
+    rc::Rc,
+};
 
 use actix_service::{boxed, IntoServiceFactory, ServiceFactory, ServiceFactoryExt};
 use actix_utils::future::ok;
 use actix_web::{
-    dev::{AppService, HttpServiceFactory, ResourceDef, ServiceRequest, ServiceResponse},
+    dev::{
+        AppService, HttpServiceFactory, RequestHead, ResourceDef, ServiceRequest,
+        ServiceResponse,
+    },
     error::Error,
     guard::Guard,
     http::header::DispositionType,
@@ -13,7 +21,7 @@ use futures_core::future::LocalBoxFuture;
 
 use crate::{
     directory_listing, named, Directory, DirectoryRenderer, FilesService, HttpNewService,
-    MimeOverride,
+    MimeOverride, PathFilter,
 };
 
 /// Static files handling service.
@@ -36,9 +44,10 @@ pub struct Files {
     default: Rc<RefCell<Option<Rc<HttpNewService>>>>,
     renderer: Rc<DirectoryRenderer>,
     mime_override: Option<Rc<MimeOverride>>,
+    path_filter: Option<Rc<PathFilter>>,
     file_flags: named::Flags,
     use_guards: Option<Rc<dyn Guard>>,
-    guards: Vec<Box<Rc<dyn Guard>>>,
+    guards: Vec<Rc<dyn Guard>>,
     hidden_files: bool,
 }
 
@@ -60,12 +69,14 @@ impl Clone for Files {
             file_flags: self.file_flags,
             path: self.path.clone(),
             mime_override: self.mime_override.clone(),
+            path_filter: self.path_filter.clone(),
             use_guards: self.use_guards.clone(),
             guards: self.guards.clone(),
             hidden_files: self.hidden_files,
         }
     }
 }
+
 impl Files {
     /// Create new `Files` instance for a specified base directory.
     ///
@@ -83,7 +94,7 @@ impl Files {
     ///
     /// `Files` utilizes the existing Tokio thread-pool for blocking filesystem operations.
     /// The number of running threads is adjusted over time as needed, up to a maximum of 512 times
-    /// the number of server [workers](HttpServer::workers), by default.
+    /// the number of server [workers](actix_web::HttpServer::workers), by default.
     pub fn new<T: Into<PathBuf>>(mount_path: &str, serve_from: T) -> Files {
         let orig_dir = serve_from.into();
         let dir = match orig_dir.canonicalize() {
@@ -103,6 +114,7 @@ impl Files {
             default: Rc::new(RefCell::new(None)),
             renderer: Rc::new(directory_listing),
             mime_override: None,
+            path_filter: None,
             file_flags: named::Flags::default(),
             use_guards: None,
             guards: Vec::new(),
@@ -113,6 +125,9 @@ impl Files {
     /// Show files listing for directories.
     ///
     /// By default show files listing is disabled.
+    ///
+    /// When used with [`Files::index_file()`], files listing is shown as a fallback
+    /// when the index file is not found.
     pub fn show_files_listing(mut self) -> Self {
         self.show_index = true;
         self
@@ -145,10 +160,45 @@ impl Files {
         self
     }
 
+    /// Sets path filtering closure.
+    ///
+    /// The path provided to the closure is relative to `serve_from` path.
+    /// You can safely join this path with the `serve_from` path to get the real path.
+    /// However, the real path may not exist since the filter is called before checking path existence.
+    ///
+    /// When a path doesn't pass the filter, [`Files::default_handler`] is called if set, otherwise,
+    /// `404 Not Found` is returned.
+    ///
+    /// # Examples
+    /// ```
+    /// use std::path::Path;
+    /// use actix_files::Files;
+    ///
+    /// // prevent searching subdirectories and following symlinks
+    /// let files_service = Files::new("/", "./static").path_filter(|path, _| {
+    ///     path.components().count() == 1
+    ///         && Path::new("./static")
+    ///             .join(path)
+    ///             .symlink_metadata()
+    ///             .map(|m| !m.file_type().is_symlink())
+    ///             .unwrap_or(false)
+    /// });
+    /// ```
+    pub fn path_filter<F>(mut self, f: F) -> Self
+    where
+        F: Fn(&Path, &RequestHead) -> bool + 'static,
+    {
+        self.path_filter = Some(Rc::new(f));
+        self
+    }
+
     /// Set index file
     ///
-    /// Shows specific index file for directory "/" instead of
+    /// Shows specific index file for directories instead of
     /// showing files listing.
+    ///
+    /// If the index file is not found, files listing is shown as a fallback if
+    /// [`Files::show_files_listing()`] is set.
     pub fn index_file<T: Into<String>>(mut self, index: T) -> Self {
         self.index = Some(index.into());
         self
@@ -198,7 +248,7 @@ impl Files {
     /// );
     /// ```
     pub fn guard<G: Guard + 'static>(mut self, guard: G) -> Self {
-        self.guards.push(Box::new(Rc::new(guard)));
+        self.guards.push(Rc::new(guard));
         self
     }
 
@@ -275,7 +325,7 @@ impl HttpServiceFactory for Files {
             Some(
                 guards
                     .into_iter()
-                    .map(|guard| -> Box<dyn Guard> { guard })
+                    .map(|guard| -> Box<dyn Guard> { Box::new(guard) })
                     .collect::<Vec<_>>(),
             )
         };
@@ -311,6 +361,7 @@ impl ServiceFactory<ServiceRequest> for Files {
             default: None,
             renderer: self.renderer.clone(),
             mime_override: self.mime_override.clone(),
+            path_filter: self.path_filter.clone(),
             file_flags: self.file_flags,
             guards: self.use_guards.clone(),
             hidden_files: self.hidden_files,
